@@ -31,4 +31,6 @@ $ git commit -m "explication_du_commit"  # pour un xieme snapshot
 $ git remote add remoteX https://github.com/Fred-Zang/mlops_projet2.git # si fichier jamais tracké !
 $ git push -u remoteX master
 
-2-bis si fichier déjà tracké et pushé
+2-bis si fichier déjà tracké et pushés
+git commit -am "commentaire"
+gii push

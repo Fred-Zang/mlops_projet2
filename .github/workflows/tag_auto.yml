@@ -1,4 +1,4 @@
-on: # ne marche pas => aucune action ne se lance !
+on: 
   push:
     branches:
       - master
@@ -9,14 +9,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - id: release
-        uses: rymndhng/release-on-push-action@master
+      - uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: minor
-          tag_prefix: v
-          
-      - name: Check Output Parameters
-        run: |
-          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
-          echo "Got release version ${{ steps.release.outputs.version }}"
-
