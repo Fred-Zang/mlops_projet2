@@ -45,8 +45,12 @@ b) NAME : ACTIONS_STEP_DEBUG  / Value : true  et Clic sur "Add secret"
 
 
 ## B : 1er workflow "1ere action avec tag auto et mise-à-jour fichiers"
-1> création du dossier .github/workflows dans rep. principal MLops-Satispy2
-2> 1er fichier workflow tag_auto.yml créé dans .github/workflows selon tuto https://github.com/marketplace/actions/tag-release-on-push-action
+1> création du dossier .github/workflows dans le dossier de travail mlops_projet2
+2> -	Création fichier python-app.yml  # 1er workflow
+	installation flake8 et pytest
+	python-version: "3.10"  => voir si pb 3.9 ou 3.9 selon modèles
+-	Création fichier_test.py
+	def total() et def test_total() avec assert de PyTest # fichier de test .py
 
 
 
