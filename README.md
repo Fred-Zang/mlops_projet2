@@ -1,4 +1,4 @@
-# ------------ Récupérer le REPO Github ----------------------- #
+# ------------ Récupérer le REPO Github --------------------- #
 
 ## A : sur un navigateur
  - aller sur ce github https://github.com/Fred-Zang/mlops_projet2
@@ -11,7 +11,7 @@
  - $ git clone https://github.com/Fred-Zang/mlops_projet2.git  
     => cela va copier tous les dossier et fichiers du REPO dans un nouveau dossier local "MLops-Satispy2"
 
-# ------------ voir les navigateur FastApi et Streamlit tourner ----------------------- #
+# --- voir les navigateur FastApi et Streamlit tourner ------ #
 ## A : Création des images FastApi et Streamlit par docker-compose
  - $ cd mlops_projet2
  - créer tout d'abord le reseau AIservice avant de lancer le docker-compose    
@@ -28,13 +28,13 @@
     => donc mise à jour de pip recommandée
 
 ## B : voir l'API
-1 - aller sur localhost:8000/docs
+1 - aller sur http://localhost:8000/docs
 
 ## C :  voir le streamlit
-1 - aller sur localhost:8501
+1 - aller sur http://localhost:8501
 
 
-# ------------ workflows de github-actions ----------------------- #
+# --------- workflows de github-actions --------- #
 ## A : Activation du mode debug si pb dans workflow dans le repo git du projet
 * (toujours actif normalement car à faire qu'une seule fois pour tous les repo )
 sur "mon profil github" : activer notifications  => Settings > notification > Actions > notifications à activer ="automatically watch repositories" + dans system > Actions :Notifications for workflow runs on repositories set up with GitHub Actions => cocher Only notify for failed workflows
@@ -45,8 +45,14 @@ b) NAME : ACTIONS_STEP_DEBUG  / Value : true  et Clic sur "Add secret"
 
 
 ## B : 1er workflow "1ere action avec tag auto et mise-à-jour fichiers"
-1> création du dossier .github/workflows dans rep. principal MLops-Satispy2
-2> 1er fichier workflow tag_auto.yml créé dans .github/workflows selon tuto https://github.com/marketplace/actions/tag-release-on-push-action
+1 - création du dossier .github/workflows dans le dossier de travail mlops_projet2
+2 -	Création fichier python-app.yml  # 1er workflow
+- sur https://github.com/Fred-ZAng/mlps_projet2
+- cliquer Actions > new workflow > "choisir python application" > configure > start commit
+-	=> installation flake8 et pytest
+-	=> python-version: "3.10"  => voir si pb 3.9 ou 3.9 selon modèles
+3	Création fichier_test.py
+-	def total() et def test_total() avec assert de PyTest # fichier de test .py
 
 .... expliquer ce fichier yaml + lancement dès le commit + fichier logs => run OK mais beaucoup d'erreurs 
 d'indentation, espace etc; dans les fichiers python
