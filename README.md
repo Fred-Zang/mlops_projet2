@@ -67,9 +67,21 @@ $ autopep8 --in-place -a -a data/fichier_test.py
 => les 3 fichiers python sont maintenant aux normes pep8
 
 2 - commit du local sur repo github pour vérif des logs
+=> reste plus que 8 pb a régler
+2023-01-12T22:37:47.3141988Z ./fastapi/PyAPI.py:7:1 : F401 'fastapi.Query' importé mais inutilisé
+2023-01-12T22:37:47.3143031Z ./fastapi/PyAPI.py:49:128 : Ligne E501 trop longue (131 > 127 caractères)
+2023-01-12T22:37:47.3143884Z ./fastapi/PyAPI.py:50:128 : Ligne E501 trop longue (130 > 127 caractères)
+2023-01-12T22:37:47.3144636Z ./streamlit/PyStreamlit.py:62:128 : Ligne E501 trop longue (143 > 127 caractères)
+2023-01-12T22:37:47.3145432Z ./streamlit/PyStreamlit.py:65:128 : ligne E501 trop longue (137 > 127 caractères)
+2023-01-12T22:37:47.3146210Z ./streamlit/PyStreamlit.py:66:128 : ligne E501 trop longue (144 > 127 caractères)
+2023-01-12T22:37:47.3146801Z 5 E501 ligne trop longue (131 > 127 caractères)
+2023-01-12T22:37:47.3147506Z 1 F401 'fastapi.Query' importé mais inutilisé
+
+!! [avertissement]La commande `set-output` est obsolète et sera bientôt désactivée. Veuillez passer à l'utilisation des fichiers d'environnement. Pour plus d'informations, voir : https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
 
 
 
+# -------------- changement de Branche -------------------
 
 
 
