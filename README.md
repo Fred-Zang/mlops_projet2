@@ -45,11 +45,13 @@ b) NAME : ACTIONS_STEP_DEBUG  / Value : true  et Clic sur "Add secret"
 
 
 ## B : 1er workflow "1ere action avec tag auto et mise-à-jour fichiers"
-1> création du dossier .github/workflows dans le dossier de travail mlops_projet2
-2> -	Création fichier python-app.yml  # 1er workflow
--	installation flake8 et pytest
--	python-version: "3.10"  => voir si pb 3.9 ou 3.9 selon modèles
--	Création fichier_test.py
+1 - création du dossier .github/workflows dans le dossier de travail mlops_projet2
+2 -	Création fichier python-app.yml  # 1er workflow
+- sur https://github.com/Fred-ZAng/mlps_projet2
+- cliquer Actions > new workflow > "choisir python application" > configure > start commit
+-	=> installation flake8 et pytest
+-	=> python-version: "3.10"  => voir si pb 3.9 ou 3.9 selon modèles
+3	Création fichier_test.py
 -	def total() et def test_total() avec assert de PyTest # fichier de test .py
 
 
