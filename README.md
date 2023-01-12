@@ -1,4 +1,4 @@
-# ------------ Récupérer le REPO Github ----------------------- #
+# ------------ Récupérer le REPO Github --------------------- #
 
 ## A : sur un navigateur
  - aller sur ce github https://github.com/Fred-Zang/mlops_projet2
@@ -11,7 +11,7 @@
  - $ git clone https://github.com/Fred-Zang/mlops_projet2.git  
     => cela va copier tous les dossier et fichiers du REPO dans un nouveau dossier local "MLops-Satispy2"
 
-# ------------ voir les navigateur FastApi et Streamlit tourner ----------------------- #
+# --- voir les navigateur FastApi et Streamlit tourner ------ #
 ## A : Création des images FastApi et Streamlit par docker-compose
  - $ cd mlops_projet2
  - créer tout d'abord le reseau AIservice avant de lancer le docker-compose    
@@ -28,13 +28,13 @@
     => donc mise à jour de pip recommandée
 
 ## B : voir l'API
-1 - aller sur localhost:8000/docs
+1 - aller sur http://localhost:8000/docs
 
 ## C :  voir le streamlit
-1 - aller sur localhost:8501
+1 - aller sur http://localhost:8501
 
 
-# ------------ workflows de github-actions ----------------------- #
+# --------- workflows de github-actions --------- #
 ## A : Activation du mode debug si pb dans workflow dans le repo git du projet
 * (toujours actif normalement car à faire qu'une seule fois pour tous les repo )
 sur "mon profil github" : activer notifications  => Settings > notification > Actions > notifications à activer ="automatically watch repositories" + dans system > Actions :Notifications for workflow runs on repositories set up with GitHub Actions => cocher Only notify for failed workflows
@@ -45,13 +45,54 @@ b) NAME : ACTIONS_STEP_DEBUG  / Value : true  et Clic sur "Add secret"
 
 
 ## B : 1er workflow "1ere action avec tag auto et mise-à-jour fichiers"
-1> création du dossier .github/workflows dans rep. principal MLops-Satispy2
-2> 1er fichier workflow tag_auto.yml créé dans .github/workflows selon tuto https://github.com/marketplace/actions/tag-release-on-push-action
+1 - création du dossier .github/workflows dans le dossier de travail mlops_projet2
+2 -	Création fichier python-app.yml  # 1er workflow
+- sur https://github.com/Fred-ZAng/mlps_projet2
+- cliquer Actions > new workflow > "choisir python application" > configure > start commit
+-	=> installation flake8 et pytest
+-	=> python-version: "3.10"  => voir si pb 3.9 ou 3.9 selon modèles
+3	Création fichier_test.py
+-	def total() et def test_total() avec assert de PyTest # fichier de test .py
+
+.... expliquer ce fichier yaml + lancement dès le commit + fichier logs => run OK mais beaucoup d'erreurs 
+d'indentation, espace etc; dans les fichiers python
+
+
+# -----------  autopep8 de tous les fichiers python -------------
+pour corriger les erreur vu dans les logs de test_python
+1 - sur /mlops_projet2$ 
+$ autopep8 --in-place -a -a streamlit/PyStreamlit.py
+$ autopep8 --in-place -a -a fastapi/PyAPI.py
+$ autopep8 --in-place -a -a data/fichier_test.py
+=> les 3 fichiers python sont maintenant aux normes pep8
+
+2 - commit du local sur repo github pour vérif des logs
+=> reste plus que 8 pb a régler
+2023-01-12T22:37:47.3141988Z ./fastapi/PyAPI.py:7:1 : F401 'fastapi.Query' importé mais inutilisé
+2023-01-12T22:37:47.3143031Z ./fastapi/PyAPI.py:49:128 : Ligne E501 trop longue (131 > 127 caractères)
+2023-01-12T22:37:47.3143884Z ./fastapi/PyAPI.py:50:128 : Ligne E501 trop longue (130 > 127 caractères)
+2023-01-12T22:37:47.3144636Z ./streamlit/PyStreamlit.py:62:128 : Ligne E501 trop longue (143 > 127 caractères)
+2023-01-12T22:37:47.3145432Z ./streamlit/PyStreamlit.py:65:128 : ligne E501 trop longue (137 > 127 caractères)
+2023-01-12T22:37:47.3146210Z ./streamlit/PyStreamlit.py:66:128 : ligne E501 trop longue (144 > 127 caractères)
+2023-01-12T22:37:47.3146801Z 5 E501 ligne trop longue (131 > 127 caractères)
+2023-01-12T22:37:47.3147506Z 1 F401 'fastapi.Query' importé mais inutilisé
+
+!! [avertissement]La commande `set-output` est obsolète et sera bientôt désactivée. Veuillez passer à l'utilisation des fichiers d'environnement. Pour plus d'informations, voir : https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
 
 
 
+# -------------- Tag v1.0.1 branche master -------------------
+
+$ git tag -a v1.0.1 f9b0fa8
 
 
+
+# -------------- changement de Branche -------------------
+
+-	$ git branch  -> * master
+-	$ git checkout Fred -> Branch 'Fred' set up to track remote branch 'Fred' from 'remote2'.
+            Switched to a new branch 'Fred'
+-	$ git branch   -> * Fred    	   master
 
 
 
