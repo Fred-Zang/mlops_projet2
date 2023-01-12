@@ -1,7 +1,7 @@
-on: 
+on: # ne marche pas => aucune action ne se lance !
   push:
     branches:
-      - main
+      - master
 
 jobs:
   release-on-push:
