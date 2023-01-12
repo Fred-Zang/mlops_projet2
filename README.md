@@ -28,10 +28,10 @@
     => donc mise à jour de pip recommandée
 
 ## B : voir l'API
-1 - aller sur localhost:8000/docs
+1 - aller sur http://localhost:8000/docs
 
 ## C :  voir le streamlit
-1 - aller sur localhost:8501
+1 - aller sur http://localhost:8501
 
 
 # --------- workflows de github-actions --------- #
