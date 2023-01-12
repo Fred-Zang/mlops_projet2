@@ -48,7 +48,19 @@ b) NAME : ACTIONS_STEP_DEBUG  / Value : true  et Clic sur "Add secret"
 1> création du dossier .github/workflows dans rep. principal MLops-Satispy2
 2> 1er fichier workflow tag_auto.yml créé dans .github/workflows selon tuto https://github.com/marketplace/actions/tag-release-on-push-action
 
+.... expliquer ce fichier yaml + lancement dès le commit + fichier logs => run OK mais beaucoup d'erreurs 
+d'indentation, espace etc; dans les fichiers python
 
+
+# -----------  autopep8 de tous les fichiers python -------------
+pour corriger les erreur vu dans les logs de test_python
+1 - sur /mlops_projet2$ 
+$ autopep8 --in-place -a -a streamlit/PyStreamlit.py
+$ autopep8 --in-place -a -a fastapi/PyAPI.py
+$ autopep8 --in-place -a -a data/fichier_test.py
+=> les 3 fichiers python sont maintenant aux normes pep8
+
+2 - commit du local sur repo github pour vérif des logs
 
 
 
