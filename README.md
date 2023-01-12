@@ -1,4 +1,4 @@
-# ------------ Récupérer le REPO Github ----------------------- #
+# ------------ Récupérer le REPO Github --------------------- #
 
 ## A : sur un navigateur
  - aller sur ce github https://github.com/Fred-Zang/mlops_projet2
@@ -11,7 +11,7 @@
  - $ git clone https://github.com/Fred-Zang/mlops_projet2.git  
     => cela va copier tous les dossier et fichiers du REPO dans un nouveau dossier local "MLops-Satispy2"
 
-# ------------ voir les navigateur FastApi et Streamlit tourner ----------------------- #
+# --- voir les navigateur FastApi et Streamlit tourner ------ #
 ## A : Création des images FastApi et Streamlit par docker-compose
  - $ cd mlops_projet2
  - créer tout d'abord le reseau AIservice avant de lancer le docker-compose    
@@ -34,7 +34,7 @@
 1 - aller sur localhost:8501
 
 
-# ------------ workflows de github-actions ----------------------- #
+# --------- workflows de github-actions --------- #
 ## A : Activation du mode debug si pb dans workflow dans le repo git du projet
 * (toujours actif normalement car à faire qu'une seule fois pour tous les repo )
 sur "mon profil github" : activer notifications  => Settings > notification > Actions > notifications à activer ="automatically watch repositories" + dans system > Actions :Notifications for workflow runs on repositories set up with GitHub Actions => cocher Only notify for failed workflows
