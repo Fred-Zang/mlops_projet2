@@ -32,5 +32,6 @@ $ git remote add remoteX https://github.com/Fred-Zang/mlops_projet2.git # si fic
 $ git push -u remoteX master
 
 2-bis si fichier déjà tracké et pushés
-git commit -am "commentaire"
-gii push
+$ git commit -am "commentaire"
+$ git push
+
