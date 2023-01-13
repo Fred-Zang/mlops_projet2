@@ -81,6 +81,7 @@ $ autopep8 --in-place -a -a data/fichier_test.py
 
 
 
+
 # -------------- Tag v1.0.1 branche master -------------------
 
 $ git tag -a v1.0.1 f9b0fa8
@@ -93,6 +94,9 @@ $ git tag -a v1.0.1 f9b0fa8
 -	$ git checkout Fred -> Branch 'Fred' set up to track remote branch 'Fred' from 'remote2'.
             Switched to a new branch 'Fred'
 -	$ git branch   -> * Fred    	   master
+=======
+# -------------- changement de Branche -------------------
+
 
 
 

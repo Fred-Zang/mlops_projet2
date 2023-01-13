@@ -9,7 +9,6 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
 
 
-
 app = FastAPI(
     title="Backend FastAPI by Quan & Fred",
     version="wikihappy.org"
@@ -25,23 +24,21 @@ users = {
         "hashed_password": pwd_context.hash('wonderland'),
     },
 
-    "bob" : {
-        "username" :  "bob",
-        "hashed_password" : pwd_context.hash('builder'),
+    "bob": {
+        "username": "bob",
+        "hashed_password": pwd_context.hash('builder'),
     },
 
-    "clementine" : {
-        "username" :  "clementine",
-        "hashed_password" : pwd_context.hash('mandarine'),
+    "clementine": {
+        "username": "clementine",
+        "hashed_password": pwd_context.hash('mandarine'),
     },
-    "admin" : {
-        "username" :  "admin",
-        "hashed_password" : pwd_context.hash('4dm1N')  # 4dm1N
+    "admin": {
+        "username": "admin",
+        "hashed_password": pwd_context.hash('4dm1N')  # 4dm1N
 
     }
 }
-
-
 
 
 # ----------------------------------1ere route Authentification ------------------------------------------------ #
@@ -65,7 +62,11 @@ Sinon, on renvoie l'identifiant de l'utilisateur.
     """
 
     username = credentials.username
-    if not(users.get(username)) or not(pwd_context.verify(credentials.password, users[username]['hashed_password'])):
+    if not (
+        users.get(username)) or not (
+        pwd_context.verify(
+            credentials.password,
+            users[username]['hashed_password'])):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -74,11 +75,11 @@ Sinon, on renvoie l'identifiant de l'utilisateur.
     return credentials.username
 
 
-@app.get("/authentification", name="Hello",  tags=['home'])
+@app.get("/authentification", name="Hello", tags=['home'])
 async def current_user(username: str = Depends(get_current_user)):
     """
     _summary_ : pour accéder à cette route, il faut au préalable que l'utilisateur se soit authentifié.
-    
+
         HELLO user
 
     Args: username (str, optional): _description_. Defaults to Depends(get_current_user).
@@ -89,18 +90,18 @@ async def current_user(username: str = Depends(get_current_user)):
 
 
 # ----------------------------------2eme route Création de la base de donnée ------------------------------------------------ #
- 
 
-@app.post("/Postez un commentaire", name="Nouveau Commentaire ",  tags=['admin']) 
+
+@app.post("/Postez un commentaire",
+          name="Nouveau Commentaire ",
+          tags=['admin'])
 async def admin_user(comment: str, username: str = Depends(get_current_user)):
     """
     _summary_ : détails à donner
-        
+
 
     Args: idem
     """
-    
+
     # ? ajouter la date de saisie du commentaire en return
-    return {username:comment}
-
-
+    return {username: comment}
