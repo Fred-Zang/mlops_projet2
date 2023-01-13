@@ -23,4 +23,20 @@ $ git push -u remote1 master  # envoyer le remote1 sur mon repo github vierge =>
 # B : mettre à jour le repo github 
 
 1 - modification ou création de fichiers (dossiers) sur PC local
-2 - 
+
+2 - si nouveau fichier jamais tracké
+
+$ git status # pour voir les modifs à pusher $ git add <chemin/fichier.extension> ou $ git add --all si c'est ok pour tout prendre $ git commit -m "explication_du_commit" # pour un xieme snapshot $ git remote add remoteX https://github.com/Fred-Zang/mlops_projet2.git # si fichier jamais tracké ! $ git push -u remoteX master
+
+2- bis si fichier déjà tracké et pushés
+
+$ git commit -am "commentaire" $ git push
+
+C : ---------------------- mettre à jour le repo local --------------------------
+1 – ajout de fichier dans le repo github
+
+2 - sur la terminal en local
+
+$ git fetch # pour vérifier les modifs sur le repo github $ git pull # fait la mise à jour sur le repo local
+
+$ git reset HEAD~1 = effacer un commit non pushé
