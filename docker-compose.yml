@@ -5,6 +5,9 @@ services:
     build: fastapi/
     ports: 
       - 8000:8000
+    volumes:
+      - ./data:/data
+      - ./fastapi:/fastapi
     networks:
       - deploy_network
     container_name: fastapi
@@ -15,6 +18,9 @@ services:
       - fastapi
     ports: 
         - 8501:8501
+    volumes:
+      - ./data:/data
+      - ./streamlit:/streamlit
     networks:
       - deploy_network
     container_name: streamlit
