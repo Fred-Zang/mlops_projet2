@@ -25,6 +25,9 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 
 # --------------------chargement des modèles--------------------------#
+nlp = spacy.load('fr_core_news_md') 
+# nlp = pickle.load(open("/data/Modeles/nlp_SAV_core_news_md.pickle","rb"))
+
 # load Vectorizer For Gender Prediction                                           data/Modeles/vectoriser_ber
 # ---------  chargement des modèles et dataframes diverses ------------- #
 GBC_2_vectorizer = pickle.load(open("/data/Modeles/vectoriser_GBC_2","rb"))
