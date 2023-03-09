@@ -10,7 +10,10 @@ import sys
 import re
 import spacy
 import gensim
+import nltk
 from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+nltk.download('punkt')
 
 from PIL import Image
 
@@ -23,6 +26,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
+
+import tensorflow as tf
 
 # --------------------chargement des modèles--------------------------#
 nlp = spacy.load('fr_core_news_md') 
@@ -326,7 +331,7 @@ def present_part(choose_do):
 			pred = SVM(corpus)
 			sentiment(pred)
 		elif model == 'ANN':
-			ANN = tf.keras.models.load_model(r'C:\Users\lqegg\datascientest\satifait client\ANN.h5')
+			ANN = tf.keras.models.load_model(r'/data/Modeles/ANN.h5')  # anciennement C:\Users\lqegg\datascientest\satifait client\ANN.h5
 			pred = prediction(corpus, ANN) 
 		#st.write(pred)
 			pred = pred[0].tolist()
@@ -432,7 +437,7 @@ def prediction(text, model):
 
 pages = [
     "Le Projet en DETAILS",
-    "Dataviz du Projet",
+    "Cahier des Charges",
     "Filtrages, Tokenisations, Lemmatisations et Vectorisations",
     "Modélisations à la demande",
     "Conclusion et REMERciements"]
@@ -452,17 +457,18 @@ if page == pages[0]:  # sur la page 0 Introduction
 
     # title du page
     st.markdown(
-        "<h1 style='text-align: center; color: white;'>SatisPy Projet</h1>",
+        "<h1 style='text-align: center; color: white;'>SatisPy Projet - version MLOps</h1>",
         unsafe_allow_html=True)
     # écrire du texte ( # = taille, ##, ###) ici le titre de la page
-    st.write("### Préambule QUE DES BULLES !!!:")
-    st.write("Tout comme le rapport de projet, cette présentation Streamlit est destinée à tout public et ne comporte aucune ligne de code.😉​")
+    st.write("### Présentation Générale !!!:")
+    st.write("blablabla....................😉​")
     st.write("### Rapide aperçu du Projet :")
     st.write(
         "On nous a remis un dataset 'reviews_trust.csv' comportant 19.863 lignes et 11 colonnes qui correspond aux commentaires clients \
         et notation de 1 à 5 étoiles sur leurs achats de produit sur 2 sites marchands 'ShowRoom' et 'VeePee'. Ces commentaires proviennent de \
             2 sources récoltant les avis, 'TrustedShop' et 'TrustPilot' et voici un extrait du dataset :")
-    st.write("---est ce que ça marche ? ---")
+    st.write("--- AERER TOUT CA ---")
+    st.write("Projet présenté et réalisé par Quan Liu, Éric Gasniere et Fred Zanghi")
 
 
 #------------------------------------------------------------------------------------------
@@ -472,7 +478,7 @@ elif page==pages[1]:  # sur la page 1 Dataviz
 	# affichage
 	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/logo_SatisPy_Project.png')
 	
-	st.markdown("<h2 style='text-align: center; color: white;'>Exploration & Visualisation des données</h2>", unsafe_allow_html=True)
+	st.markdown("<h2 style='text-align: center; color: white;'>Cahier des Charges</h2>", unsafe_allow_html=True)
 	st.markdown("""
 	## Objectif：
 	- Exploration des données 
@@ -499,9 +505,10 @@ elif page==pages[1]:  # sur la page 1 Dataviz
 
 	st.markdown("""
 	### Objectif：
-	- Visualisation des données
-	- Identification des relations entre les variables
-	- Identification des variables explicatives et de la variable cible
+	- Définition des métriques et exigences de performances
+	- Schéma d’implémentation
+	- Récupération de nouvelles données
+
 	""")
 
 	charts = ['Distribution Star variable cible',
@@ -682,7 +689,7 @@ elif page ==pages[3]:  # sur la page 3 Modelisation
 		#st.write('complet dataframe')
 
 	if st.button("ANN Réseaux de Neurones Articiciels"):
-		ANN = tf.keras.models.load_model('ANN.h5')
+		ANN = tf.keras.models.load_model('/data/Modeles/ANN.h5')
 		pred = prediction(corpus, ANN) 
 		st.write(pred)
 		pred = pred[0].tolist()

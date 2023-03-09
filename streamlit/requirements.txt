@@ -11,6 +11,7 @@ Pillow==9.4.0
 spacy==3.5.0
 gensim==4.2.0
 tensorflow==2.11.0
+openpyxl==3.0.10
 
 
 
