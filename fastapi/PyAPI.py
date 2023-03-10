@@ -10,7 +10,7 @@ from passlib.context import CryptContext
 
 
 app = FastAPI(
-    title="Backend FastAPI by Quan & Fred",
+    title="Backend FastAPI by Quan, Éric & Fred",
     version="wikihappy.org"
 )
 security = HTTPBasic()

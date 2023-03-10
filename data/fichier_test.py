@@ -12,4 +12,3 @@ def test_total():
 
 # executer $ pytest => ok ça marche !
 
-import pandas

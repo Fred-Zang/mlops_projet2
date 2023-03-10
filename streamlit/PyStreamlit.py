@@ -12,8 +12,8 @@ import spacy
 import gensim
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-nltk.download('punkt')
+from nltk.tokenize import word_tokenize # pour modele ANN.h5
+nltk.download('punkt')                  # pour modele ANN.h5
 
 from PIL import Image
 
@@ -36,14 +36,14 @@ nlp = spacy.load('fr_core_news_md')
 # load Vectorizer For Gender Prediction                                           data/Modeles/vectoriser_ber
 # ---------  chargement des modèles et dataframes diverses ------------- #
 GBC_2_vectorizer = pickle.load(open("/data/Modeles/vectoriser_GBC_2","rb"))
-Bernoulli_vectorizer = pickle.load(open("/data/Modeles/vectoriser_ber","rb"))
+
 
 # load pre-trained model
 trained = pickle.load(open(r"/data/Modeles/trained.pickle","rb"))
 
 # load Model For Prediction
 GBC_2_model = pickle.load(open("/data/Modeles/GBC_2.pickle","rb"))
-Bernoulli_model = pickle.load(open("/data/Modeles/ber.pickle","rb"))
+
 SVM_model = pickle.load(open("/data/Modeles/SVM.pickle","rb"))
 
 
