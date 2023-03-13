@@ -12,6 +12,7 @@ from typing import Optional
 import pandas as pd 
 import numpy as np
 import csv 
+import json
 
 app = FastAPI(
     title="Backend FastAPI by Eric & Fred & Quan",
@@ -172,13 +173,19 @@ async def post_comment(item:Item):
     comment = comments.iloc[-1,:]
     return {'new comment': comment['Commentaire']}
 
-@app.get('/getcomment', name= 'Get comments', tags = ['Data Management'])
-def get_comment():
+@app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
+def get_comments():
     # data storage file name
     data_store = '/home/liuquan/mlops_projet2/data/comments/reviews_trust.csv'
     comments = pd.read_csv(data_store)
-    comment = comments.iloc[-1,:]
-    total = len(comments.Commentaire)
-    return {'last comment': comment['Commentaire'], "total comment": total }
+    # comment = comments.iloc[-1,:]
+    # total = len(comments.Commentaire)
+    data_json = comments.to_json('/home/liuquan/mlops_projet2/data/comments/reviews_trust.json')
+
+    data = comments.to_json()
+
+    return data
+
+    
 
 
