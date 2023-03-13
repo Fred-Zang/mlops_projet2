@@ -349,7 +349,7 @@ dense4 = Dense(units = 2, activation = "softmax", name = "Dense_4")
 inputs = Input(shape = (100))
 dense_1 = Dense(units = 64, activation = "relu")
 dropout_2 = Dropout(rate=0.1)
-dense_3 = Dense(units = 32, activation = "relu")
+dense_3 = Dense(units =32, activation = "relu")
 dropout_4 = Dropout(rate=0.1)
 dense_5 = Dense(units = 2, activation = "sigmoid")
 
@@ -403,7 +403,10 @@ print("Training time in {} secondes".format(t1))
 
 test_pred = ANN.predict(X_test)  # => dim (5160, 2) où n =dim[0]de X_test et 2 = dim units dense_last
 y_pred_class = np.argmax(test_pred,axis=1) # on prend l'index du max de chaque ligne prédite
+#y_pred_class = np.where(test_pred[:,1] > 0.52, 1, 0)
+
 y_test_class = y_test  # autre nom a y_test pour la suite classification_report et confusion_matrix
+
 
 print(classification_report(y_test_class,y_pred_class)) 
 print(confusion_matrix(y_test_class,y_pred_class))
