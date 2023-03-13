@@ -1,0 +1,3 @@
+data/Modeles/trained.pickle
+fastapi/__pycache__/PyAPI.cpython-37.pyc
+fastapi/__pycache__/PyAPI.cpython-39.pyc
