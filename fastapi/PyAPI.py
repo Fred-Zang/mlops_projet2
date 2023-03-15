@@ -1,44 +1,53 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Dec 30 01:41:01 2022
-
 @author: user
 """
 from fastapi import Depends, FastAPI, HTTPException, status, Query
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
-
+from pydantic import BaseModel
+from typing import Optional
+import pandas as pd 
+import numpy as np
+import csv 
+import json
 
 app = FastAPI(
-    title="Backend FastAPI by Quan, Éric & Fred",
-    version="wikihappy.org"
+    title="Backend FastAPI by Eric & Fred & Quan",
+    description = "API for MLOps final project: SatisPy",
+    # version="wikihappy.org"
+    version = "1.0.0",
+    openapi_tags=[
+        {
+            'name': "Authentification"
+        },
+        {
+            'name': 'Data Management',
+            'description':"Data management for sentiment analysis"
+        }
+    ]
 )
+
 security = HTTPBasic()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # dictionnaire des users avec hashage du mot de pass
+# deux utilisateurs: user normale ("user") et administateur ("admin")
+
 users = {
-
-    "alice": {
-        "username": "alice",
-        "hashed_password": pwd_context.hash('wonderland'),
-    },
-
-    "bob": {
-        "username": "bob",
-        "hashed_password": pwd_context.hash('builder'),
-    },
-
-    "clementine": {
-        "username": "clementine",
-        "hashed_password": pwd_context.hash('mandarine'),
+    "user" : {
+        "username" : "user",
+        "hashed_password" : pwd_context.hash("user")
     },
     "admin": {
         "username": "admin",
-        "hashed_password": pwd_context.hash('4dm1N')  # 4dm1N
+        "hashed_password": pwd_context.hash('admin')  
 
     }
 }
+
+
 
 
 # ----------------------------------1ere route Authentification ------------------------------------------------ #
@@ -50,13 +59,10 @@ On récupère l'identifiant et le mot de passe de l'utilisateur grâce aux attri
 On vérifie si l'identifiant est présent dans la base de données. Ensuite, on compare si le mot de passe crypté correspond bien à \
 celui de la base de données en utilisant la méthode verify de la variable pwd_context.  \
 Sinon, on renvoie l'identifiant de l'utilisateur.
-
     Args:
         credentials (HTTPBasicCredentials, optional): _description_. Defaults to Depends(security).
-
     Raises:
         HTTPException: On lève une erreur 401 si username et hashedpassword ne correspondent pas
-
     Returns:
         credentials.username
     """
@@ -74,16 +80,20 @@ Sinon, on renvoie l'identifiant de l'utilisateur.
         )
     return credentials.username
 
+@app.get('/status',tags = ['Authentification'])
+async def get_status(username: str = Depends(get_current_user)):
+    
+    if username== "admin" or username=="user":
+        return "API is ready"
+    else: 
+        return "API is not ready for unknown user"
 
-@app.get("/authentification", name="Hello", tags=['home'])
+@app.get("/authentification", name="Hello", tags=['Authentification'])
 async def current_user(username: str = Depends(get_current_user)):
     """
     _summary_ : pour accéder à cette route, il faut au préalable que l'utilisateur se soit authentifié.
-
         HELLO user
-
     Args: username (str, optional): _description_. Defaults to Depends(get_current_user).
-
     Returns: _type_: string  _description_: affiche "Hello" + "username"
     """
     return "Hello {}".format(username)
@@ -92,16 +102,79 @@ async def current_user(username: str = Depends(get_current_user)):
 # ----------------------------------2eme route Création de la base de donnée ------------------------------------------------ #
 
 
-@app.post("/Postez un commentaire",
-          name="Nouveau Commentaire ",
-          tags=['admin'])
-async def admin_user(comment: str, username: str = Depends(get_current_user)):
-    """
-    _summary_ : détails à donner
+# @app.post("/Postez un commentaire",
+#           name="Nouveau Commentaire ",
+#           tags=['admin'])
+# async def admin_user(comment: str, username: str = Depends(get_current_user)):
+#     """
+#     _summary_ : détails à donner
 
 
-    Args: idem
-    """
+#     Args: idem
+#     """
 
-    # ? ajouter la date de saisie du commentaire en return
-    return {username: comment}
+#     # ? ajouter la date de saisie du commentaire en return
+#     return {username: comment}
+
+# Commentaire	star	date	client	reponse	source	company	ville	maj	date_commande	ecart
+
+class Item(BaseModel):
+    # inID: Optional[int] = None 
+    Commentaire: str
+    star : int
+    date: Optional[str] = None
+    client: Optional[str]= None
+    reponse: Optional[str]= None
+    source: Optional[str] = None
+    company: Optional[str] = None
+    ville: Optional[str]=None
+    maj: Optional[str]=None
+    date_commande: Optional[str] = None 
+    ecart: Optional[int]=None
+
+# data base  
+data_store = '/airflow/clean_data/reviews_trust.csv'
+
+# function definition
+# function to store a new comment
+def write_comment(FileName : str, inputs:list):
+    with open(FileName,'a+') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow([inputs.Commentaire, 
+        inputs.star, 
+        inputs.date, 
+        inputs.client, 
+        inputs.reponse, 
+        inputs.source, 
+        inputs.company,
+        inputs.ville,
+        inputs.maj,
+        inputs.date_commande,
+        inputs.ecart])
+
+
+
+
+
+@app.post('/comment', name="Make a New comment", tags= ['Data Management'])
+async def post_comment(item:Item):
+    # data storage file name
+    data_store = '/airflow/clean_data/reviews_trust.csv'
+
+    write_comment(data_store,item)
+    comments = pd.read_csv(data_store)
+    comment = comments.iloc[-1,:]
+    return {'new comment': comment['Commentaire']}
+
+@app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
+def get_comments():
+    # data storage file name
+    data_store = '/airflow/clean_data/reviews_trust.csv'
+    comments = pd.read_csv(data_store)
+    # comment = comments.iloc[-1,:]
+    # total = len(comments.Commentaire)
+    data_json = comments.to_json('/airflow/clean_data/reviews_trust.json') # marche aussi avec /data/XLS-CSV/...
+
+    data = comments.to_json()
+
+    return data
