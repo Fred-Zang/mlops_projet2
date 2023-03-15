@@ -6,6 +6,8 @@ services:
     ports: 
       - 8000:8000
     volumes:
+      - ./airflow/clean_data:/airflow/clean_data
+      - ./airflow/clean_model:/airflow/clean_model
       - ./data:/data
       - ./fastapi:/fastapi
     networks:
@@ -19,6 +21,8 @@ services:
     ports: 
         - 8501:8501
     volumes:
+      - ./airflow/clean_data:/airflow/clean_data
+      - ./airflow/clean_model:/airflow/clean_model
       - ./data:/data
       - ./streamlit:/streamlit
     networks:

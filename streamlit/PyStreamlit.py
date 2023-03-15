@@ -1,9 +1,9 @@
 
 import streamlit as st
-import seaborn as sns
+#import seaborn as sns
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import webbrowser
 
 import sys
@@ -30,30 +30,31 @@ from sklearn.neighbors import KNeighborsClassifier
 import tensorflow as tf
 
 # --------------------chargement des modèles--------------------------#
+
 nlp = spacy.load('fr_core_news_md') 
-# nlp = pickle.load(open("/data/Modeles/nlp_SAV_core_news_md.pickle","rb"))
+# nlp = pickle.load(open("/airflow/clean_model/nlp_SAV_core_news_md.pickle","rb"))
 
-# load Vectorizer For Gender Prediction                                           data/Modeles/vectoriser_ber
+# load Vectorizer For Gender Prediction                                           /airflow/clean_model/vectoriser_ber
 # ---------  chargement des modèles et dataframes diverses ------------- #
-GBC_2_vectorizer = pickle.load(open("/data/Modeles/vectoriser_GBC_2","rb"))
-
+GBC_2_vectorizer = pickle.load(open("/airflow/clean_model/vectoriser_GBC_2-sav_sklearn102","rb"))
+                                    # airflow/clean_model/vectoriser_GBC_2-sav_sklearn102
 
 # load pre-trained model
-trained = pickle.load(open(r"/data/Modeles/trained.pickle","rb"))
+trained = pickle.load(open(r"/airflow/clean_model/trained.pickle","rb"))
 
 # load Model For Prediction
-GBC_2_model = pickle.load(open("/data/Modeles/GBC_2.pickle","rb"))
+GBC_2_model = pickle.load(open("/airflow/clean_model/GBC_2-sav_sklearn102.pickle","rb"))
 
-SVM_model = pickle.load(open("/data/Modeles/SVM.pickle","rb"))
+SVM_model = pickle.load(open("/airflow/clean_model/SVM_sav-sklearn102.pickle","rb"))
 
 
 #---------- Chargement des data csv ----------------------------------#
 
-#df_origin = pd.read_csv('reviews_trust.csv',index_col = 0)
-df_origin = pd.read_csv('/data/reviews_trust.csv')
-df = pd.read_csv('/data/reviews_trust_fr_VF.csv',index_col = 0) 
 
-data = pd.read_csv('/data/review_trust_fr_lemmantiser_word+2_VF.csv', sep=',', index_col = 0)
+df_origin = pd.read_csv('/airflow/clean_data/reviews_trust.csv')
+df = pd.read_csv('/airflow/clean_data/reviews_trust_fr_VF.csv',index_col = 0) 
+
+data = pd.read_csv('/airflow/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv', sep=',', index_col = 0)
 
 # ---------  Fonction d'affichage ------------- #
 
@@ -129,10 +130,10 @@ def my_doc2vec(doc, trained):
 # ---------  Fonction d'affichage DataViz ------------- #
 def chart(chart):
 	if chart == 'Distribution Star variable cible':
-		st.image('/data/logo_SatisPy_Project.png')
+		st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
     		
 	elif chart == 'Distribution star avec filtre reponse':
-		st.image('/data/logo_SatisPy_Project.png')
+		st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
 		if st.checkbox("Afficher l'analyse"):
 			st.write("Nous remarquons que les sites marchands donnent peu de réponses au clients mécontents ou satisfaits à l'exception des clients très satisfaits, ce qui est anormal et doit être signalé au service marketing.:pray:")
 			st.write(" ")
@@ -145,7 +146,7 @@ def chart(chart):
 			- 4 étoiles = client satisfait
 			- 5 étoiles = client très satisfait	""")
 	elif chart == 'Distribution source avec filtre star':
-		st.image('/data/logo_SatisPy_Project.png')
+		st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
 		if st.checkbox("Afficher l'analyse"):
 			st.markdown("""
 			### Variation des données entre ces 2 entreprises
@@ -156,7 +157,7 @@ def chart(chart):
 			""")
     			
 	elif chart == 'Distributions des sites marchands de compagny avec filtre star ou filtre source':
-		st.image('/data/logo_SatisPy_Project.png')
+		st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
 		if st.checkbox("Afficher l'analyse"):
 			st.markdown("""
 			### Site marchand ***showroom***
@@ -174,7 +175,7 @@ def chart(chart):
 			""")
     			
 	elif chart == 'Chronologie des notations par Années':
-		st.image('/data/logo_SatisPy_Project.png')
+		st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
 		if st.checkbox("Afficher l'analyse"):
 			st.markdown("""
 			- Il y a 66.34% de NaN sur date_commande, le graphe présente essentiellement les informations en 2020 et 2021
@@ -241,7 +242,7 @@ def present_part1(choose_part):
                     """)
 
 				# 🌞🌞🌞@fred: ajouter le jpd dans le meme folder 🌞🌞🌞
-			insert_img('/data/sample-image.jpg')  # mots_vides.jpg
+			insert_img('/data/JPG-PNG/sample-image.jpg')  # mots_vides.jpg
 		st.write('------------------------------------------------------------------------------')
 
 # Mot particulier
@@ -252,7 +253,7 @@ def present_part1(choose_part):
 			st.write("Il faut aussi traiter les mots particuliers dans les données. Dans le projet SatisPy, il y a des mots comme 'ras, rad, ras le bol'. Les mots 'ras' et 'rad' présentent 'rien a signaler' ou 'rien à dire', ces sentiments sont est plustôt positifs :smiley:. Cependant le mot 'ras le bol' présente un sentiment plustôt négatif :angry:")
     			# 🌞🌞🌞@fred: ajouter le jpd dans le meme folder 🌞🌞🌞
 			 ## 🛑🛑add image apres la recevoir 🛑🛑
-			st.image('/data/logo_SatisPy_Project.png')
+			st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
 			
 
 			st.write("Notre décision : '")
@@ -331,7 +332,7 @@ def present_part(choose_do):
 			pred = SVM(corpus)
 			sentiment(pred)
 		elif model == 'ANN':
-			ANN = tf.keras.models.load_model(r'/data/Modeles/ANN.h5')  # anciennement C:\Users\lqegg\datascientest\satifait client\ANN.h5
+			ANN = tf.keras.models.load_model(r'/airflow/clean_model/ANN-tensor280.h5')  # anciennement ANN.h5
 			pred = prediction(corpus, ANN) 
 		#st.write(pred)
 			pred = pred[0].tolist()
@@ -377,10 +378,10 @@ def sentiment(pred):
 # ---------  Fonction la prédiction par SVM_wiki ------------- #
 def SVM(corpus):
 	# 🌞🌞🌞@fred: changer le file path 🌞🌞🌞
-	trained = pickle.load(open('/data/Modeles/trained.pickle','rb'))
+	trained = pickle.load(open('/airflow/clean_model/trained.pickle','rb'))
 	# charger le model
 	# 🌞🌞🌞@fred: changer le file path 🌞🌞🌞
-	SVM_wiki = pickle.load(open('/data/Modeles/SVM.pickle','rb'))
+	SVM_wiki = pickle.load(open('/airflow/clean_model/SVM_sav-sklearn102.pickle','rb'))
 	text_vec = my_doc2vec(corpus,trained)
 	text_vector = pd.DataFrame(my_doc2vec(corpus, trained)).T
 	pred = SVM_wiki.predict(text_vector)
@@ -390,10 +391,10 @@ def SVM(corpus):
 def GBC_2(corpus):
 	# charger le vecteur
 	# 🌞🌞🌞@fred: changer le file path 🌞🌞🌞
-	vectorizer = pickle.load(open('/data/Modeles/vectoriser_GBC_2','rb'))
+	vectorizer = pickle.load(open('/airflow/clean_model/vectoriser_GBC_2-sav_sklearn102','rb'))
 	# charger le model 
 	# 🌞🌞🌞@fred: changer le file path 🌞🌞🌞
-	GBC_2 = pickle.load(open('/data/Modeles/GBC_2.pickle','rb'))
+	GBC_2 = pickle.load(open('/airflow/clean_model/GBC_2-sav_sklearn102.pickle','rb'))
 	text= pd.Series(corpus)
 	text_vec = vectorizer.transform(text).todense()
 	#st.write('vectorization for GBC2 ',text_vec)
@@ -405,7 +406,7 @@ def GBC_2(corpus):
 
 def prediction(text, model):
 	# 🌞🌞🌞@fred: changer le file path 🌞🌞🌞
-	trained = pickle.load(open('/data/Modeles/trained.pickle','rb'))
+	trained = pickle.load(open('/airflow/clean_model/trained.pickle','rb'))
 	my_doc = text.lower()
 	my_doc_tk = word_tokenize(my_doc)
 	def lemms(corpus_tk):    
@@ -420,7 +421,7 @@ def prediction(text, model):
 				tokens.append(mot)
 		return tokens
 	# 🌞🌞🌞@fred: changer le file path 🌞🌞🌞
-	df_stop_word_xls = pd.read_excel('/data/liste_no-stop-words_tokens_unique.xlsx', header=None)
+	df_stop_word_xls = pd.read_excel('/airflow/clean_data/liste_no-stop-words_tokens_unique.xlsx', header=None)
 	update_list_fr = list(df_stop_word_xls[0])
 	# initialisation de la variable des mots vides
 	stop_words = set()
@@ -453,7 +454,7 @@ if page == pages[0]:  # sur la page 0 Introduction
     st.write("### Frontend Streamlit")
     insert_head(
         'https://datascientest.fr/train/assets/logo_datascientest.png',
-        "/data/logo_SatisPy_Project.png")
+        "/data/JPG-PNG/logo_SatisPy_Project.png")
 
     # title du page
     st.markdown(
@@ -476,7 +477,7 @@ if page == pages[0]:  # sur la page 0 Introduction
 #------------------------------------------------------------------------------------------
 elif page==pages[1]:  # sur la page 1 Dataviz
 	# affichage
-	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/logo_SatisPy_Project.png')
+	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/JPG-PNG/logo_SatisPy_Project.png')
 	
 	st.markdown("<h2 style='text-align: center; color: white;'>Cahier des Charges</h2>", unsafe_allow_html=True)
 	st.markdown("""
@@ -543,7 +544,7 @@ elif page==pages[1]:  # sur la page 1 Dataviz
 	#fig = plt.figure(figsize = (8,4)) 
 	#sns.barplot(x = 'Langage',y = '%', data = table_lang);
 	#st.pyplot(fig)
-	st.image('/data/logo_SatisPy_Project.png')
+	st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
 
 	st.markdown('------------------------------------------------------------------------------------------')
 
@@ -562,7 +563,7 @@ elif page==pages[1]:  # sur la page 1 Dataviz
 	# add wordcloud
 	st.write('### Wordcloud du dataset original avant traitements et filtrages')
 	#☻ afficher l'image wordcloud
-	st.image('/data/logo_SatisPy_Project.png')
+	st.image('/data/JPG-PNG/logo_SatisPy_Project.png')
 
 #------------------------------------------------------------------------------------------
 # sépration des pages  
@@ -571,7 +572,7 @@ elif page==pages[1]:  # sur la page 1 Dataviz
 elif page ==pages[2]:
 	
 	# affichage
-	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/logo_SatisPy_Project.png')
+	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/JPG-PNG/logo_SatisPy_Project.png')
 	# title du page
 	st.markdown("<h1 style='text-align: center; color: white;'>Filtrages, Tokenisation, Lemmatisations et Vectorisations</h1>", unsafe_allow_html=True)
 	st.markdown("""
@@ -595,63 +596,14 @@ elif page ==pages[2]:
 # sépration des pages  
 #------------------------------------------------------------------------------------------
 elif page ==pages[3]:  # sur la page 3 Modelisation
+    
+    #############  TOUS LES MODELES ET DATA ICI SONT RECUPERES DANS /airflow/clean_data ou /airflow/clean_model #############################
+    
 	# affichage
-	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/logo_SatisPy_Project.png')
+	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/JPG-PNG/logo_SatisPy_Project.png')
 	
-	st.markdown("<h2 style='text-align: center; color: white;'>Nos 4 Modèles présentés ici</h2>", unsafe_allow_html=True)
-	#st.write("# Nos 3 Modèles présentés ici")
-	st.write("### Gradient Boosting Classifier")
-
-	col1, col5 = st.columns([4,1])
-	with col1:
-		st.write("Le Boosting permet de construire un modèle, pas à pas en demandant au modèle de corriger les erreurs de son prédécesseur. Chaque modèle est faible, en underfitting. La foule permet de réduire le biais.")
-	with col5:    
-		if st.button('Aide @ Gradient Boosting'):
-			url3 = "https://en.wikipedia.org/wiki/Gradient_boosting"
-			webbrowser.open_new_tab(url3)
-# 🛑🛑ajouter les image dans le dossier et décommenté🛑🛑
-	st.image ("/data/logo_SatisPy_Project.png")
-	#st.write('add image')
-
-
-	st.write(' ')
-	st.write("### Modèle pré-entrainé Wikipedia2vec")
-	col1, col5 = st.columns([4,1])
-	with col1:
-		st.write("Wikipedia2Vec est un outil d'apprentissage des imbrications de mots et d'entités de Wikipédia. Les imbrications apprises mappent des mots et des entités similaires proches les uns des autres dans un espace vectoriel continu.")
-	with col5:    
-		if st.button('Aide vidéo Tuto wikipedia2vec'):        
-			url6 = "https://www.youtube.com/watch?v=FwSD1EM2Qkk"
-			webbrowser.open_new_tab(url6)
-# 🛑🛑ajouter les image dans le dossier et décommenté🛑🛑
-	st.image("/data/logo_SatisPy_Project.png") #"schema_principe_wikipedia2vec.jpg")
+	st.markdown("<h2 style='text-align: center; color: white;'>Nos 3 Modèles présentés ici</h2>", unsafe_allow_html=True)
 	
-	st.write(' ')
-	st.write("### Modèle Support Vector Machine")
-
-	col1, col5 = st.columns([4,1])
-	with col1:
-		st.write("Les machines à vecteurs de support ou séparateurs à vaste marge sont un ensemble de techniques d'apprentissage supervisé destinées à résoudre des problèmes de discrimination et de régression. Les SVM sont une généralisation des classifieurs linéaires.")
-	with col5:    
-		if st.button('Aide vidéo Tuto SVM'):        
-			url_SVM = "https://www.youtube.com/watch?v=_YPScrckx28"
-			webbrowser.open_new_tab(url_SVM)	
-	st.image("/data/logo_SatisPy_Project.png")
-	#st.write('add img')
-
-	st.write(" ")
-	st.write("### Modèle ANN réseau de neurones artificiels")
-	col1, col5 = st.columns([4,1])
-	with col1:
-		st.write("Des perceptrons (neurones artificiels de base) sont disposés en couches successives pour réaliser un apprentissage automatique sans aucune intervention.")
-	with col5:    
-		if st.button('Aide Vidéo Perceptron'):
-			url7 = "https://www.youtube.com/watch?v=VlMm4VZ6lk4"  # perceptron
-			webbrowser.open_new_tab(url7)
-# 🛑🛑ajouter les image dans le dossier et décommenté🛑🛑
-	st.image("/data/logo_SatisPy_Project.png")
-	#st.write('add image')
-	st.write(" ")
 
 	# title du page
 	st.markdown("<h1 style='text-align: center; color: white;'>Modélisations à la demande</h1>", unsafe_allow_html=True)
@@ -665,13 +617,7 @@ elif page ==pages[3]:  # sur la page 3 Modelisation
 		st.success('Your message was classified as {}'.format(pred))
 		sentiment = sentiment(pred)
 		st.write("Ce modèle atteint une précision de 89% sur les 2 sentiments et donc malgré tout un taux d'erreurs de 11%")
-# 🛑🛑ajouter les image dans le dossier et décommenté🛑🛑
-		st.image("/data/logo_SatisPy_Project.png")  #"confusion_classifreport_model2.jpg") 
-		#st.write('add image')
-		st.write("#### Quelques erreurs du modèle sur les données originales du projet :")
-# 🛑🛑ajouter les df dans le dossier et décommenté🛑🛑
-		#st.dataframe(df_errors_GBC.sample(60))
-		#st.write('complet dataframe')
+
 
 	if st.button("pré-entrainement avec Wikipedia2vec puis modélisation par SVM"):
 		pred = SVM(corpus)
@@ -679,17 +625,10 @@ elif page ==pages[3]:  # sur la page 3 Modelisation
 		st.success('Your message was classified as {}'.format(pred))
 		sentiment(pred)
 		st.write("Ce modèle atteint une précision de 90% sur les 'satisfaits' et seulement 76% sur les 'mécontents")
-# 🛑🛑ajouter les image dans le dossier et décommenté🛑🛑
-		st.image("/data/logo_SatisPy_Project.png")   #"confusion_classifreport_model4.jpg")
-		#st.write('add img')
-		
-		st.write("#### Quelques erreurs du modèle sur les données originales du projet :")
-# 🛑🛑ajouter les df dans le dossier et décommenté🛑🛑
-		#st.dataframe(df_errors_wiki_SVM.sample(60))
-		#st.write('complet dataframe')
+
 
 	if st.button("ANN Réseaux de Neurones Articiciels"):
-		ANN = tf.keras.models.load_model('/data/Modeles/ANN.h5')
+		ANN = tf.keras.models.load_model('/airflow/clean_model/ANN-tensor280.h5')
 		pred = prediction(corpus, ANN) 
 		st.write(pred)
 		pred = pred[0].tolist()
@@ -708,7 +647,7 @@ elif page ==pages[3]:  # sur la page 3 Modelisation
 
 elif page ==pages[4]:  # sur la page 4 Conclusion
 	# affichage
-	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/logo_SatisPy_Project.png')
+	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/data/JPG-PNG/logo_SatisPy_Project.png')
     
 	# title du page
 	st.markdown("<h1 style='text-align: center; color: white;'>✨ Conclusion ✨</h1>", unsafe_allow_html=True)

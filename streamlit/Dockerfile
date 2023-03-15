@@ -7,9 +7,6 @@ COPY requirements.txt /streamlit
 
 WORKDIR /streamlit
 
-# pour permetre l'install de gensim etc ... 
-# = nouvelle image à faire ici avec docker-compose !!!
-
 RUN pip install -U pip
 
 # ancienne image OK
