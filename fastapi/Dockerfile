@@ -1,5 +1,5 @@
 # backend / fastapi
-FROM tiangolo/uvicorn-gunicorn:python3.7
+FROM tiangolo/uvicorn-gunicorn:python3.9
 
 RUN mkdir /fastapi
 

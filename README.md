@@ -80,8 +80,17 @@ $ autopep8 --in-place -a -a data/fichier_test.py
 !! [avertissement]La commande `set-output` est obsolète et sera bientôt désactivée. Veuillez passer à l'utilisation des fichiers d'environnement. Pour plus d'informations, voir : https://github.blog/changelog/2022-10-11-github-actions-deprecating-save-state-and-set-output-commands/
 
 
+# -------------- Tag v1.0.1 branche master -------------------
+
+$ git tag -a v1.0.1 f9b0fa8
 
 # -------------- changement de Branche -------------------
+
+-	$ git branch  -> * master
+-	$ git checkout Fred -> Branch 'Fred' set up to track remote branch 'Fred' from 'remote2'.
+            Switched to a new branch 'Fred'
+-	$ git branch   -> * Fred    	   master
+
 
 
 
