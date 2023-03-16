@@ -2,3 +2,4 @@ fastapi/__pycache__/
 model/__pycache__/
 data/__pycache__/
 data/Modeles/trained.pickle
+notOnGITHUB
