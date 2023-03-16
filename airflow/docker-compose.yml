@@ -17,7 +17,7 @@ x-airflow-common:
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
-    - ./plugins:/opt/airflow/plugins
+    #- ./plugins:/opt/airflow/plugins
     - type: bind
       source: ./clean_data
       target: /app/clean_data

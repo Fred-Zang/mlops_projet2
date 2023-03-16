@@ -1,1 +1,0 @@
-pour initiatiliser le dossier quand git push
