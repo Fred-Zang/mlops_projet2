@@ -1,4 +1,4 @@
+fastapi/__pycache__/
+model/__pycache__/
+data/__pycache__/
 data/Modeles/trained.pickle
-fastapi/__pycache__/PyAPI.cpython-37.pyc
-fastapi/__pycache__/PyAPI.cpython-39.pyc
-model/__pycache__/my_functions.cpython-310.pyc

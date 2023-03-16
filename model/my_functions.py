@@ -19,7 +19,7 @@ def transform_star_to_target(df_comment):
         
     Returns:
     --------
-        Dataframe contenant des entiers (0 ou 1)
+        Liste contenant des entiers (0 ou 1)
     """
     new_star = {1:0,2:0,3:1,4:1,5:1}
     df_comment.star.replace(new_star, inplace = True)
