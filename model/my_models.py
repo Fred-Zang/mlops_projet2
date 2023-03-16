@@ -35,18 +35,24 @@ from tensorflow.keras import callbacks
 from my_functions import transform_star_to_target, collect_stopwords, prepare_data, reporting
 
 
-
 #####################################################
 #   1. MODELE GBC - GRADIENT BOOSTING CLASSIFIER    #
 #####################################################
-def GBC_predict_df(path_data= '../data/reviews_trust_fr_VF.csv',                       # Chemin de stockage des données nettoyées
-                   path_stopwords= '../data/liste_no-stop-words_tokens_unique.xlsx',   # Chemin du fichier contenant les stopwords
-                   save_model= True,                                                   # Boolean indiquant si on sauve le modèle ou pas
-                   path_save_model= '../data/Modeles/GBC_2.pickle',                    # Chemin de sauvegarde du modèle GBC
-                   save_vectorizer= True,                                              # Boolean indiquant si on sauve le vectorizer ou pas
-                   path_save_vectorizer= '../data/Modeles/vectoriser_GBC_2',           # Chemin de stockage du vectorizer
-                   print_report= True                                                  # Affiche les rapports de performance si True
-                ):
+def GBC_predict_df(  # Chemin de stockage des données nettoyées
+    path_data='../data/reviews_trust_fr_VF.csv',
+    # Chemin du fichier contenant les stopwords
+    path_stopwords='../data/liste_no-stop-words_tokens_unique.xlsx',
+    # Boolean indiquant si on sauve le modèle ou pas
+                   save_model=True,
+                   # Chemin de sauvegarde du modèle GBC
+                   path_save_model='../data/Modeles/GBC_2.pickle',
+                   # Boolean indiquant si on sauve le vectorizer ou pas
+                   save_vectorizer=True,
+                   # Chemin de stockage du vectorizer
+                   path_save_vectorizer='../data/Modeles/vectoriser_GBC_2',
+                   # Affiche les rapports de performance si True
+                   print_report=True
+):
     """Prédiction avec un Gradient Boosting Classifier:
             1.1 Préparation des données
             1.2 Entrainement du modèle
@@ -57,11 +63,11 @@ def GBC_predict_df(path_data= '../data/reviews_trust_fr_VF.csv',                
     --------
         les prédictions
     """
-    
+
     ##### 1.1 PREPARATION DES DONNES #####
     #------------------------------------#
-    # Importer les données nettoyées 
-    df = pd.read_csv(path_data, index_col = 0)
+    # Importer les données nettoyées
+    df = pd.read_csv(path_data, index_col=0)
 
     # Récupération des features (colonne de commentaires)
     features = df.Commentaire
@@ -72,13 +78,16 @@ def GBC_predict_df(path_data= '../data/reviews_trust_fr_VF.csv',                
     target = transform_star_to_target(df)
 
     # Séparation du jeu de données en jeu d'entrainement et de test
-    X_train_GBC_2,X_test_GBC_2,y_train, y_test = train_test_split(features, target, test_size = 0.2,random_state=20)
+    X_train_GBC_2, X_test_GBC_2, y_train, y_test = train_test_split(
+        features, target, test_size=0.2, random_state=20)
 
     # Récupération des mots vides (ou stop words)
     stop_words = collect_stopwords(path_stopwords)
 
     # Initialiser un objet vectorizer, garde aussi un mot avec plus 2 lettres
-    vectorizer = CountVectorizer(stop_words = stop_words,token_pattern = r"[a-zéèêàâîïàùçôëûæœ]{2,}" )
+    vectorizer = CountVectorizer(
+        stop_words=stop_words,
+        token_pattern=r"[a-zéèêàâîïàùçôëûæœ]{2,}")
 
     # Mettre à jour la valeur de X_train et X_test
     X_train_GBC_2 = vectorizer.fit_transform(X_train_GBC_2).todense()
@@ -86,29 +95,32 @@ def GBC_predict_df(path_data= '../data/reviews_trust_fr_VF.csv',                
 
     # print(vectorizer.vocabulary_)
 
-
     ##### 1.2 ENTRAINEMENT DU MODELE #####
     #------------------------------------#
-    GBC_2 = GradientBoostingClassifier(n_estimators=100,        # The number of estimators as selected by early stopping
-                                       learning_rate=1.0,       # Learning rate shrinks the contribution of each tree by learning_rate
-                                       max_depth=1,             # Maximum depth of the individual regression estimators.
-                                       random_state=0           # Controls the random seed given to each Tree estimator at each boosting iteration
-                                       ).fit(X_train_GBC_2, y_train)
-
+    GBC_2 = GradientBoostingClassifier(  # The number of estimators as selected by early stopping
+        n_estimators=100,
+        # Learning rate shrinks the contribution
+        # of each tree by learning_rate
+        learning_rate=1.0,
+        # Maximum depth of the individual regression estimators.
+        # Controls the random seed given to each
+        # Tree estimator at each boosting iteration
+        max_depth=1,
+        random_state=0
+    ).fit(X_train_GBC_2, y_train)
 
     ##### 1.3 SAUVEGARDE DU MODELE #####
     #----------------------------------#
     # sauvegarder le modèle pré-entrainé
     if save_model:
-        pickle.dump(GBC_2,open(path_save_model,'wb')) 
+        pickle.dump(GBC_2, open(path_save_model, 'wb'))
     # sauvegarder le Vectoriser
     if save_vectorizer:
-        pickle.dump(vectorizer, open(path_save_vectorizer,'wb'))
-
+        pickle.dump(vectorizer, open(path_save_vectorizer, 'wb'))
 
     ##### 1.4 EVALUATION DU MODELE #####
     #----------------------------------#
-    # Calculer les prédictions 
+    # Calculer les prédictions
     y_pred_GBC_2 = GBC_2.predict(X_test_GBC_2)
 
     ### REPORTING - PERFORMANCES ###
@@ -116,18 +128,17 @@ def GBC_predict_df(path_data= '../data/reviews_trust_fr_VF.csv',                
     # Calcul et affichage de la matrice de confusion
     if print_report:
         reporting("GRADIENT BOOSTING", y_test, y_pred_GBC_2)
-    
+
     # Renvoie la prédiction
     return y_pred_GBC_2
 
 
 # Initialization of a timer
 t0 = time()
-GBC_predict_df(save_model = True, save_vectorizer = True)
+GBC_predict_df(save_model=True, save_vectorizer=True)
 # Calulation of training time
 t1 = time() - t0
 print("Training time in {} secondes".format(t1))
-
 
 
 #####################################################
@@ -139,7 +150,7 @@ print("Training time in {} secondes".format(t1))
 
 # ### Chargement du modèle pré-entrainé de wikipedia2vec
 # - TUTO d'aide pour charger une réprésentation pré-entraînée dans une langue souhaitée de wikipedia2vec
-# 
+#
 #    - 1 aller sur le lien @  https://wikipedia2vec.github.io/wikipedia2vec/pretrained/#french
 #    - 2 copier le lien d'adresse d'un des 4 fichiers souhaité en langue Française de la ligne
 #      frwiki_20180420 (window=5, iteration=10, negative=15): 100d (bin) 100d (txt) 300d (bin) 300d (txt)
@@ -149,12 +160,13 @@ print("Training time in {} secondes".format(t1))
 #    - 6 placer ce fichier décompressé dans le dossier C:\\Users\\UserPC\\anaconda3\\envs\\spyder-env\\lib\\site-packages\\gensim\\test\\test_data\\
 #      où spyder-env est mon environnement spécial spyder (pas obligatoire)
 #    - 7 enfin lancer la cellule ci-dessous pour charger le fichier sur notre IDE et créer un vecteur
-# 
+#
 
 # Le chargement d'un objet gensim prend 6 à 8 mins chaque fois, le modèle **trained** est sauvegardé et utilisé dans la suite
-# 
+#
 
-# si c'est la première fois et que vous n'avez pas récupéré le trained.pickle, lancez les codes. sinon charger directement le modèle 
+# si c'est la première fois et que vous n'avez pas récupéré le
+# trained.pickle, lancez les codes. sinon charger directement le modèle
 '''
 # chargement d'un objet gensim de type models.keyedvectors de taille 2.500.733
 start = time()
@@ -165,22 +177,29 @@ end = time()
 print("temps chargement modele pré-entrainé = ", end-start)
 # à voir absolument le parametre unicode_errors='ignore' ou 'replace' qui sera utile par la suite pour éviter des ereurs en chargement
 
-print(trained.vectors.shape) 
+print(trained.vectors.shape)
 '''
 '''
 # sauvegarder le modèle pré-entrainé
-pickle.dump(trained,open('../data/Modeles/trained.pickle','wb')) 
+pickle.dump(trained,open('../data/Modeles/trained.pickle','wb'))
 '''
 
 #####################################################
 #    2.2 MODELE SVM - SUPPORT VECTOR MACHINES       #
 #####################################################
-def SVM_predict_df(path_data= '../data/review_trust_fr_lemmantiser_word+2_VF.csv',     # Chemin de stockage des données nettoyées
-                   path_model_wiki= '../data/Modeles/trained.pickle',                  # Chemin du modèle Wikipedia
-                   save_model= True,                                                   # Boolean indiquant si on sauve le modèle ou pas
-                   path_save_model= '../data/Modeles/SVM.pickle',                      # Chemin de sauvegarde du modèle SVM
-                   print_report= True                                                  # Affiche les rapports de performance si True
-                ):
+
+
+def SVM_predict_df(  # Chemin de stockage des données nettoyées
+    path_data='../data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    # Chemin du modèle Wikipedia
+    path_model_wiki='../data/Modeles/trained.pickle',
+    # Boolean indiquant si on sauve le modèle ou pas
+    save_model=True,
+    # Chemin de sauvegarde du modèle SVM
+    path_save_model='../data/Modeles/SVM.pickle',
+    # Affiche les rapports de performance si True
+    print_report=True
+):
     """Prédiction avec un Support Vector Machines:
             2.2.1 Préparation des données
             2.2.2 Entrainement du modèle
@@ -191,36 +210,35 @@ def SVM_predict_df(path_data= '../data/review_trust_fr_lemmantiser_word+2_VF.csv
     --------
         les prédictions
     """
-    ##### 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET DE TEST POUR LES MODELES SVM ET ANN #####
+    # 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET
     X_train, X_test, y_train, y_test = prepare_data(path_data, path_model_wiki)
-
 
     ##### 2.2.2 ENTRAINEMENT DU MODELE #####
     # SVM avec noyau RBF par défaut
-    SVM = SVC(C=100, gamma=1,random_state=0)
+    SVM = SVC(C=100, gamma=1, random_state=0)
     # Ces paramètres ont été trouvés par GridSearchCV sur quelques valeurs seulement
-    # Nous donnons le code pour cela ci-dessous mais à lancer avec parcimonie puisque les temps de calculs ont sont multipliés ! 
+    # Nous donnons le code pour cela ci-dessous mais à lancer avec parcimonie
+    # puisque les temps de calculs ont sont multipliés !
     SVM.fit(X_train, y_train)
-    
+
     ### RECHERCHE DES MEILLEURS PARAMETRES ###
     # recherche des best parametres avec gridsearshCV
     #from sklearn.model_selection import GridSearchCV
 
-    #param_grid = {'C':[50, 100], 'kernel': ['rbf'], 'gamma': [1, 10]}  # recherche des bons hyperparams
-    #grid = GridSearchCV(SVC(), param_grid) # création de la grille de recherche sur le model SVC()
+    # param_grid = {'C':[50, 100], 'kernel': ['rbf'], 'gamma': [1, 10]}  # recherche des bons hyperparams
+    # grid = GridSearchCV(SVC(), param_grid) # création de la grille de
+    # recherche sur le model SVC()
 
     #grille = grid.fit(X_train, y_train)
     # affichage des résultats test de GridSearchCV
-    #print(pd.DataFrame.from_dict(grille.cv_results_).loc[:,['params', 'mean_test_score']]) 
+    #print(pd.DataFrame.from_dict(grille.cv_results_).loc[:,['params', 'mean_test_score']])
     #print("grid.best_params :", grid.best_params_)
     #svm_best= grid.best_estimator_
-
 
     ##### 2.2.3 SAUVEGARDE DU MODELE #####
     #------------------------------------#
     if save_model:
-        pickle.dump(SVM,open(path_save_model,'wb')) 
-
+        pickle.dump(SVM, open(path_save_model, 'wb'))
 
     ##### 2.2.4 EVALUATION DU MODELE #####
     #------------------------------------#
@@ -239,22 +257,26 @@ def SVM_predict_df(path_data= '../data/review_trust_fr_lemmantiser_word+2_VF.csv
 
 # Initialization of a timer
 t0 = time()
-SVM_predict_df(save_model = True)
+SVM_predict_df(save_model=True)
 # Calulation of training time
 t1 = time() - t0
 print("Training time in {} secondes".format(t1))
 
 
-
 #####################################################
 #    2.3 MODELE ANN ARTIFICEL NEURONAL NETWORK      #
 #####################################################
-def ANN_predict_df(path_data= '../data/review_trust_fr_lemmantiser_word+2_VF.csv',     # Chemin de stockage des données nettoyées
-                   path_model_wiki= '../data/Modeles/trained.pickle',                  # Chemin du modèle Wikipedia
-                   save_model= True,                                                   # Boolean indiquant si on sauve le modèle ou pas
-                   path_save_model= '../data/Modeles/ANN-tensor280.h5',                # Chemin de sauvegarde du modèle ANN
-                   print_report= True                                                  # Affiche les rapports de performance si True
-                ):
+def ANN_predict_df(  # Chemin de stockage des données nettoyées
+    path_data='../data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    # Chemin du modèle Wikipedia
+    path_model_wiki='../data/Modeles/trained.pickle',
+    # Boolean indiquant si on sauve le modèle ou pas
+    save_model=True,
+    # Chemin de sauvegarde du modèle ANN
+    path_save_model='../data/Modeles/ANN-tensor280.h5',
+    # Affiche les rapports de performance si True
+    print_report=True
+):
     """Prédiction avec un réseau de neurones:
             2.3.1 Préparation des données
             2.3.2 Création du modèle
@@ -266,70 +288,86 @@ def ANN_predict_df(path_data= '../data/review_trust_fr_lemmantiser_word+2_VF.csv
     --------
         les prédictions
     """
-    ##### 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET DE TEST POUR LES MODELES SVM ET ANN #####
+    # 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET
     X_train, X_test, y_train, y_test = prepare_data(path_data, path_model_wiki)
 
-
     ##### 2.2.2 CREATION DU MODELE #####
-    inputs = Input(shape = (100))
-    dense_1 = Dense(units = 64, activation = "relu")
+    inputs = Input(shape=(100))
+    dense_1 = Dense(units=64, activation="relu")
     dropout_2 = Dropout(rate=0.1)
-    dense_3 = Dense(units =32, activation = "relu")
+    dense_3 = Dense(units=32, activation="relu")
     dropout_4 = Dropout(rate=0.1)
-    dense_5 = Dense(units = 2, activation = "sigmoid")
+    dense_5 = Dense(units=2, activation="sigmoid")
 
-    x=dense_1(inputs)  # -> x de type engine.keras_tensor.KerasTensor
-    x=dropout_2(x)
-    x=dense_3(x)
-    x=dropout_4(x)
-    outputs=dense_5(x)  # tous les x suivant et le outputs sont du meme type que le 1er x
+    x = dense_1(inputs)  # -> x de type engine.keras_tensor.KerasTensor
+    x = dropout_2(x)
+    x = dense_3(x)
+    x = dropout_4(x)
+    # tous les x suivant et le outputs sont du meme type que le 1er x
+    outputs = dense_5(x)
     # - Les commandes suivantes permettent de finaliser la définition du modèle et d'en afficher la structure.
-    ANN = Model(inputs = inputs, outputs = outputs,name = "ANN")
+    ANN = Model(inputs=inputs, outputs=outputs, name="ANN")
     ANN.summary()
 
-
-    # Compilation du modele avec "binary_crossentropy" ne marche pas !! 
-    ANN.compile(loss = "sparse_categorical_crossentropy",
-                optimizer = tf.keras.optimizers.Adam(),
-                metrics = ["accuracy"])
+    # Compilation du modele avec "binary_crossentropy" ne marche pas !!
+    ANN.compile(loss="sparse_categorical_crossentropy",
+                optimizer=tf.keras.optimizers.Adam(),
+                metrics=["accuracy"])
 
     # AUTOMATIC REDUCTION OF THE LEARNING RATE
-    lr_plateau = callbacks.ReduceLROnPlateau(monitor = 'val_loss',          # Metric to control
-                                             patience = 5,                  # Number of epochs to wait before decreasing the learning rate
-                                             factor = 0.1,                  # Percentage learning rate is decreased
-                                             verbose = 2,                   # Number of informations displayed during training
-                                             mode = 'min')                  # Indicate the metric decrease
+    lr_plateau = callbacks.ReduceLROnPlateau(  # Metric to control
+        monitor='val_loss',
+        # Number of epochs to wait before
+        # decreasing the learning rate
+        patience=5,
+        # Percentage learning rate is decreased
+        factor=0.1,
+        # Number of informations displayed during training
+        verbose=2,
+        # Indicate the metric decrease
+        mode='min')
 
     # EARLY STOPPING
-    early_stopping = callbacks.EarlyStopping(monitor = 'val_loss',          # Metric to control
-                                             patience = 13,                 # Number of epochs to wait before stopping the training
-                                             mode = 'min',                  # Indicate the metric decrease
-                                             restore_best_weights = True)   # To restore the weights of the best epoch
+    early_stopping = callbacks.EarlyStopping(  # Metric to control
+        monitor='val_loss',
+        # Number of epochs to wait before
+        # stopping the training
+        patience=13,
+        # Indicate the metric decrease
+        mode='min',
+        # To restore the weights of the best epoch
+        restore_best_weights=True)
 
-
-   ##### 2.2.3 ENTRAINEMENT DU MODELE #####
+    ##### 2.2.3 ENTRAINEMENT DU MODELE #####
     BATCH_SIZE = 128
 
     ANN.fit(X_train, y_train,
-            validation_data= (X_test,y_test),
-            epochs=100,                                                    # Number of epochs
-            steps_per_epoch = (len(X_train)) // (BATCH_SIZE * 2),          # Number of steps per Epoch
-            validation_steps = (len(X_test)) // (BATCH_SIZE * 2),          # Number of iterations during the test  
-            callbacks = [lr_plateau, early_stopping],                      # Callbacks
-            workers = -1)                                                  # Using all processors
-
+            validation_data=(X_test, y_test),
+            # Number of epochs
+            epochs=100,
+            # Number of steps per Epoch
+            steps_per_epoch=(len(X_train)) // (BATCH_SIZE * 2),
+            # Number of iterations during the test
+            validation_steps=(len(X_test)) // (BATCH_SIZE * 2),
+            # Callbacks
+            callbacks=[
+                lr_plateau,
+                early_stopping],
+            # Using all processors
+            workers=-1)
 
     ##### 2.2.4 SAUVEGARDE DU MODELE #####
     #------------------------------------#
     if save_model:
         ANN.save(path_save_model)
 
-
     ##### 2.2.5 EVALUATION DU MODELE #####
     #------------------------------------#
     # Calcul des prédictions
-    test_pred = ANN.predict(X_test)  # => dim (5160, 2) où n =dim[0]de X_test et 2 = dim units dense_last
-    y_pred_ANN = np.argmax(test_pred,axis=1) # on prend l'index du max de chaque ligne prédite
+    # => dim (5160, 2) où n =dim[0]de X_test et 2 = dim units dense_last
+    test_pred = ANN.predict(X_test)
+    # on prend l'index du max de chaque ligne prédite
+    y_pred_ANN = np.argmax(test_pred, axis=1)
     #y_pred_ANN = np.where(test_pred[:,1] > 0.52, 1, 0)
 
     ### REPORTING - PERFORMANCES ###
@@ -342,10 +380,9 @@ def ANN_predict_df(path_data= '../data/review_trust_fr_lemmantiser_word+2_VF.csv
     return y_pred_ANN
 
 
-
 # Initialization of a timer
 t0 = time()
-ANN_predict_df(save_model = True)
+ANN_predict_df(save_model=True)
 # Calulation of training time
 t1 = time() - t0
 print("Training time in {} secondes".format(t1))
