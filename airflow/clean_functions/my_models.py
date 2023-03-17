@@ -45,11 +45,11 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
     # Boolean indiquant si on sauve le modèle ou pas
                    save_model=True,
                    # Chemin de sauvegarde du modèle GBC
-                   path_save_model='../clean_model/GBC_2.pickle',
+                   path_save_model='../clean_model/GBC_2-sav_sklearn102.pickle',
                    # Boolean indiquant si on sauve le vectorizer ou pas
                    save_vectorizer=True,
                    # Chemin de stockage du vectorizer
-                   path_save_vectorizer='../clean_model/vectoriser_GBC_2',
+                   path_save_vectorizer='../clean_model/vectoriser_GBC_2-sav_sklearn102',
                    # Affiche les rapports de performance si True
                    print_report=True
 ):
@@ -135,7 +135,7 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
 
 # Initialization of a timer
 t0 = time()
-GBC_predict_df(save_model=True, save_vectorizer=True)
+GBC_predict_df(save_model=False, save_vectorizer=False)
 # Calulation of training time
 t1 = time() - t0
 print("Training time in {} secondes".format(t1))
@@ -196,7 +196,7 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
     # Boolean indiquant si on sauve le modèle ou pas
     save_model=True,
     # Chemin de sauvegarde du modèle SVM
-    path_save_model='../clean_model/SVM.pickle',
+    path_save_model='../clean_model/SVM_sav-sklearn102.pickle',
     # Affiche les rapports de performance si True
     print_report=True
 ):
@@ -257,7 +257,7 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
 
 # Initialization of a timer
 t0 = time()
-SVM_predict_df(save_model=True)
+SVM_predict_df(save_model=False)
 # Calulation of training time
 t1 = time() - t0
 print("Training time in {} secondes".format(t1))
@@ -382,7 +382,7 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
 
 # Initialization of a timer
 t0 = time()
-ANN_predict_df(save_model=True)
+ANN_predict_df(save_model=False)
 # Calulation of training time
 t1 = time() - t0
 print("Training time in {} secondes".format(t1))
