@@ -8,7 +8,8 @@ services:
     volumes:
       - ./airflow/clean_data:/airflow/clean_data
       - ./airflow/clean_model:/airflow/clean_model
-      - ./data:/data
+      - ./airflow/clean_functions:/airflow/clean_functions
+      - ./airflow/data_others:/airflow/data_others      
       - ./fastapi:/fastapi
     networks:
       - deploy_network
@@ -23,7 +24,8 @@ services:
     volumes:
       - ./airflow/clean_data:/airflow/clean_data
       - ./airflow/clean_model:/airflow/clean_model
-      - ./data:/data
+      - ./airflow/clean_functions:/airflow/clean_functions
+      - ./airflow/data_others:/airflow/data_others 
       - ./streamlit:/streamlit
     networks:
       - deploy_network
