@@ -273,7 +273,7 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
     # Boolean indiquant si on sauve le modèle ou pas
     save_model=True,
     # Chemin de sauvegarde du modèle ANN
-    path_save_model='../clean_model/ANN-tensor280.h5',
+    path_save_model='../clean_model/ANN-sav-tensor280.h5',
     # Affiche les rapports de performance si True
     print_report=True
 ):
@@ -378,13 +378,4 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
 
     # Renvoie la prédiction
     return y_pred_ANN
-
-
-# Initialization of a timer
-t0 = time()
-ANN_predict_df(save_model=False)
-# Calulation of training time
-t1 = time() - t0
-
-print("Training time in {} secondes".format(t1))
 
