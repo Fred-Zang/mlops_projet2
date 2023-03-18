@@ -1,1 +1,5 @@
+fastapi/__pycache__/
+airflow/dags/__pycache__/
+airflow/logs/scheduler/
+airflow/logs/scheduler/latest
 airflow/clean_model/trained.pickle
