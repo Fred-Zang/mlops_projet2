@@ -190,3 +190,4 @@ def prepare_data(path_data, path_model_wiki):
 
     # Partition en train_set et test_set
     return train_test_split(X, y, test_size=0.2, random_state=20)
+   

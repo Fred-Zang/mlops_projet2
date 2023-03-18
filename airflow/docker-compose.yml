@@ -18,12 +18,24 @@ x-airflow-common:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     #- ./plugins:/opt/airflow/plugins
+#    - type: bind
+#      source: ./dags
+#      target: /app/dags
+#    - type: bind
+#      source: ./logs
+#      target: /app/logs     
     - type: bind
       source: ./clean_data
       target: /app/clean_data
     - type: bind
-      source: ./raw_files
-      target: /app/raw_files   
+      source: ./clean_functions
+      target: /app/clean_functions
+    - type: bind
+      source: ./clean_model
+      target: /app/clean_model
+    - type: bind
+      source: ./data_others
+      target: /app/data_others     
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
     redis:
