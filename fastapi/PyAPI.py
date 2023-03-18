@@ -116,42 +116,65 @@ async def current_user(username: str = Depends(get_current_user)):
 #     # ? ajouter la date de saisie du commentaire en return
 #     return {username: comment}
 
-# Commentaire	star	date	client	reponse	source	company	ville	maj	date_commande	ecart
+# # original data set
+# #Commentaire	star	date	client	reponse	source	company	ville	maj	date_commande	ecart
+# class Item(BaseModel):
+#     # inID: Optional[int] = None 
+#     Commentaire: str
+#     star : int
+#     date: Optional[str] = None
+#     client: Optional[str]= None
+#     reponse: Optional[str]= None
+#     source: Optional[str] = None
+#     company: Optional[str] = None
+#     ville: Optional[str]=None
+#     maj: Optional[str]=None
+#     date_commande: Optional[str] = None 
+#     ecart: Optional[int]=None
 
+# # data used in GBC, ANN and SVM 
 class Item(BaseModel):
-    # inID: Optional[int] = None 
+    inID: Optional[int] = None 
     Commentaire: str
     star : int
-    date: Optional[str] = None
-    client: Optional[str]= None
-    reponse: Optional[str]= None
     source: Optional[str] = None
     company: Optional[str] = None
-    ville: Optional[str]=None
-    maj: Optional[str]=None
-    date_commande: Optional[str] = None 
-    ecart: Optional[int]=None
+    Index_org: Optional[int] = None
+    Star_org: Optional[int] =None
+    date: Optional[str] = None
 
 # data base  
-data_store = '/airflow/clean_data/reviews_trust.csv'
+data_store = '/airflow/clean_data/data_MAJ.csv'
 
 # function definition
 # function to store a new comment
+# def write_comment(FileName : str, inputs:list):
+#     with open(FileName,'a+') as csvfile:
+#         writer = csv.writer(csvfile)
+#         writer.writerow([inputs.Commentaire, 
+#         inputs.star, 
+#         inputs.date, 
+#         inputs.client, 
+#         inputs.reponse, 
+#         inputs.source, 
+#         inputs.company,
+#         inputs.ville,
+#         inputs.maj,
+#         inputs.date_commande,
+#         inputs.ecart])
+
 def write_comment(FileName : str, inputs:list):
     with open(FileName,'a+') as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow([inputs.Commentaire, 
-        inputs.star, 
-        inputs.date, 
-        inputs.client, 
-        inputs.reponse, 
+        writer.writerow([
+        inputs.inID,
+        inputs.Commentaire, 
+        inputs.star,           
         inputs.source, 
         inputs.company,
-        inputs.ville,
-        inputs.maj,
-        inputs.date_commande,
-        inputs.ecart])
-
+        inputs.Index_org,
+        inputs.Star_org,
+        inputs.date])
 
 
 
@@ -159,7 +182,7 @@ def write_comment(FileName : str, inputs:list):
 @app.post('/comment', name="Make a New comment", tags= ['Data Management'])
 async def post_comment(item:Item):
     # data storage file name
-    data_store = '/airflow/clean_data/reviews_trust.csv'
+    data_store = '/airflow/clean_data/data_MAJ.csv' # change name data_MAJ.csv
 
     write_comment(data_store,item)
     comments = pd.read_csv(data_store)
@@ -169,12 +192,12 @@ async def post_comment(item:Item):
 @app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
 def get_comments():
     # data storage file name
-    data_store = '/airflow/clean_data/reviews_trust.csv'
+    data_store = '/airflow/clean_data/data_MAJ.csv'
     comments = pd.read_csv(data_store)
     # comment = comments.iloc[-1,:]
     # total = len(comments.Commentaire)
-    data_json = comments.to_json('/airflow/clean_data/reviews_trust.json') # marche aussi avec /data/XLS-CSV/...
+    data_json = comments.to_json('/airflow/clean_data/data_MAJ.json')
 
     data = comments.to_json()
-
+    
     return data
