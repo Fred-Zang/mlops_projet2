@@ -385,4 +385,6 @@ t0 = time()
 ANN_predict_df(save_model=False)
 # Calulation of training time
 t1 = time() - t0
+
 print("Training time in {} secondes".format(t1))
+
