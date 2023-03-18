@@ -15,9 +15,15 @@ x-airflow-common:
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKEND: 'airflow.api.auth.backend.basic_auth'
   volumes:
-    - ./dags:/opt/airflow/dags
-    - ./logs:/opt/airflow/logs
+   # - ./dags:/opt/airflow/dags
+   # - ./logs:/opt/airflow/logs
     #- ./plugins:/opt/airflow/plugins
+    - type: bind
+      source: ./dags
+      target: /app/dags
+    - type: bind
+      source: ./logs
+      target: /app/logs     
     - type: bind
       source: ./clean_data
       target: /app/clean_data
