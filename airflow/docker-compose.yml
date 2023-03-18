@@ -22,8 +22,11 @@ x-airflow-common:
       source: ./clean_data
       target: /app/clean_data
     - type: bind
-      source: ./raw_files
-      target: /app/raw_files   
+      source: ./clean_functions
+      target: /app/clean_functions
+    - type: bind
+      source: ./clean_model
+      target: /app/clean_model      
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
     redis:
