@@ -111,5 +111,5 @@ def test_my_doc2vec():
 def prepare_data():
     """Prétraitement du corpus afin de fournir les jeux d'entrainement et de test
     Tester le format des données renvoyées
-    "''
+    """
     assert True
