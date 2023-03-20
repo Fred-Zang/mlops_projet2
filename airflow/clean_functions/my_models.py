@@ -32,26 +32,28 @@ from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras import callbacks
 
+import sys
+sys.path.append('/app/clean_functions')
 from my_functions import transform_star_to_target, collect_stopwords, prepare_data, reporting
 
 
 #####################################################
 #   1. MODELE GBC - GRADIENT BOOSTING CLASSIFIER    #
 #####################################################
-def GBC_predict_df(  # Chemin de stockage des données nettoyées
-    path_data='../clean_data/reviews_trust_fr_VF.csv',
-    # Chemin du fichier contenant les stopwords
-    path_stopwords='../clean_data/liste_no-stop-words_tokens_unique.xlsx',
-    # Boolean indiquant si on sauve le modèle ou pas
-                   save_model=True,
-                   # Chemin de sauvegarde du modèle GBC
-                   path_save_model='../clean_model/GBC_2-sav_sklearn102.pickle',
-                   # Boolean indiquant si on sauve le vectorizer ou pas
-                   save_vectorizer=True,
-                   # Chemin de stockage du vectorizer
-                   path_save_vectorizer='../clean_model/vectoriser_GBC_2-sav_sklearn102',
-                   # Affiche les rapports de performance si True
-                   print_report=True
+def GBC_predict_df( # Chemin de stockage des données nettoyées
+                    path_data='/app/clean_data/reviews_trust_fr_VF.csv',
+                    # Chemin du fichier contenant les stopwords
+                    path_stopwords='/app/clean_data/liste_no-stop-words_tokens_unique.xlsx',
+                    # Boolean indiquant si on sauve le modèle ou pas
+                    save_model=True,
+                    # Chemin de sauvegarde du modèle GBC
+                    path_save_model='/app/clean_model/GBC_2-sav_sklearn102.pickle',
+                    # Boolean indiquant si on sauve le vectorizer ou pas
+                    save_vectorizer=True,
+                    # Chemin de stockage du vectorizer
+                    path_save_vectorizer='/app/clean_model/vectoriser_GBC_2-sav_sklearn102',
+                    # Affiche les rapports de performance si True
+                    print_report=True
 ):
     """Prédiction avec un Gradient Boosting Classifier:
             1.1 Préparation des données
@@ -133,13 +135,6 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
     return y_pred_GBC_2
 
 
-# Initialization of a timer
-t0 = time()
-GBC_predict_df(save_model=False, save_vectorizer=False)
-# Calulation of training time
-t1 = time() - t0
-print("Training time in {} secondes".format(t1))
-
 
 #####################################################
 #       2.1 PASSAGE DU CORPUS SUR UN MODELE         #
@@ -190,13 +185,13 @@ pickle.dump(trained,open('../clean_model/trained.pickle','wb'))
 
 
 def SVM_predict_df(  # Chemin de stockage des données nettoyées
-    path_data='../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    path_data='/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
     # Chemin du modèle Wikipedia
-    path_model_wiki='../clean_model/trained.pickle',
+    path_model_wiki='/app/clean_model/trained.pickle',
     # Boolean indiquant si on sauve le modèle ou pas
     save_model=True,
     # Chemin de sauvegarde du modèle SVM
-    path_save_model='../clean_model/SVM_sav-sklearn102.pickle',
+    path_save_model='/app/clean_model/SVM_sav-sklearn102.pickle',
     # Affiche les rapports de performance si True
     print_report=True
 ):
@@ -255,25 +250,18 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
     return y_pred_SVM
 
 
-# Initialization of a timer
-t0 = time()
-SVM_predict_df(save_model=False)
-# Calulation of training time
-t1 = time() - t0
-print("Training time in {} secondes".format(t1))
-
 
 #####################################################
 #    2.3 MODELE ANN ARTIFICEL NEURONAL NETWORK      #
 #####################################################
 def ANN_predict_df(  # Chemin de stockage des données nettoyées
-    path_data='../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    path_data='/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
     # Chemin du modèle Wikipedia
-    path_model_wiki='../clean_model/trained.pickle',
+    path_model_wiki='/app/clean_model/trained.pickle',
     # Boolean indiquant si on sauve le modèle ou pas
     save_model=True,
     # Chemin de sauvegarde du modèle ANN
-    path_save_model='../clean_model/ANN-sav-tensor280.h5',
+    path_save_model='/app/clean_model/ANN-sav-tensor280.h5',
     # Affiche les rapports de performance si True
     print_report=True
 ):
