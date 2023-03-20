@@ -1,1 +1,2 @@
 airflow/clean_model/trained.pickle
+airflow/dags/__pycache__/airflow_molps_projet.cpython-37.pyc
