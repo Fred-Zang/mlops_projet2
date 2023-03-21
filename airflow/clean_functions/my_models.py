@@ -32,7 +32,7 @@ from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras import callbacks
 
-from my_functions import transform_star_to_target, collect_stopwords, prepare_data, reporting
+from my_functions import transform_star_to_target, collect_stopwords, prepare_data, reporting, token_lemmatiser
 
 
 #####################################################
@@ -132,15 +132,6 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
     # Renvoie la prédiction
     return y_pred_GBC_2
 
-
-# Initialization of a timer
-t0 = time()
-GBC_predict_df(save_model=False, save_vectorizer=False)
-# Calulation of training time
-t1 = time() - t0
-print("Training time in {} secondes".format(t1))
-
-
 #####################################################
 #       2.1 PASSAGE DU CORPUS SUR UN MODELE         #
 #            PRE-ENTRAINE EN LANGUE FRANCAISE       #
@@ -184,13 +175,15 @@ print(trained.vectors.shape)
 pickle.dump(trained,open('../clean_model/trained.pickle','wb'))
 '''
 
+
 #####################################################
 #    2.2 MODELE SVM - SUPPORT VECTOR MACHINES       #
 #####################################################
 
 
 def SVM_predict_df(  # Chemin de stockage des données nettoyées
-    path_data='../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    # path_data='../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    path_data='../clean_data/data_MAJ.csv', # utiliser les données viennent fastapi 
     # Chemin du modèle Wikipedia
     path_model_wiki='../clean_model/trained.pickle',
     # Boolean indiquant si on sauve le modèle ou pas
@@ -210,8 +203,13 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
     --------
         les prédictions
     """
+
+    # 2.2.0 TOKENISER ET LEMMATISER DES DONNEES
+
+    data = token_lemmatiser(path_data,clean_data = 'review_trust_fr_lemmantiser_word+2_VF.csv', save_path = '../airflow/clean_data/')
+
     # 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET
-    X_train, X_test, y_train, y_test = prepare_data(path_data, path_model_wiki)
+    X_train, X_test, y_train, y_test = prepare_data(path, path_model_wiki)
 
     ##### 2.2.2 ENTRAINEMENT DU MODELE #####
     # SVM avec noyau RBF par défaut
@@ -255,19 +253,12 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
     return y_pred_SVM
 
 
-# Initialization of a timer
-t0 = time()
-SVM_predict_df(save_model=False)
-# Calulation of training time
-t1 = time() - t0
-print("Training time in {} secondes".format(t1))
-
-
 #####################################################
 #    2.3 MODELE ANN ARTIFICEL NEURONAL NETWORK      #
 #####################################################
 def ANN_predict_df(  # Chemin de stockage des données nettoyées
-    path_data='../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    # path_data='../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    path_data='../clean_data/data_MAJ.csv', # utiliser les données viennent fastapi 
     # Chemin du modèle Wikipedia
     path_model_wiki='../clean_model/trained.pickle',
     # Boolean indiquant si on sauve le modèle ou pas
@@ -288,6 +279,11 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
     --------
         les prédictions
     """
+
+    # 2.2.0 TOKENISER ET LEMMATISER DES DONNEES
+
+    data = token_lemmatiser(path_data,clean_data = 'review_trust_fr_lemmantiser_word+2_VF.csv', save_path = '../airflow/clean_data/')
+
     # 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET
     X_train, X_test, y_train, y_test = prepare_data(path_data, path_model_wiki)
 
