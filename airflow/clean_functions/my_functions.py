@@ -26,7 +26,8 @@ def transform_star_to_target(df_comment):
     """
     new_star = {1: 0, 2: 0, 3: 1, 4: 1, 5: 1}
     df_comment.star.replace(new_star, inplace=True)
-    return df_comment # ici on a besoin un detaframe comme un retour de fonction je pense 
+    return df_comment.star.astype('int') 
+
 
 # FONCTION token_lemmatiser() DE PRETRAITEMENT => question : est ce que le csv sauvegardé est utile ? 
 def token_lemmatiser(path,clean_data = 'review_trust_fr_lemmantiser_word+2_VF.csv', save_path = '../airflow/clean_data/'):
@@ -53,7 +54,8 @@ def token_lemmatiser(path,clean_data = 'review_trust_fr_lemmantiser_word+2_VF.cs
     data.drop(data.iloc[:,:1], axis=1, inplace=True)
 
     # remplacer les stars 1,2 => 0 et 3,4,5 => 1 par function transform_star_to_target()
-    transform_star_to_target(data)
+    new_star = {1: 0, 2: 0, 3: 1, 4: 1, 5: 1}
+    data.star.replace(new_star, inplace=True)
 
     # # récupérer colonne 'Commentaire' sous forme de liste de str dans corpus
     corpus = data['Commentaire'].tolist()  
