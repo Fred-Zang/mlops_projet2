@@ -1,37 +1,16 @@
-"""
-import requests
-import json
-import datetime
-import os
-"""
-
 import pandas as pd
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 
-"""
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.naive_bayes import BernoulliNB,CategoricalNB
-from sklearn.svm import SVC
-from sklearn.metrics import *
-from sklearn.metrics import classification_report,confusion_matrix
 
-from tensorflow.keras.layers import Input, Dense #Pour instancier une couche Dense et une d'Input
-from tensorflow.keras.models import Model
-
-import spacy
-from nltk.tokenize import word_tokenize
-
-from joblib import dump
-"""
 
 import sys
 sys.path.append('/app/clean_functions')
 from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
+from my_functions import token_lemmatiser
+
 
 # initialisation du DAG avec un lancement des task toutes les minutes -----------------------------
 """
@@ -59,33 +38,18 @@ my_dag = DAG(
     catchup=False)
 
 
-# écriture dans le fichier à sauvegarder
-with open("/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv",'r') as old_file:
-    df_old = pd.read_csv(old_file,index_col = 0)
-    
-def print_test():
-    print("df ligne 1 = ",df_old.iloc[0:1,:])  # test pour voir dans le log du task si tout ok
-    
+#####################################################
+#   0. PRE-PREOCESSING DE DATA_MAJ.CSV              #
+#####################################################
+def Data_Preprocessing():
+    token_lemmatiser(path="/app/clean_data/data_MAJ.csv")
+
 
 #####################################################
 #   1. MODELE GBC - GRADIENT BOOSTING CLASSIFIER    #
 #####################################################
-def GBC_predict():
-    GBC_predict_df(# Chemin de stockage des données nettoyées
-                   path_data='/app/clean_data/data_MAJ.csv',
-                   # Chemin du fichier contenant les stopwords
-                   path_stopwords='/app/clean_data/liste_no-stop-words_tokens_unique.xlsx',
-                   # Boolean indiquant si on sauve le modèle ou pas
-                   save_model=True,
-                   # Chemin de sauvegarde du modèle GBC
-                   path_save_model='/app/clean_model/GBC_2-updated.pickle',
-                   # Boolean indiquant si on sauve le vectorizer ou pas
-                   save_vectorizer=True,
-                   # Chemin de stockage du vectorizer
-                   path_save_vectorizer='/app/clean_model/vectoriser_GBC_2-updated',
-                   # Affiche les rapports de performance si True
-                   print_report=True
-    )
+def GBC_preprocess_train_predict():
+    GBC_predict_df(path_data='/app/clean_data/data_MAJ.csv')
 
 
 
@@ -93,80 +57,54 @@ def GBC_predict():
 #    2.2 MODELE SVM - SUPPORT VECTOR MACHINES       #
 #####################################################
 def SVM_predict():
-    SVM_predict_df(# Chemin de stockage des données nettoyées
-                   path_data='/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
-                   # Chemin du modèle Wikipedia
-                   path_model_wiki='/app/clean_model/trained.pickle',
-                   # Boolean indiquant si on sauve le modèle ou pas
-                   save_model=True,
-                   # Chemin de sauvegarde du modèle SVM
-                   path_save_model='/app/clean_model/SVM-updated.pickle',
-                   # Affiche les rapports de performance si True
-                   print_report=True
-    )
+    SVM_predict_df(path_data='/app/clean_data/data_preprocess_v1.csv')
 
 
 #####################################################
 #    2.3 MODELE ANN ARTIFICEL NEURONAL NETWORK      #
 #####################################################
 def ANN_predict():
-    ANN_predict_df(# Chemin de stockage des données nettoyées
-                   path_data='/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
-                   # Chemin du modèle Wikipedia
-                   path_model_wiki='/app/clean_model/trained.pickle',
-                   # Boolean indiquant si on sauve le modèle ou pas
-                   save_model=True,
-                   # Chemin de sauvegarde du modèle ANN
-                   path_save_model='/app/clean_model/ANN-updated.h5',
-                   # Affiche les rapports de performance si True
-                   print_report=True
-    )
+    ANN_predict_df(path_data='/app/clean_data/data_preprocess_v1.csv')
 
 
-    
-# task 1 ------------------------------------------------------------------------------------------
+
+
+
+
 task1 = PythonOperator(
-    task_id='collect_data',
+    task_id='preprocessing_data_MAJ',
     doc_md="""
-    ## Collect data and update file '/app/clean_data/data_MAJ.csv'
-    * Input: '/app/clean_data/data_MAJ.csv'
-    * Output: '/app/clean_data/data_MAJ.csv'
+    ## Preprocessing de data_MAJ.csv => + columns lemm + word+2
+    * Input: data_MAJ.csv = data originale sans colonnes de preprocessing
+    * Output: création de data_preprocess_v1.csv dans le dossier local /airflow/clean_data
+            avec 3 colonnes supplémentaires lemmatiser,words+2,no_stop_words
     """,
-    python_callable=print_test,
+    python_callable=Data_Preprocessing,
     dag=my_dag)
 
 
-# task 2 ------------------------------------------------------------------------------------------
+
 task2 = PythonOperator(
-    task_id='preprocess_train_save_GBC',
+    task_id="preprocess_2_train_save_GBC2_save_classif",
     doc_md="""
-    ## Prepocessing, Training, and Saving of the GBC model
-    * Input: '/app/clean_data/data_MAJ.csv'
-    * Output1: '/app/clean_model/GBC_2-updated.pickle'
-    * Output2: '/app/clean_model/vectoriser_GBC_2-updated'
+    ## Training and Saving of the GBC2 model
+     + calculating and saving Classification_report on Jason file
+    * Input: '../clean_data/data_preprocess_v1.csv'
+    * Output: '../clean_model/GBC2_sav-DAG.pickle'
     """,
-    python_callable=GBC_predict,
+    python_callable=GBC_preprocess_train_predict,
     dag=my_dag)
 
 
-# task 3 ------------------------------------------------------------------------------------------
-task3 = PythonOperator(
-    task_id='preprocess_SVM_ANN',
-    doc_md="""
-    ## Prepocessing for SVM and ANN models
-    * Input: '/airflow/clean_data/data_MAJ.csv'
-    * Output: '../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv'
-    """,
-    python_callable=print_test,
-    dag=my_dag)
 
 
 # task 3_1 ------------------------------------------------------------------------------------------
 task3_1 = PythonOperator(
-    task_id='train_save_SVM',
+    task_id='train_save_SVM_save_classif',
     doc_md="""
     ## Training and Saving of the SVM model
-    * Input: '../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv'
+     + calculating and saving Classification_report on Jason file
+    * Input: '../clean_data/data_preprocess_v1.csv'
     * Output: '../clean_model/SVM-updated.pickle'
     """,
     python_callable=SVM_predict,
@@ -175,9 +113,10 @@ task3_1 = PythonOperator(
 
 # task 3_2 ------------------------------------------------------------------------------------------
 task3_2 = PythonOperator(
-    task_id='train_save_ANN',
+    task_id='train_save_ANN_save_classif',
     doc_md="""
-    ## Training and Saving of the ANN model
+    ## Training and Saving of the ANN model.pickle 
+     + calculating and saving Classification_report on Jason file
     * Input: '../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv'
     * Output: '../clean_model/ANN-updated.h5'
     """,
@@ -186,5 +125,8 @@ task3_2 = PythonOperator(
 
 
 # Enchainement des taches
-task1 >> [task2, task3]
-task3 >> [task3_1, task3_2]
+#task1 >> [task2, task3]
+#task3 >> [task3_1, task3_2]
+
+task1 >> [task3_1, task3_2]
+task2

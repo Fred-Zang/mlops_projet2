@@ -175,13 +175,13 @@ async def post_comment(item:Item):
 @app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
 def get_comments():
     """"
-    return comment data base by json
+    return comment data base by json & create data_MAJ2.json on local VSC
 
     """
     # data storage file name
     ########################################
     # modify this adresse to airflow
-    data_store_path = '../airflow/clean_data/'
+    data_store_path = '../airflow/clean_data/'  # ce chemin =>  en local sur VSC
     # modify this file to origin database
     # => data_MAJ.csv
     # this is a small database
@@ -208,10 +208,10 @@ async def create_upload_file(file: UploadFile):
 
     ########################################
     # modify this adresse to airflow
-    data_store_path = '../airflow/clean_data/'
+    data_store_path = '/app/clean_data/'
     # modify this file to origin database
     # => data_MAJ.csv
-    # this is a small test data base
+    # REAL MAJ data base
     data_origin = 'data_MAJ2.csv'
     
     ######################################## 
@@ -242,4 +242,3 @@ async def create_upload_file(file: UploadFile):
     # elif file.content_type =='application/json':
         return {'INFO':'please use a csv file'}
    
-

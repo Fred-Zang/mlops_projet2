@@ -2,8 +2,10 @@
 import numpy as np
 import pandas as pd
 import pickle
+import re
+import spacy
 
-from sklearn.metrics import classification_report
+
 from sklearn.model_selection import train_test_split
 
 
@@ -24,6 +26,181 @@ def transform_star_to_target(df_comment):
     new_star = {1: 0, 2: 0, 3: 1, 4: 1, 5: 1}
     df_comment.star.replace(new_star, inplace=True)
     return df_comment.star.astype('int')
+
+# FONCTION token_lemmatiser() DE PRETRAITEMENT => question : est ce que le csv sauvegardé est utile ? 
+def token_lemmatiser(path, save_path = '/app/clean_data/data_preprocess_v1.csv'):
+    """ Traitement des données origines afin d'avoir des commentaires nettoyées
+            1. Selon l'analyse: 'r a s ' ou  ' r à s' ou 'r à d' ou 'r a d' et convertir en 'bien' +  'ras le bol' convertir en 'mauvaise
+            2. Tokenisation
+            3. Elimination des tokens vides
+            4. Lemmatisation des mots francais 
+            5. Retirer les tokens de moins de 2 lettre
+            6. Traitement des mots vides (avec liste_no-stop-words_tokens_unique.xlsx )
+            7. Sauvegarder le ficher sous nom: review_trust_fr_lemmantiser_word+2_VF.csv
+    Parameters:
+    -----------
+        path : Chemin pour accéder au fichier csv (données origines)    
+        save_path : Chemin pour sauvegarder le ficher csv (données nettoyées)
+    Returns:
+    --------
+        Un fiche .csv
+    """
+    # chargement fichier csv (données origines)
+    data=pd.read_csv(path, sep = ',')
+    data.drop(data.iloc[:,:1], axis=1, inplace=True)
+
+    # remplacer les stars 1,2 => 0 et 3,4,5 => 1 par function transform_star_to_target()
+    new_star = {1: 0, 2: 0, 3: 1, 4: 1, 5: 1}
+    data.star.replace(new_star, inplace=True)
+
+    # # récupérer colonne 'Commentaire' sous forme de liste de str dans corpus
+    corpus = data['Commentaire'].tolist()  
+
+    # les 4 regex vus ci-dessus rappelés ici
+    re_ras_points = re.compile(r"(r.a.s)|(r.à.s)|(r.a.d)|(r.à.d)") # pb r.a.s, r.à.s, r.a.d et r.à.d 
+    re_r_a_s = re.compile(r"[r]+[\s]+[a|à]+[\s]+[s|d]$")      # pb r a s , r a d , r à s , r à d
+    re_ras = re.compile(r"\bras\b|\bràs\b|\brad\b|\bràd\b")   # pb ras , rad , ràs , ràs
+    re_raslebol = re.compile(r"(ras le bol)+")                # pb ras le bol
+
+
+    corpus_ras_le_bol = []
+    for ele in corpus:
+        result = re_raslebol.sub('mauvais', ele)
+        corpus_ras_le_bol.append(result) 
+
+    # trouver les 'r.a.s' ou 'r.à.s' ou 'r.a.d' ou 'r.à.d' et convertir en 'bien'
+    corpus_ras = []
+    for ele in corpus_ras_le_bol:                          # list_test remplacé par corpus pour test     OK BON
+        result = re_ras_points.sub('bien', ele)
+        corpus_ras.append(result)
+        
+    # trouver les 'r a s ' ou  ' r à s' ou 'r à d' ou 'r a d' et convertir en 'bien'
+    corpus_ras2 = []
+    for ele in corpus_ras:                          # list_test remplacé par corpus pour test     OK BON
+        result = re_r_a_s.sub('bien', ele)
+        corpus_ras2.append(result)
+
+    # trouver les 'ras' ou 'ràs' ou 'rad' ou 'ràd' et convertir en 'bien'
+    corpus_ras3 = []
+    for ele in corpus_ras2:                          # list_test remplacé par corpus pour test     OK BON
+        result = re_ras.sub('bien', ele)
+        corpus_ras3.append(result)
+
+    # remplacement 'ras',  'r a s' et 'ras le bol' terminé à ce stade  ET commentaires traités placés dans 'corpus_ras3' 
+    # bascule du traitement dans corpus
+    corpus = corpus_ras3
+
+    # Tokenisation corpus_tk¶
+    # stop ponctuations, nombres et smileys et liste de mots en laissant tous les accents et lettres spéciales minuscules
+    # compiler et création liste de liste de token dans corpus_tk
+
+    re_token = re.compile(r"[^a-zéèêàâîïàùçôëûæœ]+")                                
+    corpus_tk=[]
+    for line in corpus:
+        corpus_tk.append(re_token.split(line))                                    
+
+    # ajout colonne token à data
+    data['tokens'] = pd.Series(corpus_tk)
+    #  décompte des token 
+    total = []
+    for i in range(data.shape[0]):
+        total.append(len(data['tokens'][i]))
+        
+    # ajout de la colonne du total des tokens restants    
+    data['total1'] = total 
+
+    # élimination des token vides créés après tokenisation à cause des ! ! ! par exemple
+    clean_tk = []
+    for row_list in corpus_tk:
+        clean_tk.append([ele for ele in row_list if len(ele) != 0])
+        
+    # verif total token restant
+    serie_clean_tk = pd.Series(clean_tk)
+    #  décompte des token 
+    total = []
+    for i in range(data.shape[0]):
+        total.append(len(serie_clean_tk[i]))
+        
+    # calcul du total des tokens restants    
+    total_clean_tk = pd.Series(total)              
+
+    # pas de nouvelle colonne crée dans data donc réafectation de clean_tk dans corpus_tk    
+    corpus_tk = clean_tk   
+
+    # Lemmatisation des mots Français
+    # test lemmatisation avant lancement sur corpus
+
+    # utilisation du module spacy importé
+    nlp = spacy.load('fr_core_news_md')
+    # Lemmatisation sur vrai data_set corpus_mot
+
+    corpus_lem = []
+    for line_com in corpus_tk:
+        liste = []
+        doc = nlp(" ".join(line_com))
+        for token in doc:
+            liste.append(token.lemma_)
+        corpus_lem.append(liste)     
+        
+    data['lemmatiser'] = pd.Series(corpus_lem)
+    #  décompte des token 
+    total = []
+    for i in range(data.shape[0]):
+        total.append(len(data['lemmatiser'][i])) 
+    # ajout de la colonne du total des mots lemmentisés   
+    data['tot_lem'] = total   
+
+    # retirer les tokens de moins de 2 lettres
+    corpus_sw = [[mot for mot in line_com if len(mot) > 2] for line_com in corpus_lem]  
+    # ajouter colonne résultat à data
+    corpus_sw_serie = pd.Series(corpus_sw)
+    data['words+2'] = corpus_sw_serie
+    #  décompte des tokens restants 
+    total = []
+    for i in range(data.shape[0]):
+        total.append(len(data['words+2'][i])) 
+    # ajout de la colonne du total des tokens restants    
+    data['tot_+2'] = total  
+
+    # traitement des mots vides #
+    # chargement fichier excel de stop words french en dataframe
+    df_stop_word_xls = pd.read_excel('/app/clean_data/liste_no-stop-words_tokens_unique.xlsx', header=None)
+
+    # création de stop words set
+
+    # faire une liste selon nltk.corpus
+    update_list_fr = list(df_stop_word_xls[0])
+
+    # initialisation de la variable des mots vides
+    stop_words = set()
+    stop_words.update(update_list_fr)
+
+
+    # fonction de filtrage
+    def stop_words_filtering(mots, stop_words) : 
+        tokens = []
+        for mot in mots:
+            if mot not in stop_words: 
+                tokens.append(mot)
+        return tokens
+
+    # création des tokens filtrés par stop_words.update et ajout de la colonne créé
+    data['no_stop_words'] = data['words+2'].apply(lambda x : stop_words_filtering(x,stop_words))   # ok parfait
+
+    #  décompte des tokens no_stop_word 
+    total = []
+    for i in range(data.shape[0]):
+        total.append(len(data['no_stop_words'][i]))
+        
+    # ajout de la colonne du total des tokens restants    
+    data['tot_sw'] = total   
+
+
+    # sauvegarder le dataframe sous csv
+    df_cleaned = data.drop(['total1','tot_lem','tot_+2','tot_sw'], axis = 1)
+    df_cleaned.to_csv(save_path) 
+
+    return df_cleaned
 
 
 # TRAITEMENT DES MOTS VIDES (ou STOP WORDS)
@@ -52,38 +229,8 @@ def collect_stopwords(path):
     return stop_words
 
 
-# REPORTING - PERFORMANCES
-def reporting(modele, y_test, y_pred):
-    """Calcul et affichage du rapport de classification et de la matrice de confusion d'un modèle
-
-    Parameters:
-    -----------
-    modele : str
-        Nom du modèle testé
-    y_test : DataFrame contenant des entiers (0 => sentiment négatif, 1 => sentiment positif)
-        Target des données de test
-    y_pred : DataFrame contenant des entiers (0 => sentiment négatif, 1 => sentiment positif)
-        Prédiction
-
-    Returns:
-    --------
-    La méthode ne retourne rien. Elle affiche les rapports.
-    """
-    # Calcul et affichage de classification_report
-    print("PERFORMANCES DU MODELE {}".format(modele))
-    print("RAPPORT DE CLASSIFICATION DU MODELE")
-    print(classification_report(y_test, y_pred))
-    print()
-
-    # Calcul et affichage de la matrice de confusion
-    confusion_matrix = pd.crosstab(
-        y_test,
-        y_pred,
-        rownames=['Classe réelle'],
-        colnames=['Classe prédite'])
-    print("MATRICE DE CONFUSION")
-    print(confusion_matrix)
-    print()
+    
+ 
 
 
 # MODELE PREENTRAINE AVEC WIKIPEDIA - SIMILARITES DE MOTS

@@ -23,37 +23,37 @@ import pandas as pd
 import numpy as np
 from time import time
 import pickle
+import json
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.svm import SVC
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense, Dropout
+from sklearn.metrics import classification_report
 from tensorflow.keras.models import Model
 from tensorflow.keras import callbacks
 
 import sys
 sys.path.append('/app/clean_functions')
-from my_functions import transform_star_to_target, collect_stopwords, prepare_data, reporting
+from my_functions import transform_star_to_target, collect_stopwords, prepare_data, token_lemmatiser
 
 
 #####################################################
 #   1. MODELE GBC - GRADIENT BOOSTING CLASSIFIER    #
 #####################################################
 def GBC_predict_df( # Chemin de stockage des données nettoyées
-                    path_data='/app/clean_data/reviews_trust_fr_VF.csv',
+                    path_data,
                     # Chemin du fichier contenant les stopwords
                     path_stopwords='/app/clean_data/liste_no-stop-words_tokens_unique.xlsx',
                     # Boolean indiquant si on sauve le modèle ou pas
                     save_model=True,
                     # Chemin de sauvegarde du modèle GBC
-                    path_save_model='/app/clean_model/GBC_2-sav_sklearn102.pickle',
+                    path_save_model='/app/clean_model/GBC_2-sav_DAG.pickle',
                     # Boolean indiquant si on sauve le vectorizer ou pas
                     save_vectorizer=True,
                     # Chemin de stockage du vectorizer
-                    path_save_vectorizer='/app/clean_model/vectoriser_GBC_2-sav_sklearn102',
-                    # Affiche les rapports de performance si True
-                    print_report=True
+                    path_save_vectorizer='/app/clean_model/vectoriser_GBC_2-sav_DAG'
 ):
     """Prédiction avec un Gradient Boosting Classifier:
             1.1 Préparation des données
@@ -111,6 +111,7 @@ def GBC_predict_df( # Chemin de stockage des données nettoyées
         random_state=0
     ).fit(X_train_GBC_2, y_train)
 
+
     ##### 1.3 SAUVEGARDE DU MODELE #####
     #----------------------------------#
     # sauvegarder le modèle pré-entrainé
@@ -126,13 +127,17 @@ def GBC_predict_df( # Chemin de stockage des données nettoyées
     y_pred_GBC_2 = GBC_2.predict(X_test_GBC_2)
 
     ### REPORTING - PERFORMANCES ###
-    # Calcul et affichage de classification_report
-    # Calcul et affichage de la matrice de confusion
-    if print_report:
-        reporting("GRADIENT BOOSTING", y_test, y_pred_GBC_2)
+    classif = classification_report(y_test, y_pred_GBC_2, output_dict=True)
+    
+    ### SAUVEGARDE CLASSIFICATION_REPORT ####
+    out_file = open("/app/clean_data/classif_GBC2_sav.json", "w")
+  
+    json.dump(classif, out_file)
+  
+    out_file.close()
 
-    # Renvoie la prédiction
-    return y_pred_GBC_2
+    # Renvoie la prédiction  => oui mais on n'en fait rien !
+    #return y_pred_GBC_2
 
 
 
@@ -175,8 +180,7 @@ print("temps chargement modele pré-entrainé = ", end-start)
 print(trained.vectors.shape)
 '''
 '''
-# sauvegarder le modèle pré-entrainé
-pickle.dump(trained,open('../clean_model/trained.pickle','wb'))
+# sauvegarder le modèle pré-entrainé  trained.pickle
 '''
 
 #####################################################
@@ -191,7 +195,7 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
     # Boolean indiquant si on sauve le modèle ou pas
     save_model=True,
     # Chemin de sauvegarde du modèle SVM
-    path_save_model='/app/clean_model/SVM_sav-sklearn102.pickle',
+    path_save_model='/app/clean_model/SVM_sav-DAG.pickle',
     # Affiche les rapports de performance si True
     print_report=True
 ):
@@ -241,13 +245,18 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
     y_pred_SVM = SVM.predict(X_test)
 
     ### REPORTING - PERFORMANCES ###
-    # Calcul et affichage de classification_report
-    # Calcul et affichage de la matrice de confusion
-    if print_report:
-        reporting("SVM", y_test, y_pred_SVM)
+### REPORTING - PERFORMANCES ###
+    classif = classification_report(y_test, y_pred_SVM, output_dict=True)
+    
+    ### SAUVEGARDE CLASSIFICATION_REPORT ####
+    out_file = open("/app/clean_data/classif_SVM_sav.json", "w")
+  
+    json.dump(classif, out_file)
+  
+    out_file.close()
 
-    # Renvoie la prédiction
-    return y_pred_SVM
+    # Renvoie la prédiction  => oui mais on n'en fait rien !
+    #return y_pred_SVM
 
 
 
@@ -255,13 +264,13 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
 #    2.3 MODELE ANN ARTIFICEL NEURONAL NETWORK      #
 #####################################################
 def ANN_predict_df(  # Chemin de stockage des données nettoyées
-    path_data='/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+    path_data,
     # Chemin du modèle Wikipedia
     path_model_wiki='/app/clean_model/trained.pickle',
     # Boolean indiquant si on sauve le modèle ou pas
     save_model=True,
     # Chemin de sauvegarde du modèle ANN
-    path_save_model='/app/clean_model/ANN-sav-tensor280.h5',
+    path_save_model='/app/clean_model/ANN-sav-DAG.h5',
     # Affiche les rapports de performance si True
     print_report=True
 ):
@@ -359,11 +368,15 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
     #y_pred_ANN = np.where(test_pred[:,1] > 0.52, 1, 0)
 
     ### REPORTING - PERFORMANCES ###
-    # Calcul et affichage de classification_report
-    # Calcul et affichage de la matrice de confusion
-    if print_report:
-        reporting("ANN", y_test, y_pred_ANN)
+### REPORTING - PERFORMANCES ###
+    classif = classification_report(y_test, y_pred_ANN, output_dict=True)
+    
+    ### SAUVEGARDE CLASSIFICATION_REPORT ####
+    out_file = open("/app/clean_data/classif_ANN_sav.json", "w")
+  
+    json.dump(classif, out_file)
+  
+    out_file.close()
 
-    # Renvoie la prédiction
-    return y_pred_ANN
-
+    # Renvoie la prédiction  => oui mais on n'en fait rien !
+    #return y_pred_ANN
