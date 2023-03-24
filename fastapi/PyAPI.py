@@ -4,7 +4,7 @@ Created on Fri Dec 30 01:41:01 2022
 
 @author: user
 """
-from fastapi import Depends, FastAPI, HTTPException #, status, Query
+from fastapi import Depends, FastAPI, HTTPException status, Query
 from fastapi import File, UploadFile
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
