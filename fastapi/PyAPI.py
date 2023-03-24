@@ -4,30 +4,30 @@ Created on Fri Dec 30 01:41:01 2022
 
 @author: user
 """
-from fastapi import Depends, FastAPI, HTTPException status, Query
+from fastapi import Depends, FastAPI, HTTPException, status, Query
 from fastapi import File, UploadFile
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from typing import Optional
-import pandas as pd 
+import pandas as pd
 import numpy as np
-import csv 
+import csv
 import json
 import datetime
 
 app = FastAPI(
     title="Backend FastAPI by Eric & Fred & Quan",
-    description = "API for MLOps final project: SatisPy",
+    description="API for MLOps final project: SatisPy",
     # version="wikihappy.org"
-    version = "1.0.0",
+    version="1.0.0",
     openapi_tags=[
         {
             'name': "Authentification"
         },
         {
             'name': 'Data Management',
-            'description':"Data management for sentiment analysis"
+            'description': "Data management for sentiment analysis"
         }
     ]
 )
@@ -39,18 +39,16 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # deux utilisateurs: user normale ("user") et administateur ("admin")
 
 users = {
-    "user" : {
-        "username" : "user",
-        "hashed_password" : pwd_context.hash("user")
+    "user": {
+        "username": "user",
+        "hashed_password": pwd_context.hash("user")
     },
     "admin": {
         "username": "admin",
-        "hashed_password": pwd_context.hash('admin')  
+        "hashed_password": pwd_context.hash('admin')
 
     }
 }
-
-
 
 
 # ----------------------------------1ere route Authentification ------------------------------------------------ #
@@ -86,13 +84,15 @@ Sinon, on renvoie l'identifiant de l'utilisateur.
         )
     return credentials.username
 
-@app.get('/status',tags = ['Authentification'])
+
+@app.get('/status', tags=['Authentification'])
 async def get_status(username: str = Depends(get_current_user)):
-    
-    if username== "admin" or username=="user":
+
+    if username == "admin" or username == "user":
         return "API is ready"
-    else: 
+    else:
         return "API is not ready for unknown user"
+
 
 @app.get("/authentification", name="Hello", tags=['Authentification'])
 async def current_user(username: str = Depends(get_current_user)):
@@ -110,43 +110,45 @@ async def current_user(username: str = Depends(get_current_user)):
 
 # ----------------------------------2eme route Création de la base de donnée ------------------------------------------------ #
 
-# # data used in GBC, ANN and SVM 
+# # data used in GBC, ANN and SVM
 class Item(BaseModel):
-    inID: Optional[int] = None 
+    inID: Optional[int] = None
     Commentaire: str
-    star : int
+    star: int
     source: Optional[str] = None
     company: Optional[str] = None
     Index_org: Optional[int] = None
-    Star_org: Optional[int] =None
+    Star_org: Optional[int] = None
     date: Optional[str] = None
+
 
 # data base  information
 ########################################
 # modify this adresse to airflow
 data_store_path = '../airflow/clean_data/'
-# modify this file to origin database 
+# modify this file to origin database
 # => data_MAJ.csv
 # this is the test small data base
 data_name = 'data_MAJ2.csv'
-########################################  
+########################################
 
 
-def write_comment(FileName : str, inputs:list):
-    with open(FileName,'a+') as csvfile:
+def write_comment(FileName: str, inputs: list):
+    with open(FileName, 'a+') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([
-        inputs.inID,
-        inputs.Commentaire, 
-        inputs.star,           
-        inputs.source, 
-        inputs.company,
-        inputs.Index_org,
-        inputs.Star_org,
-        inputs.date])
+            inputs.inID,
+            inputs.Commentaire,
+            inputs.star,
+            inputs.source,
+            inputs.company,
+            inputs.Index_org,
+            inputs.Star_org,
+            inputs.date])
 
-@app.post('/comment', name="Make a New comment", tags= ['Data Management'])
-async def post_comment(item:Item):
+
+@app.post('/comment', name="Make a New comment", tags=['Data Management'])
+async def post_comment(item: Item):
     # data storage file name
     ########################################
     # modify this adresse to airflow
@@ -155,24 +157,25 @@ async def post_comment(item:Item):
     # => data_MAJ.csv
     # this is a small test data base
     data_name = 'data_MAJ2.csv'
-    ########################################  
-    
-    
-    data_file = data_store_path+data_name
+    ########################################
+
+    data_file = data_store_path + data_name
     print(data_file)
-    write_comment(data_file,item)
-    # modify the InID 
+    write_comment(data_file, item)
+    # modify the InID
     comments = pd.read_csv(data_file)
-    comments['inID']= range(len(comments))
+    comments['inID'] = range(len(comments))
     # comments.iloc[-1,0]=comments.iloc[-2,0]+1
-    comments.to_csv(data_file,index=False) 
-    comment = comments.iloc[-1,:]
-    
-    return {'last comment ID': int(comment['inID']),'last comment': comment['Commentaire']}
-    
+    comments.to_csv(data_file, index=False)
+    comment = comments.iloc[-1, :]
+
+    return {
+        'last comment ID': int(
+            comment['inID']),
+        'last comment': comment['Commentaire']}
 
 
-@app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
+@app.get('/getcomments', name='Get comments', tags=['Data Management'])
 def get_comments():
     """"
     return comment data base by json & create data_MAJ2.json on local VSC
@@ -186,21 +189,21 @@ def get_comments():
     # => data_MAJ.csv
     # this is a small database
     data_name = 'data_MAJ2.csv'
-    data_file_csv = data_store_path+data_name
+    data_file_csv = data_store_path + data_name
     # modify the json name
     # => data_MAJ.json
     data_file_json = data_store_path + 'data_MAJ2.json'
-    ########################################  
+    ########################################
     comments = pd.read_csv(data_file_csv)
 
     data_json = comments.to_json(data_file_json)
 
     data = comments.to_json()
-    
+
     return data
 
 
-@app.post("/uploadfile/", name ='upload file', tags = ['Data Management'])
+@app.post("/uploadfile/", name='upload file', tags=['Data Management'])
 async def create_upload_file(file: UploadFile):
     """
     the uploaded file is saved with current datatime
@@ -213,32 +216,31 @@ async def create_upload_file(file: UploadFile):
     # => data_MAJ.csv
     # REAL MAJ data base
     data_origin = 'data_MAJ2.csv'
-    
-    ######################################## 
+
+    ########################################
 
     print(file.content_type)
-    
+
     data_file = data_store_path + data_origin
     dt = datetime.datetime.now()
     # if the hour and minute cause traitement problem, we can keep only y-m-d
     time = dt.strftime('%Y-%m-%d-%H:%M')
 
-    file.filename = 'new_data_'+ time + '.csv'
-    if file.content_type == "text/csv": 
+    file.filename = 'new_data_' + time + '.csv'
+    if file.content_type == "text/csv":
         # write into a new data file
-        with open(data_store_path + file.filename,'wb') as f:
+        with open(data_store_path + file.filename, 'wb') as f:
             f.write(await file.read())
 
         # update the data_MAJ file (global data base)
         added_data = pd.read_csv(data_store_path + file.filename)
-        added_data.to_csv(data_file, mode = 'a',header = False, index = False)
-        
+        added_data.to_csv(data_file, mode='a', header=False, index=False)
+
         # modify the ID
         data = pd.read_csv(data_file)
         data['inID'] = range(len(data))
-        data.to_csv(data_file,index = False)
+        data.to_csv(data_file, index=False)
         return {"filename": file.filename}
     else:
-    # elif file.content_type =='application/json':
-        return {'INFO':'please use a csv file'}
-   
+        # elif file.content_type =='application/json':
+        return {'INFO': 'please use a csv file'}

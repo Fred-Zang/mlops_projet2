@@ -1,3 +1,5 @@
+from my_functions import token_lemmatiser
+from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
 import pandas as pd
 
 from airflow import DAG
@@ -5,14 +7,11 @@ from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 
 
-
 import sys
 sys.path.append('/app/clean_functions')
-from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
-from my_functions import token_lemmatiser
 
 
-# initialisation du DAG avec un lancement des task toutes les minutes -----------------------------
+# initialisation du DAG avec un lancement des task toutes les minutes ----
 """
 Définition du DAG
 """
@@ -29,8 +28,8 @@ my_dag = DAG(
     * Train 3 different models (GBC, SVM & ANN after wikipedia preprocessing)
     * Save the models
     """,
-    tags = ['projet', 'mlops'],
-    schedule_interval=None,    #'* * * * *',   # 10 minutes
+    tags=['projet', 'mlops'],
+    schedule_interval=None,  # '* * * * *',   # 10 minutes
     default_args={
         'owner': 'airflow',
         'start_date': days_ago(0, minute=1),
@@ -52,7 +51,6 @@ def GBC_preprocess_train_predict():
     GBC_predict_df(path_data='/app/clean_data/data_MAJ.csv')
 
 
-
 #####################################################
 #    2.2 MODELE SVM - SUPPORT VECTOR MACHINES       #
 #####################################################
@@ -67,10 +65,6 @@ def ANN_predict():
     ANN_predict_df(path_data='/app/clean_data/data_preprocess_v1.csv')
 
 
-
-
-
-
 task1 = PythonOperator(
     task_id='preprocessing_data_MAJ',
     doc_md="""
@@ -81,7 +75,6 @@ task1 = PythonOperator(
     """,
     python_callable=Data_Preprocessing,
     dag=my_dag)
-
 
 
 task2 = PythonOperator(
@@ -96,9 +89,7 @@ task2 = PythonOperator(
     dag=my_dag)
 
 
-
-
-# task 3_1 ------------------------------------------------------------------------------------------
+# task 3_1 ---------------------------------------------------------------
 task3_1 = PythonOperator(
     task_id='train_save_SVM_save_classif',
     doc_md="""
@@ -111,11 +102,11 @@ task3_1 = PythonOperator(
     dag=my_dag)
 
 
-# task 3_2 ------------------------------------------------------------------------------------------
+# task 3_2 ---------------------------------------------------------------
 task3_2 = PythonOperator(
     task_id='train_save_ANN_save_classif',
     doc_md="""
-    ## Training and Saving of the ANN model.pickle 
+    ## Training and Saving of the ANN model.pickle
      + calculating and saving Classification_report on Jason file
     * Input: '../clean_data/review_trust_fr_lemmantiser_word+2_VF.csv'
     * Output: '../clean_model/ANN-updated.h5'
@@ -125,8 +116,8 @@ task3_2 = PythonOperator(
 
 
 # Enchainement des taches
-#task1 >> [task2, task3]
-#task3 >> [task3_1, task3_2]
+# task1 >> [task2, task3]
+# task3 >> [task3_1, task3_2]
 
 task1 >> [task3_1, task3_2]
 task2
