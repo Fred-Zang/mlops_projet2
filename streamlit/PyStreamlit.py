@@ -251,16 +251,6 @@ if page == pages[0]:  # sur la page 0 Introduction
     st.markdown(
         "<h1 style='text-align: center; color: white;'>SatisPy Projet - version MLOps</h1>",
         unsafe_allow_html=True)
-    # écrire du texte ( # = taille, ##, ###) ici le titre de la page
-    st.write("### Présentation Générale !!!:")
-    st.write("blablabla....................😉​")
-    st.write("### Rapide aperçu du Projet :")
-    st.write(
-        "On nous a remis un dataset 'reviews_trust.csv' comportant 19.863 lignes et 11 colonnes qui correspond aux commentaires clients \
-        et notation de 1 à 5 étoiles sur leurs achats de produit sur 2 sites marchands 'ShowRoom' et 'VeePee'. Ces commentaires proviennent de \
-            2 sources récoltant les avis, 'TrustedShop' et 'TrustPilot' et voici un extrait du dataset :")
-    st.write("--- AERER TOUT CA ---")
-    st.write("Projet présenté et réalisé par Quan Liu, Éric Gasniere et Fred Zanghi")
 
 
 #------------------------------------------------------------------------------------------
