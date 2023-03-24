@@ -1,1 +1,6 @@
 airflow/clean_model/trained.pickle
+airflow/clean_functions/__pycache__
+airflow/logs
+airflow/dags/__pycache__
+airflow/data_others/__pycache__
+fastapi/__pycache__

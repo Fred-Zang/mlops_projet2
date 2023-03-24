@@ -268,15 +268,15 @@ if page == pages[0]:  # sur la page 0 Introduction
 #------------------------------------------------------------------------------------------
 elif page==pages[1]:  # sur la page 1 Dataviz
 	# affichage
-	insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/airflow/data_others/JPG-PNG/logo_SatisPy_Project.png')
-	
-	st.markdown("<h2 style='text-align: center; color: white;'>Cahier des Charges</h2>", unsafe_allow_html=True)
-	st.markdown("""
-	## Objectif：
-	- Exploration des données 
-	- Visualisation des données
-	- Préparation des données 
-	""")
+    insert_head('https://datascientest.fr/train/assets/logo_datascientest.png','/airflow/data_others/JPG-PNG/logo_SatisPy_Project.png')
+    st.markdown("<h2 style='text-align: center; color: white;'>Cahier des Charges</h2>", unsafe_allow_html=True)
+    st.write("Schéma d'implantation - TOUT A FAIRE !")
+    st.image("/airflow/data_others/JPG-PNG/implantation.png")
+    st.image("/airflow/data_others/JPG-PNG/Capture d’écran 2023-03-23 183210.png")
+    st.write ("Suivi du cahier des charges  => à refaire proprement + images")
+    st.image("/airflow/data_others/JPG-PNG/cahier_des_charges_1.png")
+    st.image("/airflow/data_others/JPG-PNG/cahier_des_charges_2.png")
+    st.image("/airflow/data_others/JPG-PNG/cahier_des_charges_3.png")
 
 
 
@@ -290,17 +290,23 @@ elif page==pages[2]:
     # title du page
     st.markdown("<h1 style='text-align: center; color: white;'>Améliorations à prévoir et Problèmatiques</h1>", unsafe_allow_html=True)
 
-    st.write("Vulnérabilité des containers")
-    insert_img("/airflow/data_others/JPG-PNG/vulnerability_containers.png")
+    st.write("VULNÉRABILITÉ DES CONTAINERS")
+    st.markdown(""" - exemple ici vulnératbilité sur python 3.9""")
+    st.image("/airflow/data_others/JPG-PNG/vulnerability_containers.png")
 
-    st.write("Poids des images buildées")
-    insert_img("/airflow/data_others/JPG-PNG/Poids_des_images.png")
+
+
+    st.write("POIDS DES IMAGES BUILDÉES")
+    st.markdown(""" - Les images contruites pour STreamlit, FastAPI et AirFlow sont assez lourde avec respectivement 1 GB, 2GB et 2GB""")
+    st.image("/airflow/data_others/JPG-PNG/Poids_des_images.png")
     st.write('')
-    st.write("Versionning des packages")
-    insert_img("/airflow/data_others/JPG-PNG/requirement_streamlit.png")
+    st.write("VERSIONNING DES PACKAGES")
+    st.image("/airflow/data_others/JPG-PNG/requirement_streamlit.png")
     st.write('')
-    st.write("Usage RAM importante")
-    insert_img("/airflow/data_others/JPG-PNG/usage_CPU_containers.png")
+    st.write("USAGE DE RAM IMPORTANTE")
+    st.markdown (""" - problématiques de chargement en local et une utilisation de RAM trop importante si RAM pc < 16 Go """)
+    st.image("/airflow/data_others/JPG-PNG/Vmmem.png")
+    st.image("/airflow/data_others/JPG-PNG/Vue_processeur.png")
     st.write('')
    
 #------------------------------------------------------------------------------------------
