@@ -125,7 +125,7 @@ class Item(BaseModel):
 # data base  information
 ########################################
 # modify this adresse to airflow
-data_store_path = '../airflow/clean_data/'
+data_store_path = '/airflow/clean_data/'
 # modify this file to origin database
 # => data_MAJ.csv
 # this is the test small data base
@@ -152,7 +152,7 @@ async def post_comment(item: Item):
     # data storage file name
     ########################################
     # modify this adresse to airflow
-    data_store_path = '../airflow/clean_data/'
+    data_store_path = '/airflow/clean_data/'
     # modify this file to origin database
     # => data_MAJ.csv
     # this is a small test data base
@@ -184,7 +184,7 @@ def get_comments():
     # data storage file name
     ########################################
     # modify this adresse to airflow
-    data_store_path = '../airflow/clean_data/'  # ce chemin =>  en local sur VSC
+    data_store_path = '/airflow/clean_data/'
     # modify this file to origin database
     # => data_MAJ.csv
     # this is a small database
@@ -211,7 +211,7 @@ async def create_upload_file(file: UploadFile):
 
     ########################################
     # modify this adresse to airflow
-    data_store_path = '/app/clean_data/'
+    data_store_path = '/clean_data/'
     # modify this file to origin database
     # => data_MAJ.csv
     # REAL MAJ data base

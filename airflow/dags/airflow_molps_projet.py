@@ -1,5 +1,3 @@
-from my_functions import token_lemmatiser
-from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
 import pandas as pd
 
 from airflow import DAG
@@ -9,7 +7,8 @@ from airflow.utils.dates import days_ago
 
 import sys
 sys.path.append('/app/clean_functions')
-
+from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
+from my_functions import token_lemmatiser
 
 # initialisation du DAG avec un lancement des task toutes les minutes ----
 """
