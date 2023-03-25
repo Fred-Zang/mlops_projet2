@@ -1,0 +1,44 @@
+h1, h2, h3, h4{
+    color: #5930f2;
+}
+
+code {
+    color: #40E4BE;
+}
+
+#MainMenu{
+    visibility: hidden;
+}
+
+div[data-testid="stDecoration"]{
+    visibility: hidden;    
+}
+
+footer{
+    visibility: hidden;
+}
+
+.st-bk{
+    background-color: #10b8dd;
+    color: white;
+}
+.css-hxt7ib {
+    background-color: #10b8dd;
+    color: white;
+}
+.st-bk > h2 {
+    color:black;
+} 
+.css-hxt7ib h2{
+    color:white;
+} 
+.css-hxt7ib h3{
+    color:black;
+} 
+.sidebar .sidebar-content {
+    background-color: #10b8dd;
+}
+.css-12oz5g7 {
+    padding-top: 10px;
+    padding-left: 20px;
+}
