@@ -12,8 +12,8 @@ def run():
     st.markdown("---")
 
     st.write("Schéma d'implantation - TOUT A FAIRE !")
-    st.image("/airflow/data_others/JPG-PNG/implantation.png")
-    st.image("/airflow/data_others/JPG-PNG/Capture d’écran 2023-03-23 183210.png")
+    st.image("/airflow/data_others/JPG-PNG/schema_implantation.png")
+
     st.write("Suivi du cahier des charges  => à refaire proprement + images")
     st.image("/airflow/data_others/JPG-PNG/cahier_des_charges_1.png")
     st.image("/airflow/data_others/JPG-PNG/cahier_des_charges_2.png")
