@@ -11,19 +11,20 @@ TITLE = "Le projet SatisPy"
 
 TEAM_MEMBERS = [
     Member(
-        name="Quan",
-        linkedin_url="xxx",
-        github_url="xxx",
+        name="Quan LIU",
+        linkedin_url="https://www.linkedin.com/in/quan-liu-fr/",
+        github_url="https://github.com/luckychien87",
     ),
     Member(
-        name="Fred",
-        linkedin_url="xxx",
-        github_url="xxx",
+        name="Fred ZANGHI",
+        linkedin_url="https://www.linkedin.com/in/fred-zanghi-89a01390/",
+        github_url="https://github.com/Fred-Zang",
     ),
 
     Member(
         name="Eric GASNIER",
-        linkedin_url="https://www.linkedin.com/in/ericgasnier",
+        linkedin_url="https://www.linkedin.com/in/ericgasnier/",
+        github_url="https://github.com/egasnier",
     ),
 ]
 

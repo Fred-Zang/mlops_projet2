@@ -29,14 +29,21 @@ TABS = OrderedDict(
 
 def run():
     st.sidebar.image(
-        "/airflow/data_others/JPG-PNG/logo_SatisPy_Project.png",
+        "https://datascientest.fr/train/assets/logo_datascientest.png",
         width=150,
     )
+
     st.sidebar.markdown(
         """
         # Le projet SatisPY
         """)
     tab_name = st.sidebar.radio("", list(TABS.keys()), 0)
+    
+    st.sidebar.image(
+        '/airflow/data_others/JPG-PNG/logo_SatisPy_Project.png',
+        width=150,
+    )
+    
     st.sidebar.markdown("---")
     st.sidebar.markdown(f"## {config.PROMOTION}")
 

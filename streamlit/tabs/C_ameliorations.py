@@ -1,16 +1,10 @@
 import streamlit as st
 
-from my_functions import insert_head
-
 title = "Améliorations à prévoir et Problèmatiques"
 sidebar_name = "Améliorations à prévoir et Problèmatiques"
 
 
 def run():
-
-    insert_head(
-        'https://datascientest.fr/train/assets/logo_datascientest.png',
-        "/airflow/data_others/JPG-PNG/logo_SatisPy_Project.png")
 
     st.title(title)
 
