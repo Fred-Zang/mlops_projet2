@@ -4,3 +4,5 @@ airflow/logs
 airflow/dags/__pycache__
 airflow/data_others/__pycache__
 fastapi/__pycache__
+streamlit/tabs/__pycache__
+streamlit/__pycache__
