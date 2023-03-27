@@ -212,9 +212,9 @@ async def post_comment(item:Item,username: str = Depends(get_current_user)):
 @app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
 def get_comments(username: str = Depends(get_current_user)):
     """
-    _summary_ : pour afficher des commantaire si authentifié 
+    _summary_ : sauvegarde en json de data_MAJ.csv si authentifié 
 
-        COMMENTS commentaires
+        data_MAJ.csv => data_MAJ.json
 
     Args: \n
     1. username (str, optional): _description_ - Defaults to Depends(get_current_user).
@@ -248,9 +248,10 @@ def get_comments(username: str = Depends(get_current_user)):
 @app.post("/uploadfile", name ='upload file', tags = ['Data Management'])
 async def create_upload_file(file: UploadFile,username: str = Depends(get_current_user)):
     """
-    _summary_ : pour déposer des commantaire via un csv document par un admin
+    _summary_ : pour déposer des nouveaux commentaires via un csv document par un admin
 
-        BASE DE DONNEE mis à jour par csv
+        BASE DE DONNEE data_MAJ.csv mis à jour par csv
+        + création archive data_MAJ_annee-moi-jour-heure:min.csv
 
     Args:\n
     1. username (str, optional): _description_ - Defaults to Depends(get_current_user).\n
