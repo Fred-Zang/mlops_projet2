@@ -118,17 +118,18 @@ async def current_user(username: str = Depends(get_current_user)):
 
 
 # ----------------------------------2eme route Création de la base de donnée ------------------------------------------------ #
-
+dt = datetime.datetime.now()
+time = dt.strftime('%d/%m/%Y')
 # # data used in GBC, ANN and SVM 
 class Item(BaseModel):
     inID: Optional[int] = None 
-    Commentaire: str 
+    Commentaire: str= Field(...,min_length=1) # at least one world 
     star : int = Field(None, ge=1,le=5)
     source: Optional[str] = None
     company: Optional[str] = None
     Index_org: Optional[int] = None
     Star_org: Optional[int] = None
-    date: Optional[str] = None
+    date: str = Field(default = time,regex="^\d{2}\/\d{2}\/\d{4}$") # the default is today
 
 # # data base  information
 # ################################################################################
@@ -170,7 +171,7 @@ async def post_comment(item:Item,username: str = Depends(get_current_user)):
         company: Optional[str] - site web (ShowRoom ou VeePee ou None) \n
         Index_org: Optional[int] - ID origine \n
         Star_org: Optional[int] - étoile origine avant transférer en 0 et 1, un cope de "star"\n
-        date: Optional[str] - date de commentaire\n
+        date: str - date de commentaire, dd/mm/yyyy\n
 
     Returns: \n
     _type_: dict - {"nouveau commentaire ID" : int, "nouveau commantaire": str} si authentifié 
@@ -208,49 +209,13 @@ async def post_comment(item:Item,username: str = Depends(get_current_user)):
         return "Sorry you have no rights!"
     
 
-
-@app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
-def get_comments(username: str = Depends(get_current_user)):
-    """
-    _summary_ : pour afficher des commantaire si authentifié 
-
-        COMMENTS commentaires
-
-    Args: \n
-    1. username (str, optional): _description_ - Defaults to Depends(get_current_user).
-
-    Returns: \n
-    _type_: json - un json si authentifié 
-    """ 
-    # data storage file name
-    ################################################################################ 
-    # modify this adresse to airflow
-    data_store_path = '../airflow/clean_data/'
-    # modify this file to origin database
-    data_name = 'data_MAJ.csv'
-    data_file_csv = data_store_path+data_name
-    # modify the json name
-    data_file_json = data_store_path + 'data_MAJ.json'
-    ################################################################################ 
-
-    if username == 'admin' or username =='user':
-        comments = pd.read_csv(data_file_csv)
-
-        data_json = comments.to_json(data_file_json)
-
-        data = comments.to_json()
-        
-        return data
-    else:
-        return "Sorry you have no rights!"
-
-
 @app.post("/uploadfile", name ='upload file', tags = ['Data Management'])
 async def create_upload_file(file: UploadFile,username: str = Depends(get_current_user)):
     """
-    _summary_ : pour déposer des commantaire via un csv document par un admin
+    _summary_ : pour déposer des nouveaux commentaires via un csv document par un admin
 
-        BASE DE DONNEE mis à jour par csv
+        BASE DE DONNEE data_MAJ.csv mis à jour par csv
+        + création archive data_MAJ_annee-moi-jour-heure:min.csv
 
     Args:\n
     1. username (str, optional): _description_ - Defaults to Depends(get_current_user).\n
@@ -300,6 +265,40 @@ async def create_upload_file(file: UploadFile,username: str = Depends(get_curren
             return {'INFO':'please use a csv file'}
     elif username =='user':
         return "Only admin can upload a file, please contact your admin or upload one note once!"
-    
-   
 
+'''    
+@app.get('/getcomments', name= 'Get comments', tags = ['Data Management'])
+def get_comments(username: str = Depends(get_current_user)):
+    """
+    _summary_ : sauvegarde en json de data_MAJ.csv si authentifié 
+
+        data_MAJ.csv => data_MAJ.json
+
+    Args: \n
+    1. username (str, optional): _description_ - Defaults to Depends(get_current_user).
+
+    Returns: \n
+    _type_: json - un json si authentifié 
+    """ 
+    # data storage file name
+    ################################################################################ 
+    # modify this adresse to airflow
+    data_store_path = '../airflow/clean_data/'
+    # modify this file to origin database
+    data_name = 'data_MAJ.csv'
+    data_file_csv = data_store_path+data_name
+    # modify the json name
+    data_file_json = data_store_path + 'data_MAJ.json'
+    ################################################################################ 
+
+    if username == 'admin' or username =='user':
+        comments = pd.read_csv(data_file_csv)
+
+        data_json = comments.to_json(data_file_json)
+
+        data = comments.to_json()
+        
+        return data
+    else:
+        return "Sorry you have no rights!"   
+'''
