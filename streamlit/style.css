@@ -1,44 +1,12 @@
-h1, h2, h3, h4{
-    color: #c2f225;
+h1, h2, h3, h4 {
+    color: #C2F225;
 }
-
-code {
-    color: #e18e30;
+.stApp {
+    background-color: rgb(17, 15, 15);,
 }
-
-#MainMenu{
-    visibility: hidden;
+.css-6qob1r {
+    background-color: rgb(193, 108, 38);,
 }
-
-div[data-testid="stDecoration"]{
-    visibility: hidden;    
-}
-
-footer{
-    visibility: hidden;
-}
-
-.st-bk{
-    background-color: #a6afaa;
-    color: white;
-}
-.css-hxt7ib {
-    background-color: #10b8dd;
-    color: white;
-}
-.st-bk > h2 {
-    color:black;
-} 
-.css-hxt7ib h2{
-    color:white;
-} 
-.css-hxt7ib h3{
-    color:black;
-} 
-.sidebar .sidebar-content {
-    background-color: #10b8dd;
-}
-.css-12oz5g7 {
-    padding-top: 10px;
-    padding-left: 20px;
+.css-18ni7ap {
+    background-color: rgb(17,15,15);,
 }
