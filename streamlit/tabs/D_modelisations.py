@@ -1,10 +1,12 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
 
 from my_functions_streamlit import GBC_2, sentiment, SVM, prediction
 from tensorflow.keras.models import load_model
 
-title = "Modélisations à la demande"
-sidebar_name = "Modélisations à la demande"
+title = "Modélisations à la demande et surveillance des métriques"
+sidebar_name = "Modélisations à la demande et surveillance des métriques"
 
 
 def run():
@@ -25,16 +27,22 @@ def run():
         pred = GBC_2(corpus)
         st.success('Your message was classified as {}'.format(pred))
         sentiment(pred)
-        st.write(
-            "Ce modèle atteint une précision de 89% sur les 2 sentiments et donc malgré tout un taux d'erreurs de 11%")
+        st.write("")
+        st.write("")
+        st.markdown(":red[Classification Report] de la dernière mise-à-jour du modèle :")   
+        classification = pd.read_json("/airflow/clean_data/classif_GBC2_sav.json")
+        st.dataframe(classification)
 
     if st.button(
             "pré-entrainement avec Wikipedia2vec puis modélisation par SVM"):
         pred = SVM(corpus)
         st.success('Your message was classified as {}'.format(pred))
         sentiment(pred)
-        st.write(
-            "Ce modèle atteint une précision de 90% sur les 'satisfaits' et seulement 76% sur les 'mécontents")
+        st.write("")
+        st.write("")
+        st.markdown(":red[Classification Report] de la dernière mise-à-jour du modèle :")   
+        classification = pd.read_json("/airflow/clean_data/classif_SVM_sav.json")
+        st.dataframe(classification)
 
 
     if st.button("ANN Réseaux de Neurones Articiciels"):
@@ -45,4 +53,17 @@ def run():
         pred = pred.index(max(pred))
         sentiment(pred)
         st.write('')
-        st.write("Ce modèle atteint une précision de 86% sur les 'satisfaits' et seulement 73% sur les 'mécontents")
+        st.write("")
+        st.markdown(":red[Classification Report] de la dernière mise-à-jour du modèle :")   
+        classification = pd.read_json("/airflow/clean_data/classif_ANN_sav.json")
+        st.dataframe(classification)
+        
+        accuracy = classification.loc['precision','accuracy']
+        if accuracy >= 0.9:
+            st.write("SUPER LE MODELE VA BIEN ")
+        else:
+            
+            st.subheader("Le modèle ne répond pas aux exigences d'accuracy >= 90%")
+            st.write("Accuracy actuelle = ",accuracy)
+        
+
