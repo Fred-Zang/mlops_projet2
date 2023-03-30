@@ -1,4 +1,4 @@
-# -----------Présentation rapide du Projet ------------------#
+# -----------Présentation rapide du Projet ---------------------------
 
 - Dans le cadre d'un projet mémoire de fin de formation MLOPS, nous avons récupéré le développement
 d'un ancien projet réalisé en formation Data Scientist sur la réalisation de modèles IA d'analyse de 
@@ -9,7 +9,7 @@ en production selon le cycle de vie MLOps.
  et un Artificial Neuronal Network tous 2 lancés après un modèle pré-entrainé wikipedia2vec
 
 
-# ------------ Lancement de ce REPO Github ------------------ #
+# ------------ Lancement de ce REPO Github ----------------------------- 
 
 ## sur un IDE (VSC par exemple) en local
  - $ git clone https://github.com/Fred-Zang/mlops_projet2.git  
@@ -21,7 +21,7 @@ Aussi, veuillez suivre ce lien pour le télécharger en local et placer ce fichi
 Ceci est obligatoire et doit être réalisé des la copie du repo en local sur votre machine.
 - LIEN A DONNER ...............!!!!!
 
-# --- voir les navigateur FastApi et Streamlit tourner ------ #
+# -------- voir les navigateurs FastApi et Streamlit tourner --------------- 
 ## A : Création des containers FastApi et Streamlit
  - $ cd mlops_projet2  # se placer sur le dossier de travail du repo
  - $ docker network create AIservice  # créer le reseau AIservice
@@ -54,7 +54,12 @@ build: .   par   image: ${AIRFLOW_IMAGE_NAME:my_airflow_mlops:2.0.0}  # dans le 
 ## E : voir la console Airflow sur un navigateur
 - aller sur http://localhost:8080
 
-# --------------- Arborescence et Fonctionnement ------------#
+## F : par la suite
+- une fois toutes ces étapes réalisées, ce sera bien plus simple par la suite :
+Il vous suffira de lancer les 2 docker-compose pour relancer tous les containers et accèder aux consoles sur votre navigateur,
+avec un bien meilleur délai de constructions
+
+# --------------- Arborescence et Fonctionnement --------------------
 
 ## Gestion de nos bases de Données
 - N'ayant pas accès à l'API des données, nous avons reçu une base de 17200 lignes que nous avons découpé en 3 parties
@@ -72,7 +77,10 @@ ainsi que de prédiction à la demande sur les 3 modèles retenus et analyse du 
 Les modèles mis-à-jour sont sauvegardés avec date et heure de réalisation dans /airflow/clean_model
 Les reporting mis-à-jour sont sauvegardés avec date et heure de réalisation dans /airlow/clean_data
 
-## -------------- Nous aurions aimé faire bien plus ---------#
+- Vous pourrez écraser en local les fichier XXXXXXXXXXXXX, afin d'utiliser fastapi pour augmenter nos données avec les fichier YYYYYYYYYY, et lancer le Dag d'Airlow
+pour contruire les mises à jours de vos modèles et reporting
+
+# ----------- Nous aurions aimé faire bien plus ------------------
 - Nous nous excusons par avance de ne pas avoir eu le temps d'optimiser au mieux notre code.
 La formation MLOps de DataScientest est très dense avec de nombreux examens pour valider les modules d'apprentissages.
 Il nous fallait atteindre le dernier module pour avoir enfin une visible d'ensemble et réaliser ce projet en 2 semaines
@@ -80,9 +88,4 @@ intenses, mais ce fût un vrai plaisir dans le partage, la découverte de nombre
 et la mise en pratique de notre 1er projet MLOps.
 - Merci à Alban et toute l'équipe de DataScientest pour cette belle formation.
 
-Quan, Éric & Fred la Satispy Team ;-)
-
-
-
-
-
+Quan, Éric & Fred, la Satispy Team ;-)
