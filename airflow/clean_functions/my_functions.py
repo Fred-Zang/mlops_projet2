@@ -33,7 +33,8 @@ def transform_star_to_target(df_comment):
 
 def token_lemmatiser(path, save_path='/app/clean_data/data_preprocess_v1.csv'):
     """ Traitement des données origines afin d'avoir des commentaires nettoyées
-            1. Selon l'analyse: 'r a s ' ou  ' r à s' ou 'r à d' ou 'r a d' et convertir en 'bien' +  'ras le bol' convertir en 'mauvaise
+            1. Selon l'analyse: 'r a s ' ou  ' r à s' ou 'r à d' ou 'r a d' et convertir en 'bien'
+                            +  'ras le bol' convertir en 'mauvaise
             2. Tokenisation
             3. Elimination des tokens vides
             4. Lemmatisation des mots francais
@@ -129,9 +130,6 @@ def token_lemmatiser(path, save_path='/app/clean_data/data_preprocess_v1.csv'):
     total = []
     for i in range(data.shape[0]):
         total.append(len(serie_clean_tk[i]))
-
-    # calcul du total des tokens restants
-    total_clean_tk = pd.Series(total)
 
     # pas de nouvelle colonne crée dans data donc réafectation de clean_tk
     # dans corpus_tk
