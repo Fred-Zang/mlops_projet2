@@ -36,6 +36,7 @@ from tensorflow.keras import callbacks
 
 import sys
 sys.path.append('/app/clean_functions')
+import datetime
 
 
 #####################################################
@@ -115,12 +116,18 @@ def GBC_predict_df(
 
     # 1.3 SAUVEGARDE DU MODELE
     # ----------------------------------
+    dt = datetime.datetime.now()
+    time = dt.strftime('%Y-%m-%d-%H-%M')
     # sauvegarder le modèle pré-entrainé
     if save_model:
         pickle.dump(GBC_2, open(path_save_model, 'wb'))
+        part1, part2 = path_save_model.split('.')
+        pickle.dump(GBC_2, open(part1 + '_' + time + '.' + part2, 'wb'))
+
     # sauvegarder le Vectoriser
     if save_vectorizer:
         pickle.dump(vectorizer, open(path_save_vectorizer, 'wb'))
+        pickle.dump(vectorizer, open(path_save_vectorizer + '_' + time, 'wb'))
 
     # 1.4 EVALUATION DU MODELE
     # ----------------------------------
@@ -209,9 +216,11 @@ def SVM_predict_df(
         les prédictions
     """
     # 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET
+    # ------------------------------------
     X_train, X_test, y_train, y_test = prepare_data(path_data, path_model_wiki)
 
     # 2.2.2 ENTRAINEMENT DU MODELE
+    # ------------------------------------
     # SVM avec noyau RBF par défaut
     SVM = SVC(C=100, gamma=1, random_state=0)
     # Ces paramètres ont été trouvés par GridSearchCV sur quelques valeurs seulement
@@ -219,7 +228,8 @@ def SVM_predict_df(
     # puisque les temps de calculs ont sont multipliés !
     SVM.fit(X_train, y_train)
 
-    ### RECHERCHE DES MEILLEURS PARAMETRES ###
+    # RECHERCHE DES MEILLEURS PARAMETRES
+
     # recherche des best parametres avec gridsearshCV
     # from sklearn.model_selection import GridSearchCV
 
@@ -235,8 +245,12 @@ def SVM_predict_df(
 
     # 2.2.3 SAUVEGARDE DU MODELE
     # ------------------------------------
+    dt = datetime.datetime.now()
+    time = dt.strftime('%Y-%m-%d-%H-%M')
     if save_model:
         pickle.dump(SVM, open(path_save_model, 'wb'))
+        part1, part2 = path_save_model.split('.')
+        pickle.dump(SVM, open(part1 + '_' + time + '.' + part2, 'wb'))
 
     # 2.2.4 EVALUATION DU MODELE
     # ------------------------------------
@@ -281,9 +295,11 @@ def ANN_predict_df(path_data,
         les prédictions
     """
     # 2.2.1 PRETRAITEMENT DU CORPUS ET CREATION DES JEUX D'ENTRAINEMENT ET
+    # ------------------------------------
     X_train, X_test, y_train, y_test = prepare_data(path_data, path_model_wiki)
 
     # 2.2.2 CREATION DU MODELE
+    # ------------------------------------
     inputs = Input(shape=(100))
     dense_1 = Dense(units=64, activation="relu")
     dropout_2 = Dropout(rate=0.1)
@@ -331,6 +347,7 @@ def ANN_predict_df(path_data,
         restore_best_weights=True)
 
     # 2.2.3 ENTRAINEMENT DU MODELE
+    # ------------------------------------
     BATCH_SIZE = 128
 
     ANN.fit(X_train, y_train,
@@ -350,8 +367,12 @@ def ANN_predict_df(path_data,
 
     # 2.2.4 SAUVEGARDE DU MODELE
     # ------------------------------------
+    dt = datetime.datetime.now()
+    time = dt.strftime('%Y-%m-%d-%H-%M')
     if save_model:
         ANN.save(path_save_model)
+        part1, part2 = path_save_model.split('.')
+        ANN.save(part1 + '_' + time + '.' + part2)
 
     # 2.2.5 EVALUATION DU MODELE
     # ------------------------------------
