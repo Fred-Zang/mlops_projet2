@@ -100,9 +100,9 @@ def run():
     st.write("### E - Options Supplémentaires à envisager")
     
     st.write("1 - :green[Déploiement Cloud]")
-    st.write(""" *  Une solution pour :red[déporter nos problèmatiques] de poids d'images et ressources utilisées serait de déployer notre solution sur un service Cloud comme :orange[Amazon AWS].
+    st.write(""" *  Une solution pour :red[déporter nos problèmatiques] de poids d'images et ressources utilisées serait de déployer notre solution sur un service Cloud comme :orange[Amazon AWS ECS].
     * Nous préférons tout d'abord trouver de meilleurs solutions à notre déploiement""")
-    st.image("/airflow/data_others/JPG-PNG/aws.png")
+    st.image("/airflow/data_others/JPG-PNG/aws-ces.png")
 
     st.write("2 - :green[Orchestration Kubernetes]")
     st.write(""" * Enfin, un système open-source permettant d':red[automatiser le déploiement, la mise à l'échelle et la gestion des applications conteneurisées] serait un point final à réaliser.
