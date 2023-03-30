@@ -79,8 +79,8 @@ def test_transform_star_to_target():
 def test_token_lemmatiser():
     """Teste le prétraitement des données
     """
-    df = token_lemmatiser(path="../clean_data/test_data_MAJ_ras.csv", save_path="../clean_data/test_data_preprocess_v1.csv")
-    os.remove("../clean_data/test_data_preprocess_v1.csv")
+    df = token_lemmatiser(path="/airflow/clean_data/test_data_MAJ_ras.csv", save_path="/airflow/clean_data/test_data_preprocess_v1.csv")
+    os.remove("/airflow/clean_data/test_data_preprocess_v1.csv")
 
     """ 'r a s ' converti en 'bien' """
     assert df['no_stop_words'][0] == ['bien']
