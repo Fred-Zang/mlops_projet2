@@ -28,7 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         pip install -r ./streamlit/requirements.txt
-        python3 -m spacy download fr_core_news_md
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
