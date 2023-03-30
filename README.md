@@ -21,7 +21,7 @@ Aussi, veuillez suivre ce lien pour le télécharger en local et placer ce fichi
 Ceci est obligatoire et doit être réalisé des la copie du repo en local sur votre machine.
 - LIEN A DONNER ...............!!!!!
 
-# ------------ voir les navigateurs FastApi et Streamlit tourner ------------------ 
+# -------- voir les navigateurs FastApi et Streamlit tourner --------------- 
 ## A : Création des containers FastApi et Streamlit
  - $ cd mlops_projet2  # se placer sur le dossier de travail du repo
  - $ docker network create AIservice  # créer le reseau AIservice
@@ -59,7 +59,7 @@ build: .   par   image: ${AIRFLOW_IMAGE_NAME:my_airflow_mlops:2.0.0}  # dans le 
 Il vous suffira de lancer les 2 docker-compose pour relancer tous les containers et accèder aux consoles sur votre navigateur,
 avec un bien meilleur délai de constructions
 
-# --------------- Arborescence et Fonctionnement --------------------------
+# --------------- Arborescence et Fonctionnement --------------------
 
 ## Gestion de nos bases de Données
 - N'ayant pas accès à l'API des données, nous avons reçu une base de 17200 lignes que nous avons découpé en 3 parties
@@ -80,7 +80,7 @@ Les reporting mis-à-jour sont sauvegardés avec date et heure de réalisation d
 - Vous pourrez écraser en local les fichier XXXXXXXXXXXXX, afin d'utiliser fastapi pour augmenter nos données avec les fichier YYYYYYYYYY, et lancer le Dag d'Airlow
 pour contruire les mises à jours de vos modèles et reporting
 
-## -------------- Nous aurions aimé faire bien plus ----------------------
+## ----------- Nous aurions aimé faire bien plus ------------------
 - Nous nous excusons par avance de ne pas avoir eu le temps d'optimiser au mieux notre code.
 La formation MLOps de DataScientest est très dense avec de nombreux examens pour valider les modules d'apprentissages.
 Il nous fallait atteindre le dernier module pour avoir enfin une visible d'ensemble et réaliser ce projet en 2 semaines
