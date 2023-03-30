@@ -19,7 +19,8 @@
 
 
 # CHARGEMENT DES PACKAGES
-from my_functions import transform_star_to_target, collect_stopwords, prepare_data
+import datetime
+from my_functions import transform_star_to_target, collect_stopwords, prepare_data, save_report
 import pandas as pd
 import numpy as np
 import pickle
@@ -36,7 +37,6 @@ from tensorflow.keras import callbacks
 
 import sys
 sys.path.append('/app/clean_functions')
-import datetime
 
 
 #####################################################
@@ -134,15 +134,14 @@ def GBC_predict_df(
     # Calculer les prédictions
     y_pred_GBC_2 = GBC_2.predict(X_test_GBC_2)
 
-    # REPORTING - PERFORMANCES
+    # REPORTING - PERFORMANCES - SAUVEGARDE DANS UN FICHIER AVEC HISTORIQUE (f1-score, accuracy)
+    # Collecte du nouveau rapport de classification au format dict
     classif = classification_report(y_test, y_pred_GBC_2, output_dict=True)
-
-    # SAUVEGARDE CLASSIFICATION_REPORT
-    out_file = open("/app/clean_data/classif_GBC2_sav.json", "w")
-
-    json.dump(classif, out_file)
-
-    out_file.close()
+    save_report(
+        classif,
+        time,
+        data_store_path='/app/clean_data/',
+        data_name='reporting_GBC2')
 
 
 #####################################################
@@ -257,15 +256,14 @@ def SVM_predict_df(
     # Calcul des prédictions
     y_pred_SVM = SVM.predict(X_test)
 
-    # REPORTING - PERFORMANCES
+    # REPORTING - PERFORMANCES - SAUVEGARDE DANS UN FICHIER AVEC HISTORIQUE
+    # (f1-score, accuracy)
     classif = classification_report(y_test, y_pred_SVM, output_dict=True)
-
-    # SAUVEGARDE CLASSIFICATION_REPORT
-    out_file = open("/app/clean_data/classif_SVM_sav.json", "w")
-
-    json.dump(classif, out_file)
-
-    out_file.close()
+    save_report(
+        classif,
+        time,
+        data_store_path='/app/clean_data/',
+        data_name='reporting_SVM')
 
 
 #####################################################
@@ -383,12 +381,11 @@ def ANN_predict_df(path_data,
     y_pred_ANN = np.argmax(test_pred, axis=1)
     # y_pred_ANN = np.where(test_pred[:,1] > 0.52, 1, 0)
 
-    # REPORTING - PERFORMANCES
+    # REPORTING - PERFORMANCES - SAUVEGARDE DANS UN FICHIER AVEC HISTORIQUE
+    # (f1-score, accuracy)
     classif = classification_report(y_test, y_pred_ANN, output_dict=True)
-
-    # SAUVEGARDE CLASSIFICATION_REPORT
-    out_file = open("/app/clean_data/classif_ANN_sav.json", "w")
-
-    json.dump(classif, out_file)
-
-    out_file.close()
+    save_report(
+        classif,
+        time,
+        data_store_path='/app/clean_data/',
+        data_name='reporting_ANN')
