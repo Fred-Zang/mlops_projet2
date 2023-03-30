@@ -80,7 +80,7 @@ Les reporting mis-à-jour sont sauvegardés avec date et heure de réalisation d
 - Vous pourrez écraser en local les fichier XXXXXXXXXXXXX, afin d'utiliser fastapi pour augmenter nos données avec les fichier YYYYYYYYYY, et lancer le Dag d'Airlow
 pour contruire les mises à jours de vos modèles et reporting
 
-## ----------- Nous aurions aimé faire bien plus ------------------
+# ----------- Nous aurions aimé faire bien plus ------------------
 - Nous nous excusons par avance de ne pas avoir eu le temps d'optimiser au mieux notre code.
 La formation MLOps de DataScientest est très dense avec de nombreux examens pour valider les modules d'apprentissages.
 Il nous fallait atteindre le dernier module pour avoir enfin une visible d'ensemble et réaliser ce projet en 2 semaines
