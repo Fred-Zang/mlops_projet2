@@ -54,6 +54,11 @@ build: .   par   image: ${AIRFLOW_IMAGE_NAME:my_airflow_mlops:2.0.0}  # dans le 
 ## E : voir la console Airflow sur un navigateur
 - aller sur http://localhost:8080
 
+## F : par la suite
+- une fois toutes ces étapes réalisées, ce sera bien plus simple par la suite :
+- il vous suffira de lancer les 2 docker-compose pour relancer tous les containers et accèder aux consoles sur votre navigateur,
+avec un bien meilleur délai de constructions
+
 # --------------- Arborescence et Fonctionnement ------------
 
 ## Gestion de nos bases de Données
