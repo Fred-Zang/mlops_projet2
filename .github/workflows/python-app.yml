@@ -5,9 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "EricGas" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "EricGas" ]
+    branches: [ "master" ]
 
 permissions:
   contents: read
