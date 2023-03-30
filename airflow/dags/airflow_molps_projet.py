@@ -114,9 +114,11 @@ task3_2 = PythonOperator(
     dag=my_dag)
 
 
-# Enchainement des taches
-# task1 >> [task2, task3]
-# task3 >> [task3_1, task3_2]
+# Enchainement des taches pour config 16GB de RAM
+#task2 >> task1
+#task1 >> task3_1
+#task3_1 >> task3_2
 
+# Enchainement des taches pour config 32GB de RAM
 task1 >> [task3_1, task3_2]
 task2

@@ -13,8 +13,9 @@
 # CHARGEMENT DES PACKAGES
 import pandas as pd
 import numpy as np
+import os
 
-from my_functions import transform_star_to_target
+from my_functions import transform_star_to_target, token_lemmatiser
 
 
 # PRETRAITEMENT DES DONNEES - TRANSFORMATION DES ETOILES EN CIBLE (0 ou 1)
@@ -74,20 +75,36 @@ def test_transform_star_to_target():
             star_in_target).any()) == False
 
 
+# PRETRAITEMENT POUR LES ALGORITHES SVM et ANN
+def test_token_lemmatiser():
+    """Teste le prétraitement des données
+    """
+    df = token_lemmatiser(path="/app/clean_data/test_data_MAJ_ras.csv", save_path="/app/clean_data/test_data_preprocess_v1.csv")
+    os.remove("/app/clean_data/test_data_preprocess_v1.csv")
+
+    """ 'r a s ' converti en 'bien' """
+    assert df['no_stop_words'][0] == ['bien']
+    
+    """ ' r à s' et convertir en 'bien' """
+    assert df['no_stop_words'][1] == ['bien']
+    
+    """ 'r à d' converti en 'bien' """
+    assert df['no_stop_words'][2] == ['bien']
+
+    """ 'r a d' converti en 'bien' """
+    assert df['no_stop_words'][3] == ['bien']
+    
+    """ 'ras le bol' converti en 'mauvais' """
+    assert df['no_stop_words'][4] == ['mauvais']
+    
+    
+    
 # TRAITEMENT DES MOTS VIDES (ou STOP WORDS)
 def test_collect_stopwords():
     """Teste si les stopwords renvoyés dans la liste sont bien uniques ???
         Pas trop d'intérêt...
     """
     # Pour tester, besoin de créer un fichier fake de stopwords
-    assert True
-
-
-# REPORTING - PERFORMANCES
-def test_reporting():
-    """Calcul et affichage du rapport de classification et de la matrice de confusion d'un modèle
-        Vérifier qu'aucune erreur n'est générée ???
-    """
     assert True
 
 
