@@ -1,4 +1,4 @@
-# -----------Présentation rapide du Projet ------------------#
+# -----------Présentation rapide du Projet ------------------
 
 - Dans le cadre d'un projet mémoire de fin de formation MLOPS, nous avons récupéré le développement
 d'un ancien projet réalisé en formation Data Scientist sur la réalisation de modèles IA d'analyse de 
@@ -9,7 +9,7 @@ en production selon le cycle de vie MLOps.
  et un Artificial Neuronal Network tous 2 lancés après un modèle pré-entrainé wikipedia2vec
 
 
-# ------------ Lancement de ce REPO Github ------------------ #
+# ------------ Lancement de ce REPO Github ------------------ 
 
 ## sur un IDE (VSC par exemple) en local
  - $ git clone https://github.com/Fred-Zang/mlops_projet2.git  
@@ -21,7 +21,7 @@ Aussi, veuillez suivre ce lien pour le télécharger en local et placer ce fichi
 Ceci est obligatoire et doit être réalisé des la copie du repo en local sur votre machine.
 - LIEN A DONNER ...............!!!!!
 
-# --- voir les navigateur FastApi et Streamlit tourner ------ #
+# --- voir les navigateur FastApi et Streamlit tourner ------ 
 ## A : Création des containers FastApi et Streamlit
  - $ cd mlops_projet2  # se placer sur le dossier de travail du repo
  - $ docker network create AIservice  # créer le reseau AIservice
@@ -54,7 +54,7 @@ build: .   par   image: ${AIRFLOW_IMAGE_NAME:my_airflow_mlops:2.0.0}  # dans le 
 ## E : voir la console Airflow sur un navigateur
 - aller sur http://localhost:8080
 
-# --------------- Arborescence et Fonctionnement ------------#
+# --------------- Arborescence et Fonctionnement ------------
 
 ## Gestion de nos bases de Données
 - N'ayant pas accès à l'API des données, nous avons reçu une base de 17200 lignes que nous avons découpé en 3 parties
@@ -72,7 +72,7 @@ ainsi que de prédiction à la demande sur les 3 modèles retenus et analyse du 
 Les modèles mis-à-jour sont sauvegardés avec date et heure de réalisation dans /airflow/clean_model
 Les reporting mis-à-jour sont sauvegardés avec date et heure de réalisation dans /airlow/clean_data
 
-## -------------- Nous aurions aimé faire bien plus ---------#
+## -------------- Nous aurions aimé faire bien plus ---------
 - Nous nous excusons par avance de ne pas avoir eu le temps d'optimiser au mieux notre code.
 La formation MLOps de DataScientest est très dense avec de nombreux examens pour valider les modules d'apprentissages.
 Il nous fallait atteindre le dernier module pour avoir enfin une visible d'ensemble et réaliser ce projet en 2 semaines
