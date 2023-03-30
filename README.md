@@ -21,7 +21,7 @@ Aussi, veuillez suivre ce lien pour le télécharger en local et placer ce fichi
 Ceci est obligatoire et doit être réalisé des la copie du repo en local sur votre machine.
 - LIEN A DONNER ...............!!!!!
 
-# --- voir les navigateurs FastApi et Streamlit tourner ------------------ 
+# ------------ voir les navigateurs FastApi et Streamlit tourner ------------------ 
 ## A : Création des containers FastApi et Streamlit
  - $ cd mlops_projet2  # se placer sur le dossier de travail du repo
  - $ docker network create AIservice  # créer le reseau AIservice
