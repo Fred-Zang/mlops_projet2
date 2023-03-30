@@ -70,8 +70,7 @@ def test_transform_star_to_target():
         columns=['star'])
     # Liste attendue en sortie
     star_in_target = np.array([0, 0, 1, 1, 0, 0, 1, 1, 0, 0])
-    assert ((transform_star_to_target(df_test_star) -
-            star_in_target).any()) == False
+    assert not((transform_star_to_target(df_test_star) - star_in_target).any())
 
 
 # TRAITEMENT DES MOTS VIDES (ou STOP WORDS)

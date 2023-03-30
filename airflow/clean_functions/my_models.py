@@ -18,11 +18,10 @@
 #####################################################
 
 
-##### CHARGEMENT DES PACKAGES #####
-from my_functions import transform_star_to_target, collect_stopwords, prepare_data, token_lemmatiser
+# CHARGEMENT DES PACKAGES
+from my_functions import transform_star_to_target, collect_stopwords, prepare_data
 import pandas as pd
 import numpy as np
-from time import time
 import pickle
 import json
 from sklearn.model_selection import train_test_split
@@ -42,18 +41,12 @@ sys.path.append('/app/clean_functions')
 #####################################################
 #   1. MODELE GBC - GRADIENT BOOSTING CLASSIFIER    #
 #####################################################
-def GBC_predict_df(  # Chemin de stockage des données nettoyées
-    path_data,
-    # Chemin du fichier contenant les stopwords
-    path_stopwords='/app/clean_data/liste_no-stop-words_tokens_unique.xlsx',
-    # Boolean indiquant si on sauve le modèle ou pas
-    save_model=True,
-    # Chemin de sauvegarde du modèle GBC
-    path_save_model='/app/clean_model/GBC_2-sav_DAG.pickle',
-    # Boolean indiquant si on sauve le vectorizer ou pas
-                    save_vectorizer=True,
-                    # Chemin de stockage du vectorizer
-                    path_save_vectorizer='/app/clean_model/vectoriser_GBC_2-sav_DAG'
+def GBC_predict_df(path_data,
+                   path_stopwords='/app/clean_data/liste_no-stop-words_tokens_unique.xlsx',
+                   save_model=True,
+                   path_save_model='/app/clean_model/GBC_2-sav_DAG.pickle',
+                   save_vectorizer=True,
+                   path_save_vectorizer='/app/clean_model/vectoriser_GBC_2-sav_DAG'
 ):
     """Prédiction avec un Gradient Boosting Classifier:
             1.1 Préparation des données
@@ -61,13 +54,22 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
             1.3 Sauvegarde du modèle
             1.4 Evaluation du modèle
 
+    Parameters:
+    -----------
+        path_data: Chemin de stockage des données nettoyées
+        path_stopwords: Chemin du fichier contenant les stopwords
+        save_model: Boolean indiquant si on sauve le modèle ou pas
+        path_save_model: Chemin de sauvegarde du modèle GBC
+        save_vectorizer: Boolean indiquant si on sauve le vectorizer ou pas
+        path_save_vectorizer: Chemin de stockage du vectorizer
+    
     Returns:
     --------
         les prédictions
     """
 
     ##### 1.1 PREPARATION DES DONNES #####
-    # ------------------------------------#
+    # ------------------------------------
     # Importer les données nettoyées
     df = pd.read_csv(path_data, index_col=0)
 
@@ -98,7 +100,7 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
     # print(vectorizer.vocabulary_)
 
     ##### 1.2 ENTRAINEMENT DU MODELE #####
-    # ------------------------------------#
+    # ------------------------------------
     GBC_2 = GradientBoostingClassifier(  # The number of estimators as selected by early stopping
         n_estimators=100,
         # Learning rate shrinks the contribution
@@ -112,7 +114,7 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
     ).fit(X_train_GBC_2, y_train)
 
     ##### 1.3 SAUVEGARDE DU MODELE #####
-    # ----------------------------------#
+    # ----------------------------------
     # sauvegarder le modèle pré-entrainé
     if save_model:
         pickle.dump(GBC_2, open(path_save_model, 'wb'))
@@ -121,22 +123,20 @@ def GBC_predict_df(  # Chemin de stockage des données nettoyées
         pickle.dump(vectorizer, open(path_save_vectorizer, 'wb'))
 
     ##### 1.4 EVALUATION DU MODELE #####
-    # ----------------------------------#
+    # ----------------------------------
     # Calculer les prédictions
     y_pred_GBC_2 = GBC_2.predict(X_test_GBC_2)
 
-    ### REPORTING - PERFORMANCES ###
+    # REPORTING - PERFORMANCES
     classif = classification_report(y_test, y_pred_GBC_2, output_dict=True)
 
-    ### SAUVEGARDE CLASSIFICATION_REPORT ####
+    # SAUVEGARDE CLASSIFICATION_REPORT
     out_file = open("/app/clean_data/classif_GBC2_sav.json", "w")
 
     json.dump(classif, out_file)
 
     out_file.close()
 
-    # Renvoie la prédiction  => oui mais on n'en fait rien !
-    # return y_pred_GBC_2
 
 
 #####################################################
@@ -185,22 +185,23 @@ print(trained.vectors.shape)
 #####################################################
 
 
-def SVM_predict_df(  # Chemin de stockage des données nettoyées
-    path_data='/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
-    # Chemin du modèle Wikipedia
-    path_model_wiki='/app/clean_model/trained.pickle',
-    # Boolean indiquant si on sauve le modèle ou pas
-    save_model=True,
-    # Chemin de sauvegarde du modèle SVM
-    path_save_model='/app/clean_model/SVM_sav-DAG.pickle',
-    # Affiche les rapports de performance si True
-    print_report=True
+def SVM_predict_df(path_data='/app/clean_data/review_trust_fr_lemmantiser_word+2_VF.csv',
+                   path_model_wiki='/app/clean_model/trained.pickle',
+                   save_model=True,
+                   path_save_model='/app/clean_model/SVM_sav-DAG.pickle'
 ):
     """Prédiction avec un Support Vector Machines:
             2.2.1 Préparation des données
             2.2.2 Entrainement du modèle
             2.2.3 Sauvegarde du modèle
             2.2.4 Evaluation du modèle
+
+    Parameters:
+    -----------
+        path_data: Chemin de stockage des données nettoyées
+        path_model_wiki: Chemin du modèle Wikipedia
+        save_model: Boolean indiquant si on sauve le modèle ou pas
+        path_save_model: Chemin de sauvegarde du modèle SVM
 
     Returns:
     --------
@@ -232,43 +233,34 @@ def SVM_predict_df(  # Chemin de stockage des données nettoyées
     # svm_best= grid.best_estimator_
 
     ##### 2.2.3 SAUVEGARDE DU MODELE #####
-    # ------------------------------------#
+    # ------------------------------------
     if save_model:
         pickle.dump(SVM, open(path_save_model, 'wb'))
 
     ##### 2.2.4 EVALUATION DU MODELE #####
-    # ------------------------------------#
+    # ------------------------------------
     # Calcul des prédictions
     y_pred_SVM = SVM.predict(X_test)
 
-    ### REPORTING - PERFORMANCES ###
-### REPORTING - PERFORMANCES ###
+    # REPORTING - PERFORMANCES
     classif = classification_report(y_test, y_pred_SVM, output_dict=True)
 
-    ### SAUVEGARDE CLASSIFICATION_REPORT ####
+    # SAUVEGARDE CLASSIFICATION_REPORT
     out_file = open("/app/clean_data/classif_SVM_sav.json", "w")
 
     json.dump(classif, out_file)
 
     out_file.close()
 
-    # Renvoie la prédiction  => oui mais on n'en fait rien !
-    # return y_pred_SVM
 
 
 #####################################################
 #    2.3 MODELE ANN ARTIFICEL NEURONAL NETWORK      #
 #####################################################
-def ANN_predict_df(  # Chemin de stockage des données nettoyées
-    path_data,
-    # Chemin du modèle Wikipedia
-    path_model_wiki='/app/clean_model/trained.pickle',
-    # Boolean indiquant si on sauve le modèle ou pas
-    save_model=True,
-    # Chemin de sauvegarde du modèle ANN
-    path_save_model='/app/clean_model/ANN-sav-DAG.h5',
-    # Affiche les rapports de performance si True
-    print_report=True
+def ANN_predict_df(path_data,
+                   path_model_wiki='/app/clean_model/trained.pickle',
+                   save_model=True,
+                   path_save_model='/app/clean_model/ANN-sav-DAG.h5',
 ):
     """Prédiction avec un réseau de neurones:
             2.3.1 Préparation des données
@@ -276,6 +268,13 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
             2.3.3 Entrainement du modèle
             2.3.4 Sauvegarde du modèle
             2.3.5 Evaluation du modèle
+
+    Parameters:
+    -----------
+        path_data: Chemin de stockage des données nettoyées
+        path_model_wiki: Chemin du modèle Wikipedia
+        save_model: Boolean indiquant si on sauve le modèle ou pas
+        path_save_model: Chemin de sauvegarde du modèle ANN
 
     Returns:
     --------
@@ -350,12 +349,12 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
             workers=-1)
 
     ##### 2.2.4 SAUVEGARDE DU MODELE #####
-    # ------------------------------------#
+    # ------------------------------------
     if save_model:
         ANN.save(path_save_model)
 
     ##### 2.2.5 EVALUATION DU MODELE #####
-    # ------------------------------------#
+    # ------------------------------------
     # Calcul des prédictions
     # => dim (5160, 2) où n =dim[0]de X_test et 2 = dim units dense_last
     test_pred = ANN.predict(X_test)
@@ -363,16 +362,12 @@ def ANN_predict_df(  # Chemin de stockage des données nettoyées
     y_pred_ANN = np.argmax(test_pred, axis=1)
     # y_pred_ANN = np.where(test_pred[:,1] > 0.52, 1, 0)
 
-    ### REPORTING - PERFORMANCES ###
-### REPORTING - PERFORMANCES ###
+    # REPORTING - PERFORMANCES
     classif = classification_report(y_test, y_pred_ANN, output_dict=True)
 
-    ### SAUVEGARDE CLASSIFICATION_REPORT ####
+    # SAUVEGARDE CLASSIFICATION_REPORT
     out_file = open("/app/clean_data/classif_ANN_sav.json", "w")
 
     json.dump(classif, out_file)
 
     out_file.close()
-
-    # Renvoie la prédiction  => oui mais on n'en fait rien !
-    # return y_pred_ANN
