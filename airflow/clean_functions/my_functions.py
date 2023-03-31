@@ -4,7 +4,7 @@ import pandas as pd
 import pickle
 import re
 import spacy
-import os
+
 
 from sklearn.model_selection import train_test_split
 
@@ -345,43 +345,3 @@ def prepare_data(path_data, path_model_wiki):
 
     # Partition en train_set et test_set
     return train_test_split(X, y, test_size=0.2, random_state=20)
-
-
-# REPORTING - PERFORMANCES
-def save_report(classif, time, data_store_path, data_name):
-    """Sauvegarde des données du rapport de classification (f1-score et accuracy)
-
-    Args:
-    -----
-        classif: rapport de classification au format dict
-        time: date-heure
-        data_store_path: répertoire dans lequel les rapports sont enregistrés
-        data_name = nom du fichier de sauvegarde sans l'extension .csv
-
-    Returns:
-    --------
-        None
-    """
-    # Collecte des nouvelles données du rapport de classification
-    df_classif = pd.DataFrame(classif)
-    new_row = pd.DataFrame(data=[[time,
-                                  df_classif.loc['f1-score', '0'],
-                                  df_classif.loc['f1-score', '1'],
-                                  df_classif.loc['f1-score', 'accuracy']]],
-                           columns=['Date-Heure', 'f1_0', 'f1_1', 'accuracy'])
-
-    # SAUVEGARDE CLASSIFICATION_REPORT
-    # nommage des chemins
-    data_type = '.csv'
-
-    # chemin et nom du fichier à sauvegarder
-    data_file = data_store_path + data_name + data_type
-
-    if os.path.exists(data_file):
-        df = pd.read_csv(data_file)
-        df = pd.concat([df, new_row], axis=0, ignore_index=True)
-        df.to_csv(data_file, index=False)
-    else:
-        df = pd.DataFrame(columns=['Date-Heure', 'f1_0', 'f1_1', 'accuracy'])
-        df = pd.concat([df, new_row], axis=0, ignore_index=True)
-        df.to_csv(data_file, index=False)
