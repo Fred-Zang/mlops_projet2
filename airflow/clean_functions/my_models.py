@@ -24,7 +24,6 @@ from my_functions import transform_star_to_target, collect_stopwords, prepare_da
 import pandas as pd
 import numpy as np
 import pickle
-import json
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import GradientBoostingClassifier

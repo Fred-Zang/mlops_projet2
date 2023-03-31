@@ -1,13 +1,9 @@
-import pandas as pd
-
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-
-
+from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
 import sys
 sys.path.append('/app/clean_functions')   # chemin /airflow/clean_functions error => on passe par le volume /app
-from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
 from my_functions import token_lemmatiser
 
 # initialisation du DAG avec un lancement des task toutes les minutes ----
@@ -115,9 +111,9 @@ task3_2 = PythonOperator(
 
 
 # Enchainement des taches pour une configuration 16GB de RAM
-#task2 >> task1
-#task1 >> task3_1
-#task3_1 >> task3_2
+# task2 >> task1
+# task1 >> task3_1
+# task3_1 >> task3_2
 
 
 # Enchainement des taches pour une configuration 32GB de RAM
