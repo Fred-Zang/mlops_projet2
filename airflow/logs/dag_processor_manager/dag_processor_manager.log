@@ -33344,3 +33344,17 @@ File Path                                  PID    Runtime      # DAGs    # Error
 /opt/airflow/dags/airflow_molps_projet.py                           1           0  4.58s           2023-03-30T23:48:45
 ================================================================================
 [2023-03-30T23:49:27.406+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2023-03-31T11:08:19.281+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2023-03-31T11:08:19.286+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2023-03-31T11:08:19.286+0000] {manager.py:486} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2023-03-31T11:08:19.286+0000] {manager.py:726} INFO - Searching for files in /opt/airflow/dags
+[2023-03-31T11:08:19.294+0000] {manager.py:729} INFO - There are 1 files in /opt/airflow/dags
+[2023-03-31T11:08:19.407+0000] {manager.py:854} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                    PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run
+-----------------------------------------  -----  ---------  --------  ----------  --------------  ----------
+/opt/airflow/dags/airflow_molps_projet.py     53  0.04s             0           0
+================================================================================
+[2023-03-31T11:08:30.428+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15

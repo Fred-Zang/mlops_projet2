@@ -11,17 +11,18 @@ def run():
     st.markdown("---")
 
 
-    st.write(
-        "Traiter un sujet comme celui-ci a été passionnant et nous aimerions le poursuivre encore")
+    st.write(""" * :orange[Nous aurions aimé] avoir plus de temps pour optimiser notre code et le transférer sur un Cloud pour simplifier la procédure d'installation.
+* La :blue[formation MLOps de DataScientest] est très dense avec de nombreux examens pour valider les modules d'apprentissages.
+* Il nous fallait atteindre le dernier module pour avoir enfin une visible d'ensemble et réaliser ce projet en 2 semaines intenses.
+* mais ce fût :green[un vrai plaisir] dans le partage, la découverte de nombreux autres concepts pour lever bien des bugs
+et la mise en pratique de notre 1er projet MLOps.""")
     st.write("")
-    st.write("Nous y avons mis beaucoup de cœur, à découvrir toutes ces notions à travers nos modules de cours et à dérouler une grande quantité de modèles pour trouver des approches et ressources différentes.")
-    st.write("")
-    st.write("Nous avons le sentiment d’en être qu’au tout début de notre étude, tant il nous reste de questions à résoudre, de tests à réaliser et de nouvelles pistes à explorer.")
-    st.write("")
-    st.write("Nous espérons que sa lecture vous a été agréable et vous recommandons de parcourir les vidéos et liens donnés en annexe si vous souhaitez en savoir plus sur le sujet.")
+    st.write(""" * Nous espérons que sa découverte et mise en utilisation vous a été agréable.""")
     st.write("")
     st.markdown(
         "<h1 style='text-align: center; color: white;'>🌼​ Remerciements 🌼​</h1>",
         unsafe_allow_html=True)
     st.write("")
-    st.write("Nous tenons à remercier toute l’équipe de DataScientest pour son écoute et leurs conseils, et particulièrement notre mentor de projet Antoine qui nous a suivi chaque semaine en réunion zoom avec un sourire et une patience admirable.")
+    st.write(""" * Nous tenons à :orange[remercier Alban et toute l'équipe de DataScientest] pour cette belle et enrichissante formation.""")
+    st.write("")
+    st.write("**:green[HappyCoding Yours]** - *Quan , Éric & Fred*")
