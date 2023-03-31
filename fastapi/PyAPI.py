@@ -136,14 +136,6 @@ class Item(BaseModel):
         default=time,
         regex="^\\d{2}\\/\\d{2}\\/\\d{4}$")  # the default is today
 
-# # data base  information
-# ################################################################################
-# # modify this adresse to airflow
-# data_store_path = '/airflow/clean_data/'
-# # modify this file to origin database
-# data_name = 'data_MAJ.csv'
-# ################################################################################
-
 
 def write_comment(FileName: str, inputs: list):
     with open(FileName, 'a+') as csvfile:
