@@ -3,7 +3,7 @@ from collections import OrderedDict
 import streamlit as st
 import config
 
-from tabs import B_cahier_charges, C_ameliorations, D_modelisations, E_conclusion
+from tabs import A_cahier_charges, B_ameliorations, C_modelisations, D_reporting_analyses, E_conclusion
 
 
 st.set_page_config(
@@ -18,9 +18,10 @@ st.markdown(f"<style>{style}</style>", unsafe_allow_html=True)
 
 TABS = OrderedDict(
     [
-        (B_cahier_charges.sidebar_name, B_cahier_charges),
-        (C_ameliorations.sidebar_name, C_ameliorations),
-        (D_modelisations.sidebar_name, D_modelisations),
+        (A_cahier_charges.sidebar_name, A_cahier_charges),
+        (B_ameliorations.sidebar_name, B_ameliorations),
+        (C_modelisations.sidebar_name, C_modelisations),
+        (D_reporting_analyses.sidebar_name, D_reporting_analyses),
 		(E_conclusion.sidebar_name, E_conclusion)
     ]
 )
