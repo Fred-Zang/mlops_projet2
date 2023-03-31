@@ -12,18 +12,18 @@ def run():
 
     st.write("### A - Cahier des Charges")
 
-    st.write("1 - :green[Choix du Sujet et des Modèles]")
-    st.markdown(" * Nous avons repris le sujet de prédiction de satisfaction clientèle réalisé pour le projet de formation Data Scientist.")
+    st.write(":green[1 - Choix du Sujet et des Modèles]")
+    st.markdown("* Nous avons repris le sujet de prédiction de satisfaction clientèle réalisé pour le projet de formation Data Scientist.")
     st.write(""" * Nous avons sélectionné 3 modèles réalisés sur 8, pour leurs différences de preprocessing & modélisation, bien qu'aucun ne soit optimisé :
     * un Gradient Boosting Classifier :red[GBC]
     * un Support Vector Machine appliqué sur un modèle pré-entainé wikipedia2vec :red[SVM]
     * un Arficial Neuronal Network :red[ANN] appliqué aussi sur wikipedia2vec""")
 
-    st.write("2 - :green[Définition des Métrics et Exigence de Performances]")    
+    st.write(":green[2 - Définition des Métrics et Exigence de Performances]")    
     st.write(""" * Notre choix s'est porté sur les métriques d':red[accuracy] et de :red[F1-score] que nous souhaitons :red[> 80%] pour commencer""")
   
     
-    st.write("3 - :green[Schéma d'Implantation]")
+    st.write(":green[3 - Schéma d'Implantation]")
     st.write(""" * Nous utilisons 
     * :red[FastApi] en back-end pour la gestion de notre base de données et leur mise-à-jour
     * :red[Airflow] pour le preprocessing, fit & classification_report des modèles mis-à-jour
@@ -34,23 +34,26 @@ def run():
 
     st.write("### B - Version Control")
 
-    st.write("1 - :green[Git / GitHub]")
+    st.write(":green[1 - Git / GitHub]")
     st.write(""" * Nous avons créé un Repository Github sous :blue[*https://github.com/Fred-Zang/mlops_projet2.git*]
     * La procédure de commits s'est effectuée sur un découpage du code en de nombreuses petites parties, sur différentes branches, pour permettre à chacun d'agir indépendamment""")  
     st.image("/airflow/data_others/JPG-PNG/git_branch_commits-quan-eric-fred.png")
     
     st.write("")
-    st.write("2 - :green[Tests Unitaires]")
+
+    st.write(":green[2 - Tests Unitaires]")
     st.write(""" * Nous utilisons :red[GitHub Actions] pour créer :red[2 workflows] de vérifications de nos codes lors des push de nos commits sur Github.
+
     * le fichier :blue[.github/workflows/python-app.yml] dans notre arborescence permet de lancer automatiquement les test :red[PEP8] et :red[Pytest] sur tous nos codes Python.""")
     st.image("/airflow/data_others/JPG-PNG/tests_unitaires.png")
     st.write("")
 
-    st.write("3 - :green[Procédure d'Utilisation & Installation]")
+    st.write(":green[3 - Procédure d'Utilisation & Installation]")
     st.write(""" * Toutes les Procédures d'Utilisation, d'Installation et Commandes terminale nécessaires sont décrites dans le :red[README.md] du repo GitHub""")
+
     st.write("")
     
-    st.write("4 - :green[API - gestion de la base de données]")
+    st.write(":green[4 - API - gestion de la base de données]")
     st.write(""" * La gestion de notre base de données d'entrainement des modèles est gérée en back-end par le framework :red[FastAPI]
     * Nous implémentons une :red[Authentification des Utilisateurs] Basic HTTP pour les users :orange[admin, user].
     * Les :red[password] sont identiques aux usernames pour des questions de facilité et peuvent être modifiés avec le fichier :orange[PyAPI.py]
@@ -68,7 +71,7 @@ def run():
     * le fichier :blue[data_MAJ.csv] est également remplacé par la mise à jour de données car c'est ce fichier qui est utilisé par la suite pour les MAJ de nos modèles.""")    
             
     st.write("")
-    st.write("5 - :green[Airflow - Pipeline CI/CD] de :red[preprocessing->training->reporting->updating] des modèles")
+    st.write(":green[5 - Airflow - Pipeline CI/CD] de :red[preprocessing->training->reporting->updating] des modèles")
     st.write(""" * L'accès à l'interface Airflow s'effectue par un navigateur à l'adresse :blue[http://localhost:8080].
     * Airflow récupère le fichier :blue[data_MAJ.csv] des données de la dernière mise à jour puis effectue les tâches suivantes sur nos 3 modèles :""")
     st.image("/airflow/data_others/JPG-PNG/Airflow-tasks.png")
@@ -80,7 +83,8 @@ def run():
     st.write("7 - :green[Arborescence des modèles] utilisés et mise-à-jour")
     st.image("/airflow/data_others/JPG-PNG/bilan_modeles.png") 
 
-    st.write("8 - :green[Streamlit]")
+    st.write(":green[8 - Streamlit]")
+
     st.write(""" *  L'accès à l'interface Streamlit s'effectue par un navigateur à l'adresse :blue[http://localhost:8501].
     * Nous nous en servons pour la présentation de notre projet
     * Nous développons les problématiques rencontrées et pistes d'améliorations trouvées
@@ -89,25 +93,26 @@ def run():
 
     st.write("### D - Isolation")
 
-    st.write("1 - :green[Docker]")
+    st.write(":green[1 - Docker]")
     st.write(""" *  Fastapi, Airflow et Streamlit sont isolés par des :red[Dockerfiles séparés], chacun ayant sont propre :orange[requirements.txt]
     * Dans le dossier de travail principal :blue[mlops_projet2], nous avons un :red[docker-compose] qui build les images de Fastapi et Streamlit dans :orange[2 containers disctincts]
     * Dans le sous-dossier :blue[airflow] nous avons un second :red[docker-compose] qui build l'image de Airflow contenant en tout :orange[7 containers]  
     * Cette :red[isolation n'est pas optimisée en l'état] ( voir onglet suivant) et nous devons faire de nombreux tests encore pour résoudre ce point.""")
     
-    st.write("2 - :green[DockerHub]")
+    st.write(":green[2 - DockerHub]")
     st.write(""" *  Vu la taille des images à construire et l'utilisation importante de ressources, nous avons décidé de mettre les :red[images à disposition].
     * Veuillez svp vous rendre dans :red[README.md pour suivre la procédure] à réaliser dans ce cas si votre PC local n'offre pas assez de ressources mémoire""")
+    
     st.image("/airflow/data_others/JPG-PNG/dockerHub.png")
 
     st.write("### E - Options Supplémentaires à envisager")
     
-    st.write("1 - :green[Déploiement Cloud]")
+    st.write(":green[1 - Déploiement Cloud]")
     st.write(""" *  Une solution pour :red[déporter nos problèmatiques] de poids d'images et ressources utilisées serait de déployer notre solution sur un service Cloud comme :orange[Amazon AWS ECS].
     * Nous préférons tout d'abord trouver de meilleurs solutions à notre déploiement""")
     st.image("/airflow/data_others/JPG-PNG/aws-ces.png")
 
-    st.write("2 - :green[Orchestration Kubernetes]")
+    st.write(":green[2 - Orchestration Kubernetes]")
     st.write(""" * Enfin, un système open-source permettant d':red[automatiser le déploiement, la mise à l'échelle et la gestion des applications conteneurisées] serait un point final à réaliser.
     * Nous n'avons pas le temps nécessaire pour cela et bien des points d'améliorations à résoudre avant tout""")
     st.image("/airflow/data_others/JPG-PNG/kubernetes.png")
