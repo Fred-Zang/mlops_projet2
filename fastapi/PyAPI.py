@@ -4,16 +4,14 @@ Created on Fri Dec 30 01:41:01 2022
 
 @author: user
 """
-from fastapi import Depends, FastAPI, HTTPException , status #, Query
-from fastapi import File, UploadFile
+from fastapi import Depends, FastAPI, HTTPException , status
+from fastapi import UploadFile
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from passlib.context import CryptContext
-from pydantic import BaseModel,Field
+from pydantic import BaseModel, Field
 from typing import Optional
-import pandas as pd 
-import numpy as np
+import pandas as pd
 import csv 
-import json
 import datetime
 
 app = FastAPI(
