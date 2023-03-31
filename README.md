@@ -70,8 +70,8 @@ de performances que nous avons définis.
 et la possibilité d'ajouter un commentaire et sa notation directement à data_MAJ.csv qui est la base de référence
 actualisée et utilisé par Streamlit et Airflow par la suite.
 
-- Streamlit nous sert de présentation détaillée du projet, des problématiques rencontrées et améliorations à prévoir
-ainsi que de prédiction à la demande sur les 3 modèles retenus et analyse du reporting des performances de chacun.
+- Streamlit nous sert de Présentation détaillée du projet, des Problématiques rencontrées et Améliorations à prévoir,
+de Prédiction à la demande, Visual Reporting et Alertes Performances de chacun.
 
 - Airflow nous sert de pipeline CI/CD afin de réaliser les preprocessings, les training et reporting de nos 3 modèles.
 Les modèles mis-à-jour sont sauvegardés avec date et heure de réalisation dans /airflow/clean_model
@@ -87,7 +87,7 @@ des différentes tâches se réalise en 3 minutes (selon votre PC). Puis les fic
 - 6 : Enfin, sur le navigateur Streamlit, vous pourrez constater, en rafraichissant la page "Reporting et Alerte Exigences", les performances et évolutions de chaque modèle après chaque mise-à-jour.
 
 # ----------- Nous aurions aimé faire bien plus ------------------
-- Nous nous excusons par avance de ne pas avoir eu le temps d'optimiser au mieux notre code et de le transférer sur un Cloud pour simplifier la procédure d'installation.
+- Nous aurions aimé avoir plus de temps pour optimiser notre code et le transférer sur un Cloud pour simplifier la procédure d'installation.
 La formation MLOps de DataScientest est très dense avec de nombreux examens pour valider les modules d'apprentissages.
 Il nous fallait atteindre le dernier module pour avoir enfin une visible d'ensemble et réaliser ce projet en 2 semaines
 intenses, mais ce fût un vrai plaisir dans le partage, la découverte de nombreux autres concepts pour lever bien des bugs

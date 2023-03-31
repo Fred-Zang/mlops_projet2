@@ -17,16 +17,16 @@ def run():
     st.write(""" * Nous avons sélectionné 3 modèles réalisés sur 8, pour leurs différences de preprocessing & modélisation, bien qu'aucun ne soit optimisé :
     * un Gradient Boosting Classifier :red[GBC]
     * un Support Vector Machine appliqué sur un modèle pré-entainé wikipedia2vec :red[SVM]
-    * un Arificial Neuronal Network :red[ANN]""")
+    * un Arficial Neuronal Network :red[ANN] appliqué aussi sur wikipedia2vec""")
 
     st.write("2 - :green[Définition des Métrics et Exigence de Performances]")    
-    st.write(""" * Notre choix s'est porté sur les métriques d':red[accuracy] et de :red[F1-score] que nous souhaitons :red[> 90%]""")
+    st.write(""" * Notre choix s'est porté sur les métriques d':red[accuracy] et de :red[F1-score] que nous souhaitons :red[> 80%] pour commencer""")
   
     
     st.write("3 - :green[Schéma d'Implantation]")
     st.write(""" * Nous utilisons 
-    * :red[FastApi] en back-end pour la gestion de notre base de données et leur mise-à-jour.
-    * :red[Airflow] pour le preprocessing, fit & classification_report des modèles mis-à-jours
+    * :red[FastApi] en back-end pour la gestion de notre base de données et leur mise-à-jour
+    * :red[Airflow] pour le preprocessing, fit & classification_report des modèles mis-à-jour
     * :red[Streamlit] en front-end pour présenter notre projet, comprendre ses problématiques et améliorations envisagées, 
     ainsi que de permettre des prédictions "à la demande et vérifier si nos exigences de métriques sont respectées""") 
     st.image("/airflow/data_others/JPG-PNG/schema_implantation.png")
@@ -36,24 +36,24 @@ def run():
 
     st.write("1 - :green[Git / GitHub]")
     st.write(""" * Nous avons créé un Repository Github sous :blue[*https://github.com/Fred-Zang/mlops_projet2.git*]
-    * La procédure de commits s'est effectué sur un découpage du code en de nombreuses petites partie sur différentes branches pour permettre à chacun d'agir indépendamment""")  
+    * La procédure de commits s'est effectuée sur un découpage du code en de nombreuses petites parties, sur différentes branches, pour permettre à chacun d'agir indépendamment""")  
     st.image("/airflow/data_others/JPG-PNG/git_branch_commits-quan-eric-fred.png")
     
     st.write("")
     st.write("2 - :green[Tests Unitaires]")
-    st.write(""" * Nous utilisons :red[GitHub Actions] pour créer :red[2 workflows] de vérification de nos codes lors des push de nos commits su Github.
+    st.write(""" * Nous utilisons :red[GitHub Actions] pour créer :red[2 workflows] de vérifications de nos codes lors des push de nos commits sur Github.
     * le fichier :blue[.github/workflows/python-app.yml] dans notre arborescence permet de lancer automatiquement les test :red[PEP8] et :red[Pytest] sur tous nos codes Python.""")
     st.image("/airflow/data_others/JPG-PNG/tests_unitaires.png")
     st.write("")
 
     st.write("3 - :green[Procédure d'Utilisation & Installation]")
-    st.write(""" * Toutes les Procédures d'Utilisation, d'Installation et Commandes terminale nécessaires sont décrite dans le :red[README.md] du repo GitHub""")
+    st.write(""" * Toutes les Procédures d'Utilisation, d'Installation et Commandes terminale nécessaires sont décrites dans le :red[README.md] du repo GitHub""")
     st.write("")
     
     st.write("4 - :green[API - gestion de la base de données]")
     st.write(""" * La gestion de notre base de données d'entrainement des modèles est gérée en back-end par le framework :red[FastAPI]
     * Nous implémentons une :red[Authentification des Utilisateurs] Basic HTTP pour les users :orange[admin, user].
-    * Les :red[password] sont identiques aux usernames pour des questions de facilité et peuvent être modifié avec le fichier :orange[PyAPI.py]
+    * Les :red[password] sont identiques aux usernames pour des questions de facilité et peuvent être modifiés avec le fichier :orange[PyAPI.py]
     * L'accès à cette API s'effectue par un navigateur à l'adresse :blue[http://localhost:8000/docs].
     * Toutes les descriptions des :blue[EndPoints] et leurs usages sont données dans cet accès navigateur.""")
 
@@ -62,27 +62,30 @@ def run():
     st.write(""" * Le Endpoint :red[/comment] permet d'ajouter un commentaire et une notation directement dans :blue[data_MAJ.csv]""")
      
     st.write(""" * Le Endpoint :red[/uploadfile] est disponible uniquement pour le user :orange[admin].
-    * Un fichier de test :blue[airflow/clean_data/--new_data_test/new_data_test.csv]) est mis à disposition pour permettre de mettre à jour la base de données avec 1 fichier de
-             nouveaux commentaires.
-    * un fichier de sauvegarde est enregistré pour une totale :red[traçabilité des mises à jours].
+    * 2 fichiers de tests d'ajout à la base de donnée data_MAJ.csv sont disponibles dans le sous-dossier :blue[airflow/clean_data/--new_data_test/new_data_test.csv])
+    * il est conseillé de voir la procédure complète décrite dans README.md pour réaliser chaque étape dans le bon ordre puisque nous n'avons pas d'API de données récupérable automatiquement
+    * un fichier de sauvegarde est enregistré pour une totale :red[traçabilité des mises à jour] des datas ajoutées.
     * le fichier :blue[data_MAJ.csv] est également remplacé par la mise à jour de données car c'est ce fichier qui est utilisé par la suite pour les MAJ de nos modèles.""")    
-    st.image("/airflow/data_others/JPG-PNG/sav_data_updates.png")         
+            
     st.write("")
     st.write("5 - :green[Airflow - Pipeline CI/CD] de :red[preprocessing->training->reporting->updating] des modèles")
     st.write(""" * L'accès à l'interface Airflow s'effectue par un navigateur à l'adresse :blue[http://localhost:8080].
     * Airflow récupère le fichier :blue[data_MAJ.csv] des données de la dernière mise à jour puis effectue les tâches suivantes sur nos 3 modèles :""")
     st.image("/airflow/data_others/JPG-PNG/Airflow-tasks.png")
-    st.write(""" * Les modèles mis-à-jour s'enregistre en écrasant les anciennes mis à jours ( par manque de place sur nos PC en local )""")
-    st.image("/airflow/data_others/JPG-PNG/sav_models_dags_ok.png")
 
-    st.write(""" * Les reporting s'enregistre au format .json ainsi :red[!!! voir refaire pour ajout date au nom du fichier !!!]""")
-    st.image("/airflow/data_others/JPG-PNG/sav_classif_report.png") 
+    st.write("")
+    st.write("6 - :green[Arborescence des datas] utilisées et mise-à-jour")
+    st.image("/airflow/data_others/JPG-PNG/datas_explications.png")
 
-    st.write("6 - :green[Streamlit]")
+    st.write("7 - :green[Arborescence des modèles] utilisés et mise-à-jour")
+    st.image("/airflow/data_others/JPG-PNG/bilan_modeles.png") 
+
+    st.write("8 - :green[Streamlit]")
     st.write(""" *  L'accès à l'interface Streamlit s'effectue par un navigateur à l'adresse :blue[http://localhost:8501].
     * Nous nous en servons pour la présentation de notre projet
     * Nous développons les problématiques rencontrées et pistes d'améliorations trouvées
-    * enfin, une partie :red[modélisation à la demande et surveillance des métriques] nous sert de :orange[front-end] utilisateur.""")
+    * Une page :red[Prédictions à la demande] nous permet de tester chaque mise-à-jour de modèle
+    * Une page :red[Visual Reporting et Alertes Performances] nous permet d'effectuer un suivi sur nos mises-à-jour""")
 
     st.write("### D - Isolation")
 
@@ -90,11 +93,11 @@ def run():
     st.write(""" *  Fastapi, Airflow et Streamlit sont isolés par des :red[Dockerfiles séparés], chacun ayant sont propre :orange[requirements.txt]
     * Dans le dossier de travail principal :blue[mlops_projet2], nous avons un :red[docker-compose] qui build les images de Fastapi et Streamlit dans :orange[2 containers disctincts]
     * Dans le sous-dossier :blue[airflow] nous avons un second :red[docker-compose] qui build l'image de Airflow contenant en tout :orange[7 containers]  
-    * Cette :red[isolation n'est pas optimisée en l'état] ( voir onglet suivant) et nous devons faire ne nombreux tests encore pour résoudre ce point.""")
+    * Cette :red[isolation n'est pas optimisée en l'état] ( voir onglet suivant) et nous devons faire de nombreux tests encore pour résoudre ce point.""")
     
     st.write("2 - :green[DockerHub]")
-    st.write(""" *  Vu la taille des images à construire et l'utilisation importante de ressources, nous avons décidé mettre les images à disposition.
-    * images à insérer dans les docker-compose en :red[modifiant les codes] build: /xxx par :orange[image: fredzang/xxx:1.0.0]  ( ne pas oublier le tag 1.0.0 final)""")
+    st.write(""" *  Vu la taille des images à construire et l'utilisation importante de ressources, nous avons décidé de mettre les :red[images à disposition].
+    * Veuillez svp vous rendre dans :red[README.md pour suivre la procédure] à réaliser dans ce cas si votre PC local n'offre pas assez de ressources mémoire""")
     st.image("/airflow/data_others/JPG-PNG/dockerHub.png")
 
     st.write("### E - Options Supplémentaires à envisager")
