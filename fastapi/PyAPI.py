@@ -53,9 +53,10 @@ users = {
 def get_current_user(credentials: HTTPBasicCredentials = Depends(security)):
     """_summary_ On récupère dans la variable credentials les identifiants entrés par l'utilisateur à l'aide de la dépendance \
 Depends(security). On exige par cette dépendance, l'authentification de l'utilisateur à l'aide de la méthode HTTP. \
-On récupère l'identifiant et le mot de passe de l'utilisateur grâce aux attributs username et password de la variable credentials \
-On vérifie si l'identifiant est présent dans la base de données. Ensuite, on compare si le mot de passe crypté correspond bien à \
-celui de la base de données en utilisant la méthode verify de la variable pwd_context.  \
+On récupère l'identifiant et le mot de passe de l'utilisateur grâce aux attributs username et password de la variable \
+credentials. \
+On vérifie si l'identifiant est présent dans la base de données. Ensuite, on compare si le mot de passe crypté correspond bien \
+à celui de la base de données en utilisant la méthode verify de la variable pwd_context.  \
 Sinon, on renvoie l'identifiant de l'utilisateur.
 
     Args:
@@ -161,9 +162,9 @@ def write_comment(FileName: str, inputs: list):
 @app.post('/comment', name="Make a New comment", tags=['Data Management'])
 async def post_comment(item: Item, username: str = Depends(get_current_user)):
     """
-    _summary_ : pour déposer un nouveau commantaire par user or admin
+    _summary_ : pour déposer un nouveau commentaire par user or admin
 
-        BASE DE DONNEE mis à jour
+        BASE DE DONNEE mise à jour
 
     Args:
     1. username (str, optional): _description_  Defaults to Depends(get_current_user).\n
