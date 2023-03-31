@@ -32,7 +32,7 @@ app = FastAPI(
 security = HTTPBasic()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# dictionnaire des users avec hashage du mot de pass
+# dictionnaire des users avec hashage du mot de passe
 # deux utilisateurs: user normale ("user") et administateur ("admin")
 
 users = {
@@ -55,8 +55,8 @@ def get_current_user(credentials: HTTPBasicCredentials = Depends(security)):
 Depends(security). On exige par cette dépendance, l'authentification de l'utilisateur à l'aide de la méthode HTTP. \
 On récupère l'identifiant et le mot de passe de l'utilisateur grâce aux attributs username et password de la variable \
 credentials. \
-On vérifie si l'identifiant est présent dans la base de données. Ensuite, on compare si le mot de passe crypté correspond bien \
-à celui de la base de données en utilisant la méthode verify de la variable pwd_context.  \
+On vérifie si l'identifiant est présent dans la base de données. Ensuite, on compare si le mot de passe crypté correspond \
+bien à celui de la base de données en utilisant la méthode verify de la variable pwd_context.  \
 Sinon, on renvoie l'identifiant de l'utilisateur.
 
     Args:
