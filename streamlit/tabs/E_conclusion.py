@@ -12,8 +12,8 @@ def run():
 
     st.write(
         """ * :orange[Nous aurions aimé] avoir plus de temps pour optimiser notre code et le transférer sur un Cloud pour simplifier la procédure d'installation.
-* La :blue[formation MLOps de DataScientest] est très dense avec de nombreux examens pour valider les modules d'apprentissages.
-* Il nous fallait atteindre le dernier module pour avoir enfin une visible d'ensemble et réaliser ce projet en 2 semaines intenses.
+* La :blue[formation MLOps de DataScientest] est très dense avec de nombreux examens pour valider les modules d'apprentissage.
+* Il nous fallait atteindre le dernier module pour avoir enfin une vue d'ensemble et réaliser ce projet en 2 semaines intenses.
 * mais ce fût :green[un vrai plaisir] dans le partage, la découverte de nombreux autres concepts pour lever bien des bugs
 et la mise en pratique de notre 1er projet MLOps.""")
     st.write("")
