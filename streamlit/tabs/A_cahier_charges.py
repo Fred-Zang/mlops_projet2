@@ -18,18 +18,18 @@ def run():
         """ * Nous avons sélectionné 3 modèles réalisés sur 8, pour leurs différences de preprocessing & modélisation, bien qu'aucun ne soit optimisé :
     * un Gradient Boosting Classifier :red[GBC]
     * un Support Vector Machine appliqué sur un modèle pré-entainé wikipedia2vec :red[SVM]
-    * un Arficial Neuronal Network :red[ANN] appliqué aussi sur wikipedia2vec""")
+    * un Artificial Neuronal Network :red[ANN] appliqué aussi sur wikipedia2vec""")
 
-    st.write(":green[2 - Définition des Métrics et Exigence de Performances]")
+    st.write(":green[2 - Définition des Métriques et Exigences de Performances]")
     st.write(
         """ * Notre choix s'est porté sur les métriques d':red[accuracy] et de :red[F1-score] que nous souhaitons :red[> 80%] pour commencer""")
 
     st.write(":green[3 - Schéma d'Implantation]")
     st.write(""" * Nous utilisons
-    * :red[FastApi] en back-end pour la gestion de notre base de données et leur mise-à-jour
+    * :red[FastApi] en back-end pour la gestion de notre base de données et sa mise-à-jour
     * :red[Airflow] pour le preprocessing, fit & classification_report des modèles mis-à-jour
     * :red[Streamlit] en front-end pour présenter notre projet, comprendre ses problématiques et améliorations envisagées,
-    ainsi que de permettre des prédictions "à la demande et vérifier si nos exigences de métriques sont respectées""")
+    ainsi que de permettre des "prédictions à la demande" et vérifier si nos exigences de métriques sont respectées""")
     st.image("/airflow/data_others/JPG-PNG/schema_implantation.png")
 
     st.write("### B - Version Control")
@@ -44,7 +44,7 @@ def run():
 
     st.write(":green[2 - Tests Unitaires]")
     st.write(
-        """ * Nous utilisons :red[GitHub Actions] pour créer :red[2 workflows] de vérifications de nos codes lors des push de nos commits sur Github.
+        """ * Nous utilisons :red[GitHub Actions] pour créer :red[2 workflows] de vérification de nos codes lors des push de nos commits sur Github.
 
     * le fichier :blue[.github/workflows/python-app.yml] dans notre arborescence permet de lancer automatiquement les test :red[PEP8] et :red[Pytest] sur tous nos codes Python.""")
     st.image("/airflow/data_others/JPG-PNG/tests_unitaires.png")
@@ -104,7 +104,7 @@ def run():
 
     st.write(":green[1 - Docker]")
     st.write(
-        """ *  Fastapi, Airflow et Streamlit sont isolés par des :red[Dockerfiles séparés], chacun ayant sont propre :orange[requirements.txt]
+        """ *  Fastapi, Airflow et Streamlit sont isolés par des :red[Dockerfiles séparés], chacun ayant son propre :orange[requirements.txt]
     * Dans le dossier de travail principal :blue[mlops_projet2], nous avons un :red[docker-compose] qui build les images de Fastapi et Streamlit dans :orange[2 containers disctincts]
     * Dans le sous-dossier :blue[airflow] nous avons un second :red[docker-compose] qui build l'image de Airflow contenant en tout :orange[7 containers]
     * Cette :red[isolation n'est pas optimisée en l'état] ( voir onglet suivant) et nous devons faire de nombreux tests encore pour résoudre ce point.""")

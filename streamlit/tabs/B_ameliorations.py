@@ -14,7 +14,7 @@ def run():
     st.markdown(
         """ - Les images contruites pour Streamlit, FastAPI et AirFlow font :orange[plus de 18 GB] utilisées.""")
     st.markdown(
-        """ - On remarque que Airflow requière la grande majorité de cette mémoire avec 7 containers.""")
+        """ - On remarque que Airflow requiert la grande majorité de cette mémoire avec 7 containers.""")
     st.image("/airflow/data_others/JPG-PNG/bilan-images-poids-x9.png")
 
     st.write('')
@@ -53,7 +53,7 @@ def run():
     st.markdown(
         """ - construire 1 ou des :blue[containers dédiés aux packages] de preprocessings et modélisations""")
     st.markdown(
-        """ - nous pourrions par exemple tester ce contenaire dédié à tendorflow https://hub.docker.com/r/tensorflow/build""")
+        """ - nous pourrions par exemple tester ce container dédié à tensorflow https://hub.docker.com/r/tensorflow/build""")
 
     st.write('')
     st.write("❌ :red[5 -VULNÉRABILITÉS DES IMAGES DOCKER]")
@@ -73,4 +73,4 @@ def run():
     st.write("❌ :red[6 -DÉCOUPER NOS FONCTIONS POUR PYTEST]")
     st.markdown(
         """ - Nous n'avons :orange[pas pensé] à découper suffisamment nos fonctions Python pour les rendre testables avec Pytest""")
-    st.markdown(""" - Nous nous en sommes aperçois un peu tardivement, désolé pour ce point de négligence qui nous à permis d'apprendre malgré tout""")
+    st.markdown(""" - Nous nous en sommes aperçu un peu tardivement, désolé pour ce point de négligence qui nous à permis d'apprendre malgré tout""")
