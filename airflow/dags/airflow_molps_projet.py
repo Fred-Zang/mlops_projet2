@@ -1,11 +1,11 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
-from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
-from my_functions import token_lemmatiser
+
 import sys
 sys.path.append('/app/clean_functions')   # chemin /airflow/clean_functions error => on passe par le volume /app
-
+from my_models import GBC_predict_df, SVM_predict_df, ANN_predict_df
+from my_functions import token_lemmatiser
 
 # initialisation du DAG avec un lancement des task toutes les minutes ----
 """
