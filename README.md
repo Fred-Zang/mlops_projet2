@@ -19,7 +19,8 @@ en production selon le cycle de vie MLOps.
 - ce modèle pré-entrainé de wikipedia étant assez lourd (+ de 1Go), nous ne pouvons le déposer sur GitHub.
 Aussi, veuillez suivre ce lien pour le télécharger en local et placer ce fichier dans le dossier /airflow/clean_model
 Ceci est obligatoire et doit être réalisé après la copie du repo en local sur votre machine.
-- LIEN A DONNER ...............!!!!!
+- Voici le lien où récupérer le modèle pré-entrainé trained.pickle :
+https://drive.google.com/file/d/1OQPWw-BJ7XcOPslCnSezl38jipZsZqY7/view?usp=share_link
 
 # -------- voir les navigateurs FastApi et Streamlit tourner --------------- 
 ## A : Création des containers FastApi et Streamlit
@@ -49,7 +50,10 @@ récupérer les images contruites et déposées sur DockerHub (créez un compte 
 - il vous faudra alors modifier les codes des docker-compose en remplaçant 
 build : /fastapi    par    image: fredzang/my_fastapi_mlops:2.0.0     # dans le docker-compose principal
 build : /streamlit  par    image: fredzang/my_streamlit_mlops:2.0.0   # dans le docker-compose principal
-build: .   par   image: ${AIRFLOW_IMAGE_NAME:my_airflow_mlops:2.0.0}  # dans le docker-compose de airflow
+build: .   par   image: ${AIRFLOW_IMAGE_NAME:fredzang/my_airflow_mlops:2.0.0}  # dans le docker-compose de airflow
+
+- le lancement des containers se fait dans ce cas avec la commande :
+- $ docker-compose up -d    # au lieu de  docker-compose up -d --build
 
 ## E : voir la console Airflow sur un navigateur
 - aller sur http://localhost:8080

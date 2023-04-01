@@ -10,8 +10,7 @@ h1, h2, h3, h4 {
 
 /* Couleur de l'arrière-plan de la fenêtre principale */
 .stApp {
-    background-image: url("https://img.freepik.com/free-photo/slate-texture-background_24972-292.jpg");
-    background-size: cover;
+    background-color: rgb(17,15,15);
 }
 
 /* Couleur de l'arrière-plan de sidebar */

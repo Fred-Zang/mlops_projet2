@@ -15,15 +15,18 @@ def run():
 
     st.markdown("---")
 
-    # TOUS LES MODELES ET DATA ICI SONT RECUPERES DANS /airflow/clean_data et /airflow/clean_model
-    st.write("#### :green[Entrez un Commentaire] puis faire :orange[CTRL + ENTER] pour le valider")
+    # TOUS LES MODELES ET DATA ICI SONT RECUPERES DANS /airflow/clean_data et
+    # /airflow/clean_model
+    st.write(
+        "#### :green[Entrez un Commentaire] puis faire :orange[CTRL + ENTER] pour le valider")
     message = st.text_area(
         " ",
         "Ecrire ici ..")
     corpus = message.lower()
 
-    st.write("#### :green[Choisissez un Modèle] pour lancer la :orange[prédiction]")
-    
+    st.write(
+        "#### :green[Choisissez un Modèle] pour lancer la :orange[prédiction]")
+
     if st.button("Gradient Boosting Classifier 2"):
         pred = GBC_2(corpus)
         st.success('Your message was classified as {}'.format(pred))
@@ -46,6 +49,3 @@ def run():
         pred = pred.index(max(pred))
         sentiment(pred)
         st.write('')
-
-        
-

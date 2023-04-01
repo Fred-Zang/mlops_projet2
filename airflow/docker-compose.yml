@@ -3,7 +3,7 @@ version: '3'
 x-airflow-common:
   &airflow-common
   build: .
-  #image: ${AIRFLOW_IMAGE_NAME:-fred-pyrequire_airflow:2.3.2}
+  #image: ${AIRFLOW_IMAGE_NAME:fredzang/my_airflow_mlops:2.0.0}
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: CeleryExecutor
