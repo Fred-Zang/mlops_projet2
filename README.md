@@ -22,7 +22,7 @@ Ceci est obligatoire et doit être réalisé après la copie du repo en local su
 - Voici le lien où récupérer le modèle pré-entrainé trained.pickle :
 https://drive.google.com/file/d/1v38YH0El-jEYUoWQ1spY4Upc5DSDVLSj/view?usp=share_link
 
-# ------ voir les navigateurs FastApi et Streamlit tourner -----
+# ---- voir les navigateurs FastApi et Streamlit tourner ----
 ## A : Création des containers FastApi et Streamlit
  - $ cd mlops_projet2  # se placer sur le dossier de travail du repo
  - $ docker network create AIservice  # créer le reseau AIservice
