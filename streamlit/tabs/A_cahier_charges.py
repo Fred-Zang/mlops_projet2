@@ -32,7 +32,7 @@ def run():
     ainsi que de permettre des "prédictions à la demande" et vérifier si nos exigences de métriques sont respectées""")
     st.image("/airflow/data_others/JPG-PNG/schema_implantation.png")
 
-    st.write("### B - Version Control")
+    st.write("### B - Version Control, Tests Unitaires & Installation")   ######  modif 1--------------------------------------
 
     st.write(":green[1 - Git / GitHub]")
     st.write(
@@ -55,8 +55,11 @@ def run():
         """ * Toutes les Procédures d'Utilisation, d'Installation et Commandes terminale nécessaires sont décrites dans le :red[README.md] du repo GitHub""")
 
     st.write("")
-
-    st.write(":green[4 - API - gestion de la base de données]")
+    st.write("### C - Interfaces utilisées et Arborescences mises en place")
+    st.write("")
+     
+     
+    st.write(":green[1 - API - gestion de la base de données]")
     st.write(
         """ * La gestion de notre base de données d'entrainement des modèles est gérée en back-end par le framework :red[FastAPI]
     * Nous implémentons une :red[Authentification des Utilisateurs] Basic HTTP pour les users :orange[admin, user].
@@ -78,20 +81,13 @@ def run():
 
     st.write("")
     st.write(
-        ":green[5 - Airflow - Pipeline CI/CD] de :red[preprocessing->training->reporting->updating] des modèles")
+        ":green[2 - Airflow - Pipeline CI/CD] de :red[preprocessing->training->reporting->updating] des modèles")
     st.write(
         """ * L'accès à l'interface Airflow s'effectue par un navigateur à l'adresse :blue[http://localhost:8080].
     * Airflow récupère le fichier :blue[data_MAJ.csv] des données de la dernière mise à jour puis effectue les tâches suivantes sur nos 3 modèles :""")
     st.image("/airflow/data_others/JPG-PNG/Airflow-tasks.png")
 
-    st.write("")
-    st.write(":green[6 - Arborescence des datas] utilisées et mise-à-jour")
-    st.image("/airflow/data_others/JPG-PNG/datas_explications.png")
-
-    st.write(":green[7 - Arborescence des modèles] utilisés et mise-à-jour")
-    st.image("/airflow/data_others/JPG-PNG/bilan_modeles.png")
-
-    st.write(":green[8 - Streamlit]")
+    st.write(":green[3 - Streamlit]")
 
     st.write(
         """ *  L'accès à l'interface Streamlit s'effectue par un navigateur à l'adresse :blue[http://localhost:8501].
@@ -99,6 +95,15 @@ def run():
     * Nous développons les problématiques rencontrées et pistes d'améliorations trouvées
     * Une page :red[Prédictions à la demande] nous permet de tester chaque mise-à-jour de modèle
     * Une page :red[Visual Reporting et Alertes Performances] nous permet d'effectuer un suivi sur nos mises-à-jour""")
+
+    st.write("")
+    st.write(":green[4 - Arborescence des datas] utilisées et mise-à-jour")
+    st.image("/airflow/data_others/JPG-PNG/datas_explications.png")
+
+    st.write(":green[5 - Arborescence des modèles] utilisés et mise-à-jour")
+    st.image("/airflow/data_others/JPG-PNG/bilan_modeles.png")
+
+
 
     st.write("### D - Isolation")
 
