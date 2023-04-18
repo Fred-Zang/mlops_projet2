@@ -25,8 +25,7 @@ https://drive.google.com/file/d/1v38YH0El-jEYUoWQ1spY4Upc5DSDVLSj/view?usp=share
 # ---- voir les navigateurs FastApi et Streamlit tourner ----
 ## A : Création des containers FastApi et Streamlit
  - $ cd mlops_projet2  # se placer sur le dossier de travail du repo
- - $ docker network create AIservice  # créer le reseau AIservice
- - $ docker network ls   # vérification
+
  - $ docker-compose up -d --build  # création des images et lancement des containers fastapi et streamlit
     => cela peut prendre entre 5 à 10 minutes la 1ere fois selon le PC
 
